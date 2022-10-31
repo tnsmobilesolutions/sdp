@@ -26,13 +26,7 @@ class _DashboardState extends State<Dashboard> {
   bool isSelected = false;
   String? _selectedSearchType;
   VaktaModel? selectedUser;
-  List<String> searchBy = [
-    'Name',
-    'Company',
-    'Exp Date',
-    'CIMS Class',
-    'Description'
-  ];
+  List<String> searchBy = ['Name', 'Sangha', 'Date', 'Devotee', 'Date'];
   @override
   void initState() {
     super.initState();

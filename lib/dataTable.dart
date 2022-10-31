@@ -31,20 +31,17 @@ class _DataTableViewState extends State<DataTableView> {
   late VaktaModel singleMed;
   final columns = [
     'Name',
-    'Company',
-    'Generic Name',
-    'CIMS Class',
-    'ACT Classification',
-    'Packing',
-    'Form',
-    'Contents',
-    'Tabs/Strip',
-    'Mfg Date',
-    'Exp Date',
-    'Price',
-    'Description',
-    'Edit',
-    'Delete',
+    'Sangha',
+    'Pranami',
+    'Pali Date',
+    'Sammikani No.',
+    'Sammilani Date',
+    'UserId',
+    'Remark'
+        'CreatedBy',
+    'Created On',
+    'Updated By',
+    'Updated On',
   ];
 
   @override
