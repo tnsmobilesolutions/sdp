@@ -11,8 +11,8 @@ import 'package:sdp/pick_image.dart';
 import 'package:uuid/uuid.dart';
 
 class EditMedicineScreen extends StatefulWidget {
-  EditMedicineScreen({super.key, this.medicineData});
-  MedicineModel? medicineData;
+  EditMedicineScreen({super.key, this.VaktaData});
+  VaktaModel? VaktaData;
 
   @override
   State<EditMedicineScreen> createState() => _EditMedicineScreenState();
@@ -45,28 +45,17 @@ class _EditMedicineScreenState extends State<EditMedicineScreen> {
   void initState() {
     super.initState();
     setState(() {
-      medicineNameController.text = widget.medicineData?.medicineName ?? '';
-      packingController.text = widget.medicineData?.packing ?? '';
-      companyNameController.text = widget.medicineData?.company ?? '';
-      genericNameController.text = widget.medicineData?.genericName ?? '';
-      cimsClassController.text = widget.medicineData?.cimsClass ?? '';
-      formController.text = widget.medicineData?.form ?? '';
-      contentsController.text = widget.medicineData?.contents ?? '';
-      actClassificationController.text =
-          widget.medicineData?.actClassification ?? '';
-      tabPerStripController.text =
-          widget.medicineData?.tabsPerStrip.toString() ?? '';
-      priceController.text = widget.medicineData?.price.toString() ?? '';
-      mfgDateController.text = widget.medicineData?.mfgDate != null
-          ? DateFormat('dd-MM-yyyy')
-              .format(widget.medicineData?.mfgDate as DateTime)
-          : '';
-      expDateController.text = widget.medicineData?.expDate != null
-          ? DateFormat('dd-MM-yyyy')
-              .format(widget.medicineData?.expDate as DateTime)
-          : '';
-      descriptionController.text = widget.medicineData?.description ?? '';
-      medicineTypeController.text = widget.medicineData?.medicineType ?? '';
+      medicineNameController.text = widget.VaktaData?.devoteeName ?? '';
+      packingController.text = widget.VaktaData?.sangha ?? '';
+      companyNameController.text = widget.VaktaData?.paaliDate ?? '';
+      genericNameController.text = widget.VaktaData?.pranaami ?? '';
+      cimsClassController.text = widget.VaktaData?.createdBy ?? '';
+      formController.text = widget.VaktaData?.createdOn ?? '';
+      contentsController.text = widget.VaktaData?.remark ?? '';
+      actClassificationController.text = widget.VaktaData?.sammilaniNo ?? '';
+      tabPerStripController.text = widget.VaktaData?.sammilaniYear ?? '';
+      priceController.text = widget.VaktaData?.updatedBy ?? '';
+      mfgDateController.text = widget.VaktaData?.updatedOn ?? '';
     });
   }
 
@@ -412,38 +401,21 @@ class _EditMedicineScreenState extends State<EditMedicineScreen> {
                         ElevatedButton(
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
-                                MedicineModel medicineModel = MedicineModel(
-                                  medicineId: Uuid().v1(),
-                                  medicineName: medicineNameController.text,
-                                  medicineType: medicineTypeController.text,
-                                  cimsClass: cimsClassController.text,
-                                  actClassification:
-                                      actClassificationController.text,
-                                  form: formController.text,
-                                  contents: contentsController.text,
-                                  packing: packingController.text,
-                                  description: descriptionController.text,
-                                  addedOn: widget.medicineData?.addedOn,
-                                  addedBy: widget.medicineData?.addedBy,
-                                  genericName: genericNameController.text,
-                                  company: companyNameController.text,
-                                  medicineImageURL:
-                                      widget.medicineData?.medicineImageURL,
-                                  tabsPerStrip:
-                                      int.tryParse(tabPerStripController.text),
-                                  price: double.tryParse(priceController.text),
-                                  mfgDate: DateTime.tryParse(mfgDateController
-                                      .text
-                                      .split('-')
-                                      .reversed
-                                      .join('-')),
-                                  expDate: DateTime.tryParse(expDateController
-                                      .text
-                                      .split('-')
-                                      .reversed
-                                      .join('-')),
-                                  updatedOn: DateTime.now(),
-                                  updatedBy: '',
+                                VaktaModel medicineModel = VaktaModel(
+                                  devoteeName: medicineNameController.text,
+                                  // medicineType: _selectedMedicineType,
+                                  paaliDate: cimsClassController.text,
+                                  pranaami: actClassificationController.text,
+                                  sangha: formController.text,
+                                  createdBy: contentsController.text,
+                                  createdOn: packingController.text,
+                                  remark: descriptionController.text,
+                                  // sammilaniNo: DateTime.now(),
+                                  sammilaniNo: descriptionController.text,
+                                  sammilaniYear: genericNameController.text,
+                                  updatedBy: companyNameController.text,
+                                  // medicineImageURL: '',
+                                  updatedOn: companyNameController.text,
                                 );
 
                                 await MedicineAPI().editMedicine(medicineModel);

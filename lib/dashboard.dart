@@ -25,7 +25,7 @@ class _DashboardState extends State<Dashboard> {
   APIType? type;
   bool isSelected = false;
   String? _selectedSearchType;
-  MedicineModel? selectedMed;
+  VaktaModel? selectedUser;
   List<String> searchBy = [
     'Name',
     'Company',
@@ -43,7 +43,7 @@ class _DashboardState extends State<Dashboard> {
 
   onRowSelected(value) {
     setState(() {
-      selectedMed = value;
+      selectedUser = value;
     });
   }
 
@@ -179,12 +179,12 @@ class _DashboardState extends State<Dashboard> {
                       ),
                     ),
                     onPressed: (() {
-                      if (selectedMed != null && isSelected) {
+                      if (selectedUser != null && isSelected) {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => EditMedicineScreen(
-                                    medicineData: selectedMed)));
+                                    VaktaData: selectedUser)));
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             elevation: 6,
@@ -216,9 +216,9 @@ class _DashboardState extends State<Dashboard> {
                       ),
                     ),
                     onPressed: (() async {
-                      if (selectedMed != null) {
+                      if (selectedUser != null) {
                         await MedicineAPI()
-                            .removeMedicine(selectedMed?.medicineId);
+                            .removeMedicine(selectedUser?.userId);
                         setState(() {});
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             elevation: 6,

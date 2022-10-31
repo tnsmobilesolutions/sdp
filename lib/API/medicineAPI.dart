@@ -1,28 +1,27 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sdp/Models/medicineModel.dart';
 
-
 enum SearchBy { name, company }
 
 class MedicineAPI {
   SearchBy? searchBy;
   //Add Medicine
-  addMedicine(MedicineModel medicineModel) {
+  addMedicine(VaktaModel vakta) {
     final CollectionReference medicineCollection =
         FirebaseFirestore.instance.collection('medicines');
-    medicineCollection.doc(medicineModel.medicineId).set(medicineModel.toMap());
+    medicineCollection.doc(vakta.userId).set(vakta.toMap());
   }
 
-  Future<List<MedicineModel>> fetchAllMedicines() async {
+  Future<List<VaktaModel>> fetchAllMedicines() async {
     final CollectionReference medicineCollection =
         FirebaseFirestore.instance.collection('medicines');
     return medicineCollection.get().then(
       (querysnapshot) {
         //print('********${querysnapshot.docs.length}');
-        List<MedicineModel> lstMedicines = [];
+        List<VaktaModel> lstMedicines = [];
         for (var element in querysnapshot.docs) {
           final medicines = element.data() as Map<String, dynamic>;
-          final medicineModel = MedicineModel.fromMap(medicines);
+          final medicineModel = VaktaModel.fromMap(medicines);
           //print('Medicine model in API $medicineModel');
           lstMedicines.add(medicineModel);
         }
@@ -31,54 +30,52 @@ class MedicineAPI {
     );
   }
 
-  Future<List<MedicineModel>?> searchMedicine(
+  Future<List<VaktaModel>?> searchMedicine(
       String? searchBy, String searchedItem) async {
     final CollectionReference medicineCollection =
         FirebaseFirestore.instance.collection('medicines');
     return medicineCollection.get().then((querysnapshot) {
-      List<MedicineModel> resultMedicines = [];
+      List<VaktaModel> result = [];
       for (var element in querysnapshot.docs) {
         final medicines = element.data() as Map<String, dynamic>;
-        final medicineModel = MedicineModel.fromMap(medicines);
+        final vaktaDetails = VaktaModel.fromMap(medicines);
         if (searchBy == 'Name') {
-          if (medicineModel.medicineName
+          if (vaktaDetails.devoteeName
                   ?.toLowerCase()
                   .contains(searchedItem.toLowerCase()) ??
               false) {
-            resultMedicines.add(medicineModel);
+            result.add(vaktaDetails);
           }
-        } else if (searchBy == 'Company') {
-          if (medicineModel.company
+        } else if (searchBy == 'Date') {
+          if (vaktaDetails.sangha
                   ?.toLowerCase()
                   .contains(searchedItem.toLowerCase()) ??
               false) {
-            resultMedicines.add(medicineModel);
+            result.add(vaktaDetails);
           }
-        } else if (searchBy == 'CIMS Class') {
-          if (medicineModel.cimsClass
-                  ?.toLowerCase()
-                  .contains(searchedItem.toLowerCase()) ??
+        } else if (searchBy == 'Sangha') {
+          if (vaktaDetails.sangha?.contains(searchedItem.toLowerCase()) ??
               false) {
-            resultMedicines.add(medicineModel);
+            result.add(vaktaDetails);
           }
-        } else if (searchBy == 'Description') {
-          if (medicineModel.description
+        } else if (searchBy == 'Devotee') {
+          if (vaktaDetails.devoteeName
                   ?.toLowerCase()
                   .contains(searchedItem.toLowerCase()) ??
               false) {
-            resultMedicines.add(medicineModel);
+            result.add(vaktaDetails);
           }
         }
       }
-      return resultMedicines;
+      return result;
     });
   }
 
-  Future editMedicine(MedicineModel newMedicineData) async {
+  Future editMedicine(VaktaModel newMedicineData) async {
     var medicineCollection = FirebaseFirestore.instance.collection('medicines');
 
     medicineCollection
-        .doc(newMedicineData.medicineId)
+        .doc(newMedicineData.userId)
         .update(newMedicineData.toMap());
   }
 
