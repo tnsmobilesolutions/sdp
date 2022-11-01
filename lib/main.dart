@@ -5,16 +5,20 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:sdp/Login/EmailSignIn.dart';
 import 'package:sdp/dashboard.dart';
+import 'package:sdp/firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-      options: FirebaseOptions(
-    apiKey: "AIzaSyBBM9fjqih7IJSi1VfYLfHq3nWtbKFKuNQ",
-    appId: "1:684346010972:web:20b7176ec8d3228476e599",
-    messagingSenderId: "684346010972",
-    projectId: "sdp-nss-puri",
-  ));
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  // await Firebase.initializeApp(
+  //     options: FirebaseOptions(
+  //   apiKey: "AIzaSyBBM9fjqih7IJSi1VfYLfHq3nWtbKFKuNQ",
+  //   appId: "1:684346010972:web:20b7176ec8d3228476e599",
+  //   messagingSenderId: "684346010972",
+  //   projectId: "sdp-nss-puri",
+  // ));
   runApp(MyApp());
 }
 

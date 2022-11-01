@@ -7,7 +7,7 @@ import 'package:sdp/Models/medicineModel.dart';
 class DataTableView extends StatefulWidget {
   DataTableView({Key? key, this.allMeds, this.onRowTapped, this.isRowSelected})
       : super(key: key);
-  List<MedicineModel>? allMeds;
+  List<VaktaModel>? allMeds;
   Function? onRowTapped;
   Function? isRowSelected;
 
@@ -23,28 +23,25 @@ class _DataTableViewState extends State<DataTableView> {
     //print('allMeds from dataTable ${widget.allMeds}');
   }
 
-  List<MedicineModel>? selectedMedList;
+  List<VaktaModel>? selectedMedList;
   int? sortColumnIndex;
   bool isAscending = false;
   String? medId;
   bool isSelected = false;
-  late MedicineModel singleMed;
+  late VaktaModel singleMed;
   final columns = [
     'Name',
-    'Company',
-    'Generic Name',
-    'CIMS Class',
-    'ACT Classification',
-    'Packing',
-    'Form',
-    'Contents',
-    'Tabs/Strip',
-    'Mfg Date',
-    'Exp Date',
-    'Price',
-    'Description',
-    'Edit',
-    'Delete',
+    'Sangha',
+    'Pranami',
+    'Pali Date',
+    'Sammikani No.',
+    'Sammilani Date',
+    'UserId',
+    'Remark'
+        'CreatedBy',
+    'Created On',
+    'Updated By',
+    'Updated On',
   ];
 
   @override
@@ -76,7 +73,8 @@ class _DataTableViewState extends State<DataTableView> {
   }
 
   List<DataColumn> getColumns(List<String> columns) => columns
-      .map((String column) => DataColumn(
+      .map(
+        (String column) => DataColumn(
           label: Text(
             column,
             style: TextStyle(
@@ -85,36 +83,31 @@ class _DataTableViewState extends State<DataTableView> {
               fontSize: 16.5,
             ),
           ),
-          onSort: onSort))
+          // onSort: onSort,
+        ),
+      )
       .toList();
 
-  List<DataRow> getRows(List<MedicineModel>? allMeds) {
+  List<DataRow> getRows(List<VaktaModel>? allMeds) {
     if (allMeds != null) {
-      return allMeds.map((MedicineModel med) {
+      return allMeds.map((VaktaModel med) {
         //print('mfg date - ${med.mfgDate}');
         setState(() {
           singleMed = med;
         });
         final cells = [
-          med.medicineName,
-          med.company,
-          med.genericName,
-          med.cimsClass,
-          med.actClassification,
-          med.packing,
-          med.form,
-          med.contents,
-          med.tabsPerStrip,
-          med.mfgDate == null
-              ? ''
-              : DateFormat('MM/yyyy').format(med.mfgDate as DateTime),
-          med.expDate == null
-              ? ''
-              : DateFormat('MM/yyyy').format(med.expDate as DateTime),
-          med.price,
-          med.description,
-          Icon(Icons.edit),
-          Icon(Icons.delete),
+          med.devoteeName,
+          med.sangha,
+          med.sammilaniNo,
+          med.sammilaniYear,
+          med.paaliDate,
+          med.pranaami,
+          med.createdBy,
+          med.createdOn,
+          med.updatedBy,
+          med.updatedOn,
+          med.userId,
+          med..remark,
         ];
 
         return DataRow(
@@ -148,53 +141,53 @@ class _DataTableViewState extends State<DataTableView> {
         );
       }).toList();
 
-  void onSort(int columnIndex, bool ascending) {
-    if (columnIndex == 0) {
-      widget.allMeds?.sort((user1, user2) => compareString(
-          ascending, user1.medicineName ?? '', user2.medicineName ?? ''));
-    } else if (columnIndex == 1) {
-      widget.allMeds?.sort((user1, user2) =>
-          compareString(ascending, user1.company ?? '', user2.company ?? ''));
-    } else if (columnIndex == 2) {
-      widget.allMeds?.sort((user1, user2) => compareString(
-          ascending, user1.genericName ?? '', user2.genericName ?? ''));
-    } else if (columnIndex == 3) {
-      widget.allMeds?.sort((user1, user2) => compareString(
-          ascending, user1.cimsClass ?? '', user2.cimsClass ?? ''));
-    } else if (columnIndex == 4) {
-      widget.allMeds?.sort((user1, user2) => compareString(ascending,
-          user1.actClassification ?? '', user2.actClassification ?? ''));
-    } else if (columnIndex == 5) {
-      widget.allMeds?.sort((user1, user2) =>
-          compareString(ascending, user1.packing ?? '', user2.packing ?? ''));
-    } else if (columnIndex == 6) {
-      widget.allMeds?.sort((user1, user2) =>
-          compareString(ascending, user1.form ?? '', user2.form ?? ''));
-    } else if (columnIndex == 7) {
-      widget.allMeds?.sort((user1, user2) =>
-          compareString(ascending, user1.contents ?? '', user2.contents ?? ''));
-    } else if (columnIndex == 8) {
-      widget.allMeds?.sort((user1, user2) => compareString(ascending,
-          user1.tabsPerStrip.toString(), user2.tabsPerStrip.toString()));
-    } else if (columnIndex == 9) {
-      widget.allMeds?.sort((user1, user2) => compareString(
-          ascending, user1.mfgDate.toString(), user2.mfgDate.toString()));
-    } else if (columnIndex == 10) {
-      widget.allMeds?.sort((user1, user2) => compareString(
-          ascending, user1.expDate.toString(), user2.expDate.toString()));
-    } else if (columnIndex == 11) {
-      widget.allMeds?.sort((user1, user2) => compareString(
-          ascending, user1.price.toString(), user2.price.toString()));
-    } else if (columnIndex == 12) {
-      widget.allMeds?.sort((user1, user2) => compareString(
-          ascending, user1.description ?? '', user2.description ?? ''));
-    }
+  // void onSort(int columnIndex, bool ascending) {
+  //   if (columnIndex == 0) {
+  //     widget.allMeds?.sort((user1, user2) => compareString(
+  //         ascending, user1.medicineName ?? '', user2.medicineName ?? ''));
+  //   } else if (columnIndex == 1) {
+  //     widget.allMeds?.sort((user1, user2) =>
+  //         compareString(ascending, user1.company ?? '', user2.company ?? ''));
+  //   } else if (columnIndex == 2) {
+  //     widget.allMeds?.sort((user1, user2) => compareString(
+  //         ascending, user1.genericName ?? '', user2.genericName ?? ''));
+  //   } else if (columnIndex == 3) {
+  //     widget.allMeds?.sort((user1, user2) => compareString(
+  //         ascending, user1.cimsClass ?? '', user2.cimsClass ?? ''));
+  //   } else if (columnIndex == 4) {
+  //     widget.allMeds?.sort((user1, user2) => compareString(ascending,
+  //         user1.actClassification ?? '', user2.actClassification ?? ''));
+  //   } else if (columnIndex == 5) {
+  //     widget.allMeds?.sort((user1, user2) =>
+  //         compareString(ascending, user1.packing ?? '', user2.packing ?? ''));
+  //   } else if (columnIndex == 6) {
+  //     widget.allMeds?.sort((user1, user2) =>
+  //         compareString(ascending, user1.form ?? '', user2.form ?? ''));
+  //   } else if (columnIndex == 7) {
+  //     widget.allMeds?.sort((user1, user2) =>
+  //         compareString(ascending, user1.contents ?? '', user2.contents ?? ''));
+  //   } else if (columnIndex == 8) {
+  //     widget.allMeds?.sort((user1, user2) => compareString(ascending,
+  //         user1.tabsPerStrip.toString(), user2.tabsPerStrip.toString()));
+  //   } else if (columnIndex == 9) {
+  //     widget.allMeds?.sort((user1, user2) => compareString(
+  //         ascending, user1.mfgDate.toString(), user2.mfgDate.toString()));
+  //   } else if (columnIndex == 10) {
+  //     widget.allMeds?.sort((user1, user2) => compareString(
+  //         ascending, user1.expDate.toString(), user2.expDate.toString()));
+  //   } else if (columnIndex == 11) {
+  //     widget.allMeds?.sort((user1, user2) => compareString(
+  //         ascending, user1.price.toString(), user2.price.toString()));
+  //   } else if (columnIndex == 12) {
+  //     widget.allMeds?.sort((user1, user2) => compareString(
+  //         ascending, user1.description ?? '', user2.description ?? ''));
+  //   }
 
-    setState(() {
-      sortColumnIndex = columnIndex;
-      isAscending = ascending;
-    });
-  }
+  //   setState(() {
+  //     sortColumnIndex = columnIndex;
+  //     isAscending = ascending;
+  //   });
+  // }
 
   int compareString(bool ascending, String value1, String value2) =>
       ascending ? value1.compareTo(value2) : value2.compareTo(value1);

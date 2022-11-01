@@ -22,7 +22,7 @@ class AddMedicineScreen extends StatefulWidget {
 
 class _AddMedicineScreenState extends State<AddMedicineScreen> {
   String? _selectedMedicineType;
-  List<String> medicineTypes = ['Allopathy', 'Homeopathy', 'Ayurvedic'];
+  // List<String> medicineTypes = ['Allopathy', 'Homeopathy', 'Ayurvedic'];
 
   final _formKey = GlobalKey<FormState>();
   final medicineNameController = TextEditingController();
@@ -46,7 +46,7 @@ class _AddMedicineScreenState extends State<AddMedicineScreen> {
   @override
   void initState() {
     super.initState();
-    _selectedMedicineType = 'Allopathy';
+    // _selectedMedicineType = 'Allopathy';
   }
 
   @override
@@ -104,31 +104,31 @@ class _AddMedicineScreenState extends State<AddMedicineScreen> {
                               ),
                             ),
                             SizedBox(width: 40),
-                            DropdownButton(
-                              focusColor: Colors.grey,
-                              hint: Text('Medicine Type'),
-                              borderRadius: BorderRadius.circular(15),
-                              value: _selectedMedicineType,
-                              onChanged: (value) {
-                                setState(() {
-                                  _selectedMedicineType = value as String;
-                                  //medicineTypeController.text = value as String;
-                                });
-                              },
-                              items: medicineTypes.map(
-                                (val) {
-                                  return DropdownMenuItem(
-                                    value: val,
-                                    child: Text(val),
-                                  );
-                                },
-                              ).toList(),
-                              iconEnabledColor: Colors.blue,
-                              iconDisabledColor: Colors.blue,
-                              iconSize: 40,
-                              icon: Icon(Icons.arrow_drop_down_circle_rounded),
-                              underline: Text(''),
-                            )
+                            // DropdownButton(
+                            //   focusColor: Colors.grey,
+                            //   hint: Text('Medicine Type'),
+                            //   borderRadius: BorderRadius.circular(15),
+                            //   value: _selectedMedicineType,
+                            //   onChanged: (value) {
+                            //     setState(() {
+                            //       _selectedMedicineType = value as String;
+                            //       //medicineTypeController.text = value as String;
+                            //     });
+                            //   },
+                            //   items: medicineTypes.map(
+                            //     (val) {
+                            //       return DropdownMenuItem(
+                            //         value: val,
+                            //         child: Text(val),
+                            //       );
+                            //     },
+                            //   ).toList(),
+                            //   iconEnabledColor: Colors.blue,
+                            //   iconDisabledColor: Colors.blue,
+                            //   iconSize: 40,
+                            //   icon: Icon(Icons.arrow_drop_down_circle_rounded),
+                            //   underline: Text(''),
+                            // )
                           ],
                         ),
                         SizedBox(height: 20),
@@ -435,44 +435,41 @@ class _AddMedicineScreenState extends State<AddMedicineScreen> {
                               String? name = await UserAPI().currentUserName();
                               log(name.toString());
                               if (_formKey.currentState!.validate()) {
-                                MedicineModel medicineModel = MedicineModel(
-                                  medicineId: Uuid().v1(),
-                                  medicineName: medicineNameController.text,
-                                  medicineType: _selectedMedicineType,
-                                  cimsClass: cimsClassController.text,
-                                  actClassification:
-                                      actClassificationController.text,
-                                  form: formController.text,
-                                  contents: contentsController.text,
-                                  packing: packingController.text,
-                                  description: descriptionController.text,
-                                  addedOn: DateTime.now(),
-                                  addedBy: name,
-                                  genericName: genericNameController.text,
-                                  company: companyNameController.text,
-                                  medicineImageURL: '',
-                                  tabsPerStrip:
-                                      int.tryParse(tabPerStripController.text),
-                                  price: double.tryParse(priceController.text),
-                                  mfgDate: DateTime.tryParse(mfgDateController
-                                          .text
-                                          .split('-')
-                                          .reversed
-                                          .join('-')) ??
-                                      DateTime.tryParse(''),
-                                  expDate: DateTime.tryParse(expDateController
-                                          .text
-                                          .split('-')
-                                          .reversed
-                                          .join('-')) ??
-                                      DateTime.tryParse(''),
+                                VaktaModel vaktaDetails = VaktaModel(
+                                  userId: Uuid().v1(),
+                                  devoteeName: medicineNameController.text,
+                                  // medicineType: _selectedMedicineType,
+                                  paaliDate: cimsClassController.text,
+                                  pranaami: actClassificationController.text,
+                                  sangha: formController.text,
+                                  createdBy: contentsController.text,
+                                  createdOn: packingController.text,
+                                  remark: descriptionController.text,
+                                  // sammilaniNo: DateTime.now(),
+                                  sammilaniNo: name,
+                                  sammilaniYear: genericNameController.text,
+                                  updatedBy: companyNameController.text,
+                                  // medicineImageURL: '',
+                                  updatedOn: companyNameController.text,
+                                  // price: double.tryParse(priceController.text),
+                                  // mfgDate: DateTime.tryParse(mfgDateController
+                                  //         .text
+                                  //         .split('-')
+                                  //         .reversed
+                                  //         .join('-')) ??
+                                  //     DateTime.tryParse(''),
+                                  // expDate: DateTime.tryParse(expDateController
+                                  //         .text
+                                  //         .split('-')
+                                  //         .reversed
+                                  //         .join('-')) ??
+                                  //     DateTime.tryParse(''),
                                 );
 
-                                if (medicineModel.medicineName == '') {
+                                if (vaktaDetails.devoteeName == '') {
                                   Navigator.of(context).pop();
                                 } else {
-                                  await MedicineAPI()
-                                      .addMedicine(medicineModel);
+                                  await MedicineAPI().addMedicine(vaktaDetails);
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                           elevation: 6,

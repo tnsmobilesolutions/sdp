@@ -2,229 +2,166 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
-class MedicineModel {
-  final String? medicineName;
-  final String? medicineType;
-  final String? medicineId;
-  final String? genericName;
-  final String? cimsClass;
-  final String? actClassification;
-  final String? packing;
-  final String? form;
-  final String? contents;
-  final String? company;
-  final int? tabsPerStrip;
-  final double? price;
-  final DateTime? mfgDate;
-  final DateTime? expDate;
-  final DateTime? addedOn;
-  final DateTime? updatedOn;
-  final String? addedBy;
-  final String? updatedBy;
-  final String? medicineImageURL;
-  final String? description;
-  final Widget? edit;
-  final Widget? delete;
-
-  MedicineModel({
-    this.medicineName,
-    this.medicineType,
-    this.medicineId,
-    this.genericName,
-    this.cimsClass,
-    this.actClassification,
-    this.packing,
-    this.form,
-    this.contents,
-    this.company,
-    this.tabsPerStrip,
-    this.price,
-    this.mfgDate,
-    this.expDate,
-    this.addedOn,
-    this.updatedOn,
-    this.addedBy,
+class VaktaModel {
+  String? userId;
+  String? devoteeName;
+  String? sangha;
+  String? paaliDate;
+  String? sammilaniNo;
+  String? sammilaniYear;
+  String? pranaami;
+  String? remark;
+  String? createdBy;
+  String? createdOn;
+  String? updatedBy;
+  String? updatedOn;
+  VaktaModel({
+    this.userId,
+    this.devoteeName,
+    this.sangha,
+    this.paaliDate,
+    this.sammilaniNo,
+    this.sammilaniYear,
+    this.pranaami,
+    this.remark,
+    this.createdBy,
+    this.createdOn,
     this.updatedBy,
-    this.medicineImageURL,
-    this.description,
-    this.edit,
-    this.delete,
+    this.updatedOn,
   });
 
-  MedicineModel copyWith({
-    String? medicineName,
-    String? medicineType,
-    String? medicineId,
-    String? genericName,
-    String? cimsClass,
-    String? actClassification,
-    String? packing,
-    String? form,
-    String? contents,
-    String? company,
-    int? tabsPerStrip,
-    double? price,
-    DateTime? mfgDate,
-    DateTime? expDate,
-    DateTime? addedOn,
-    DateTime? updatedOn,
-    String? addedBy,
+  VaktaModel copyWith({
+    String? userId,
+    String? devoteeName,
+    String? sangha,
+    String? paaliDate,
+    String? sammilaniNo,
+    String? sammilaniYear,
+    String? pranaami,
+    String? remark,
+    String? createdBy,
+    String? createdOn,
     String? updatedBy,
-    String? medicineImageURL,
-    String? description,
-    Widget? edit,
-    Widget? delete,
+    String? updatedOn,
   }) {
-    return MedicineModel(
-      medicineName: medicineName ?? this.medicineName,
-      medicineType: medicineType ?? this.medicineType,
-      medicineId: medicineId ?? this.medicineId,
-      genericName: genericName ?? this.genericName,
-      cimsClass: cimsClass ?? this.cimsClass,
-      actClassification: actClassification ?? this.actClassification,
-      packing: packing ?? this.packing,
-      form: form ?? this.form,
-      contents: contents ?? this.contents,
-      company: company ?? this.company,
-      tabsPerStrip: tabsPerStrip ?? this.tabsPerStrip,
-      price: price ?? this.price,
-      mfgDate: mfgDate ?? this.mfgDate,
-      expDate: expDate ?? this.expDate,
-      addedOn: addedOn ?? this.addedOn,
-      updatedOn: updatedOn ?? this.updatedOn,
-      addedBy: addedBy ?? this.addedBy,
+    return VaktaModel(
+      userId: userId ?? this.userId,
+      devoteeName: devoteeName ?? this.devoteeName,
+      sangha: sangha ?? this.sangha,
+      paaliDate: paaliDate ?? this.paaliDate,
+      sammilaniNo: sammilaniNo ?? this.sammilaniNo,
+      sammilaniYear: sammilaniYear ?? this.sammilaniYear,
+      pranaami: pranaami ?? this.pranaami,
+      remark: remark ?? this.remark,
+      createdBy: createdBy ?? this.createdBy,
+      createdOn: createdOn ?? this.createdOn,
       updatedBy: updatedBy ?? this.updatedBy,
-      medicineImageURL: medicineImageURL ?? this.medicineImageURL,
-      description: description ?? this.description,
-      edit: edit ?? this.edit,
-      delete: delete ?? this.delete,
+      updatedOn: updatedOn ?? this.updatedOn,
     );
   }
 
   Map<String, dynamic> toMap() {
-    return {
-      'medicineName': medicineName,
-      'medicineType': medicineType,
-      'medicineId': medicineId,
-      'genericName': genericName,
-      'cimsClass': cimsClass,
-      'actClassification': actClassification,
-      'packing': packing,
-      'form': form,
-      'contents': contents,
-      'company': company,
-      'tabsPerStrip': tabsPerStrip,
-      'price': price,
-      'mfgDate': mfgDate?.millisecondsSinceEpoch,
-      'expDate': expDate?.millisecondsSinceEpoch,
-      'addedOn': addedOn?.millisecondsSinceEpoch,
-      'updatedOn': updatedOn?.millisecondsSinceEpoch,
-      'addedBy': addedBy,
-      'updatedBy': updatedBy,
-      'medicineImageURL': medicineImageURL,
-      'description': description,
-      'edit': edit,
-      'delete': delete,
-    };
+    final result = <String, dynamic>{};
+
+    if (userId != null) {
+      result.addAll({'userId': userId});
+    }
+    if (devoteeName != null) {
+      result.addAll({'devoteeName': devoteeName});
+    }
+    if (sangha != null) {
+      result.addAll({'sangha': sangha});
+    }
+    if (paaliDate != null) {
+      result.addAll({'paaliDate': paaliDate});
+    }
+    if (sammilaniNo != null) {
+      result.addAll({'sammilaniNo': sammilaniNo});
+    }
+    if (sammilaniYear != null) {
+      result.addAll({'sammilaniYear': sammilaniYear});
+    }
+    if (pranaami != null) {
+      result.addAll({'pranaami': pranaami});
+    }
+    if (remark != null) {
+      result.addAll({'remark': remark});
+    }
+    if (createdBy != null) {
+      result.addAll({'createdBy': createdBy});
+    }
+    if (createdOn != null) {
+      result.addAll({'createdOn': createdOn});
+    }
+    if (updatedBy != null) {
+      result.addAll({'updatedBy': updatedBy});
+    }
+    if (updatedOn != null) {
+      result.addAll({'updatedOn': updatedOn});
+    }
+
+    return result;
   }
 
-  factory MedicineModel.fromMap(Map<String, dynamic> map) {
-    return MedicineModel(
-      medicineName: map['medicineName'],
-      medicineType: map['medicineType'],
-      medicineId: map['medicineId'],
-      genericName: map['genericName'],
-      cimsClass: map['cimsClass'],
-      actClassification: map['actClassification'],
-      packing: map['packing'],
-      form: map['form'],
-      contents: map['contents'],
-      company: map['company'],
-      tabsPerStrip: map['tabsPerStrip']?.toInt(),
-      price: map['price']?.toDouble(),
-      mfgDate: map['mfgDate'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(map['mfgDate'])
-          : DateTime.tryParse(''),
-      expDate: map['expDate'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(map['expDate'])
-          : DateTime.tryParse(''),
-      addedOn: map['addedOn'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(map['addedOn'])
-          : null,
-      updatedOn: map['updatedOn'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(map['updatedOn'])
-          : null,
-      addedBy: map['addedBy'],
+  factory VaktaModel.fromMap(Map<String, dynamic> map) {
+    return VaktaModel(
+      userId: map['userId'],
+      devoteeName: map['devoteeName'],
+      sangha: map['sangha'],
+      paaliDate: map['paaliDate'],
+      sammilaniNo: map['sammilaniNo'],
+      sammilaniYear: map['sammilaniYear'],
+      pranaami: map['pranaami'],
+      remark: map['remark'],
+      createdBy: map['createdBy'],
+      createdOn: map['createdOn'],
       updatedBy: map['updatedBy'],
-      medicineImageURL: map['medicineImageURL'],
-      description: map['description'],
-      edit: map['edit'],
-      delete: map['delete'],
+      updatedOn: map['updatedOn'],
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory MedicineModel.fromJson(String source) =>
-      MedicineModel.fromMap(json.decode(source));
+  factory VaktaModel.fromJson(String source) =>
+      VaktaModel.fromMap(json.decode(source));
 
   @override
   String toString() {
-    return 'MedicineModel(medicineName: $medicineName, medicineType: $medicineType, medicineId: $medicineId, genericName: $genericName, cimsClass: $cimsClass, actClassification: $actClassification, packing: $packing, form: $form, contents: $contents, company: $company, tabsPerStrip: $tabsPerStrip, price: $price, mfgDate: $mfgDate, expDate: $expDate, addedOn: $addedOn, updatedOn: $updatedOn, addedBy: $addedBy, updatedBy: $updatedBy, medicineImageURL: $medicineImageURL, description: $description, edit: $edit, delete: $delete)';
+    return 'MedicineModel(userId: $userId, devoteeName: $devoteeName, sangha: $sangha, paaliDate: $paaliDate, sammilaniNo: $sammilaniNo, sammilaniYear: $sammilaniYear, pranaami: $pranaami, remark: $remark, createdBy: $createdBy, createdOn: $createdOn, updatedBy: $updatedBy, updatedOn: $updatedOn)';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is MedicineModel &&
-        other.medicineName == medicineName &&
-        other.medicineType == medicineType &&
-        other.medicineId == medicineId &&
-        other.genericName == genericName &&
-        other.cimsClass == cimsClass &&
-        other.actClassification == actClassification &&
-        other.packing == packing &&
-        other.form == form &&
-        other.contents == contents &&
-        other.company == company &&
-        other.tabsPerStrip == tabsPerStrip &&
-        other.price == price &&
-        other.mfgDate == mfgDate &&
-        other.expDate == expDate &&
-        other.addedOn == addedOn &&
-        other.updatedOn == updatedOn &&
-        other.addedBy == addedBy &&
+    return other is VaktaModel &&
+        other.userId == userId &&
+        other.devoteeName == devoteeName &&
+        other.sangha == sangha &&
+        other.paaliDate == paaliDate &&
+        other.sammilaniNo == sammilaniNo &&
+        other.sammilaniYear == sammilaniYear &&
+        other.pranaami == pranaami &&
+        other.remark == remark &&
+        other.createdBy == createdBy &&
+        other.createdOn == createdOn &&
         other.updatedBy == updatedBy &&
-        other.medicineImageURL == medicineImageURL &&
-        other.description == description &&
-        other.edit == edit &&
-        other.delete == delete;
+        other.updatedOn == updatedOn;
   }
 
   @override
   int get hashCode {
-    return medicineName.hashCode ^
-        medicineType.hashCode ^
-        medicineId.hashCode ^
-        genericName.hashCode ^
-        cimsClass.hashCode ^
-        actClassification.hashCode ^
-        packing.hashCode ^
-        form.hashCode ^
-        contents.hashCode ^
-        company.hashCode ^
-        tabsPerStrip.hashCode ^
-        price.hashCode ^
-        mfgDate.hashCode ^
-        expDate.hashCode ^
-        addedOn.hashCode ^
-        updatedOn.hashCode ^
-        addedBy.hashCode ^
+    return userId.hashCode ^
+        devoteeName.hashCode ^
+        sangha.hashCode ^
+        paaliDate.hashCode ^
+        sammilaniNo.hashCode ^
+        sammilaniYear.hashCode ^
+        pranaami.hashCode ^
+        remark.hashCode ^
+        createdBy.hashCode ^
+        createdOn.hashCode ^
         updatedBy.hashCode ^
-        medicineImageURL.hashCode ^
-        description.hashCode ^
-        edit.hashCode ^
-        delete.hashCode;
+        updatedOn.hashCode;
   }
 }

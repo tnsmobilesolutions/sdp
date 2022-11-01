@@ -27,7 +27,7 @@ class _EmailSignInState extends State<EmailSignIn> {
               child: AuthenticationWidget(
                 cardLeftPadding: 300,
                 cardRightPadding: 300,
-                loginImage: AssetImage('assets/images/loginImage.png'),
+                loginImage: AssetImage('assets/images/login.png'),
                 scaffoldbackGroundColor: Colors.white70,
                 onEmailLoginPressed: (userEmail, userPassword) async {
                   Navigator.push(
