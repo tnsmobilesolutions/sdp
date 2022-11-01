@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:sdp/Models/medicineModel.dart';
+import 'package:sdp/Models/vakta.dart';
 
 class DataTableView extends StatefulWidget {
   DataTableView({Key? key, this.allMeds, this.onRowTapped, this.isRowSelected})
