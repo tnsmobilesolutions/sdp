@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, use_build_context_synchronously, non_constant_identifier_names
 
 import 'dart:developer';
 
@@ -32,24 +32,29 @@ class _EmailSignInState extends State<EmailSignIn> {
                 loginImage: AssetImage('assets/images/login.png'),
                 scaffoldbackGroundColor: Colors.white70,
                 onEmailLoginPressed: (userEmail, userPassword) async {
-                  log(userEmail);
-                  log(userPassword);
-                  final user = await UserAPI().signIn(userEmail, userPassword);
-                  if (user != null) {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Dashboard(),
-                        ));
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      elevation: 6,
-                      behavior: SnackBarBehavior.floating,
-                      content: Text(
-                        'Please Check your Email/Password',
-                      ),
-                    ));
-                  }
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Dashboard(),
+                      ));
+                  // log(userEmail);
+                  // log(userPassword);
+                  // final user = await UserAPI().signIn(userEmail, userPassword);
+                  // if (user != null) {
+                  //   Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(
+                  //         builder: (context) => Dashboard(),
+                  //       ));
+                  // } else {
+                  //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  //     elevation: 6,
+                  //     behavior: SnackBarBehavior.floating,
+                  //     content: Text(
+                  //       'Please Check your Email/Password',
+                  //     ),
+                  //   ));
+                  // }
                 },
                 phoneAuthentication: false,
                 isSignUpVisible: false,
