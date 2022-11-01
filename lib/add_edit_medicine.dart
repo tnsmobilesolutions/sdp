@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 import 'package:sdp/API/medicineAPI.dart';
 import 'package:sdp/API/userAPI.dart';
-import 'package:sdp/Models/medicineModel.dart';
+import 'package:sdp/Models/vaktaModel.dart';
 import 'package:sdp/dashboard.dart';
 
 import 'package:uuid/uuid.dart';

@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:sdp/Models/medicineModel.dart';
+import 'package:sdp/Models/vaktaModel.dart';
 
 enum SearchBy { name, company }
 
