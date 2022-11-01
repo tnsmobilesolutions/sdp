@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:sdp/API/medicineAPI.dart';
 import 'package:sdp/API/userAPI.dart';
 import 'package:sdp/Login/EmailSignIn.dart';
-import 'package:sdp/Models/vakta.dart';
+import 'package:sdp/Models/vaktaModel.dart';
 import 'package:sdp/add_edit_medicine.dart';
 import 'package:sdp/dataTable.dart';
 import 'package:sdp/edit_medicine.dart';
