@@ -96,7 +96,7 @@ class _DataTableViewState extends State<DataTableView> {
           singleMed = med;
         });
         final cells = [
-          med.devoteeName,
+          med.name,
           med.sangha,
           med.sammilaniNo,
           med.sammilaniYear,
@@ -106,7 +106,7 @@ class _DataTableViewState extends State<DataTableView> {
           med.createdOn,
           med.updatedBy,
           med.updatedOn,
-          med.userId,
+          med.docId,
           med..remark,
         ];
 

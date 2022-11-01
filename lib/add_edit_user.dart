@@ -3,6 +3,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'package:sdp/API/medicineAPI.dart';
 import 'package:sdp/API/userAPI.dart';
@@ -31,7 +32,7 @@ class _Add_Edit_MedicineScreenState extends State<Add_Edit_MedicineScreen> {
 
   final devoteeNameController = TextEditingController();
 
-  final packingController = TextEditingController();
+  final paliDateController = TextEditingController();
 
   final sanghaNameController = TextEditingController();
 
@@ -76,7 +77,7 @@ class _Add_Edit_MedicineScreenState extends State<Add_Edit_MedicineScreen> {
                           controller: devoteeNameController,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
-                            labelText: 'Devotee Name',
+                            labelText: 'Name',
                           ),
                           validator: (value) {
                             if (value!.isEmpty) {
@@ -136,6 +137,38 @@ class _Add_Edit_MedicineScreenState extends State<Add_Edit_MedicineScreen> {
                           focusNode: FocusNode(
                             descendantsAreFocusable: false,
                           ),
+                          controller: paliDateController,
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            suffixIcon: IconButton(
+                                onPressed: () async {
+                                  DateTime? selectedDate = await showDatePicker(
+                                      context: context,
+                                      initialDate: DateTime.now(),
+                                      firstDate: DateTime(2022),
+                                      lastDate: DateTime(2050));
+                                  if (selectedDate != null) {
+                                    setState(() {
+                                      paliDateController.text =
+                                          DateFormat('dd-MM-yyyy')
+                                              .format(selectedDate);
+                                    });
+                                  } else {
+                                    paliDateController.text = '';
+                                  }
+                                },
+                                icon: Icon(Icons.calendar_month_rounded)),
+                            border: OutlineInputBorder(),
+                            labelText: 'Pali Date',
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        TextFormField(
+                          focusNode: FocusNode(
+                            descendantsAreFocusable: false,
+                          ),
                           controller: sammilaniNumberController,
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
@@ -166,61 +199,43 @@ class _Add_Edit_MedicineScreenState extends State<Add_Edit_MedicineScreen> {
                             labelText: 'Remark',
                           ),
                         ),
+                        SizedBox(height: 20),
+
                         SizedBox(
                           height: 20,
                         ),
 
                         ElevatedButton(
                             onPressed: () async {
-                              String? name = await UserAPI().currentUserName();
-                              log(name.toString());
-                              if (_formKey.currentState!.validate()) {
-                                VaktaModel vaktaDetails = VaktaModel(
-                                  userId: Uuid().v1(),
-                                  devoteeName: devoteeNameController.text,
-                                  // medicineType: _selectedMedicineType,
-                                  paaliDate: sammilaniYearController.text,
-                                  pranaami: remarkController.text,
-
-                                  createdOn: packingController.text,
-
-                                  // sammilaniNo: DateTime.now(),
-                                  sammilaniNo: name,
-                                  sammilaniYear: pranamiController.text,
-                                  updatedBy: sanghaNameController.text,
-                                  // medicineImageURL: '',
-                                  updatedOn: sanghaNameController.text,
-                                  // price: double.tryParse(priceController.text),
-                                  // mfgDate: DateTime.tryParse(mfgDateController
-                                  //         .text
-                                  //         .split('-')
-                                  //         .reversed
-                                  //         .join('-')) ??
-                                  //     DateTime.tryParse(''),
-                                  // expDate: DateTime.tryParse(expDateController
-                                  //         .text
-                                  //         .split('-')
-                                  //         .reversed
-                                  //         .join('-')) ??
-                                  //     DateTime.tryParse(''),
-                                );
-
-                                if (vaktaDetails.devoteeName == '') {
-                                  Navigator.of(context).pop();
-                                } else {
-                                  await MedicineAPI().addMedicine(vaktaDetails);
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                          elevation: 6,
-                                          behavior: SnackBarBehavior.floating,
-                                          content: Text('Added successfully')));
-
-                                  // Navigator.of(context).pop();
-                                  // setState(() {});
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => Dashboard()));
+                              DateTime now = DateTime.now();
+                              DateTime currentTime = DateTime(now.day,
+                                  now.month, now.year, now.hour, now.minute);
+                              log('$currentTime');
+                              final name = await UserAPI().currentUserName();
+                              int userId = await UserAPI().countUsers();
+                              if (widget.buttonText == 'Add') {
+                                if (_formKey.currentState != null) {
+                                  if (_formKey.currentState!.validate()) {
+                                    VaktaModel user = VaktaModel(
+                                      name: devoteeNameController.text.trim(),
+                                      createdBy: name,
+                                      createdOn: currentTime,
+                                      docId: 'U${userId + 1}',
+                                      pranaami: pranamiController.text.trim(),
+                                      remark: remarkController.text.trim(),
+                                      sammilaniNo:
+                                          sammilaniNumberController.text.trim(),
+                                      sammilaniYear:
+                                          sammilaniYearController.text.trim(),
+                                      sangha: sanghaNameController.text.trim(),
+                                      paaliDate: DateTime.tryParse(
+                                              paliDateController.text
+                                                  .split('-')
+                                                  .reversed
+                                                  .join('-')) ??
+                                          DateTime.tryParse(''),
+                                    );
+                                  }
                                 }
                               }
                             },

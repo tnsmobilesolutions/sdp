@@ -3,21 +3,21 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 class VaktaModel {
-  String? userId;
-  String? devoteeName;
+  String? docId;
+  String? name;
   String? sangha;
-  String? paaliDate;
+  DateTime? paaliDate;
   String? sammilaniNo;
   String? sammilaniYear;
   String? pranaami;
   String? remark;
   String? createdBy;
-  String? createdOn;
+  DateTime? createdOn;
   String? updatedBy;
-  String? updatedOn;
+  DateTime? updatedOn;
   VaktaModel({
-    this.userId,
-    this.devoteeName,
+    this.docId,
+    this.name,
     this.sangha,
     this.paaliDate,
     this.sammilaniNo,
@@ -31,22 +31,22 @@ class VaktaModel {
   });
 
   VaktaModel copyWith({
-    String? userId,
-    String? devoteeName,
+    String? docId,
+    String? name,
     String? sangha,
-    String? paaliDate,
+    DateTime? paaliDate,
     String? sammilaniNo,
     String? sammilaniYear,
     String? pranaami,
     String? remark,
     String? createdBy,
-    String? createdOn,
+    DateTime? createdOn,
     String? updatedBy,
-    String? updatedOn,
+    DateTime? updatedOn,
   }) {
     return VaktaModel(
-      userId: userId ?? this.userId,
-      devoteeName: devoteeName ?? this.devoteeName,
+      docId: docId ?? this.docId,
+      name: name ?? this.name,
       sangha: sangha ?? this.sangha,
       paaliDate: paaliDate ?? this.paaliDate,
       sammilaniNo: sammilaniNo ?? this.sammilaniNo,
@@ -63,17 +63,17 @@ class VaktaModel {
   Map<String, dynamic> toMap() {
     final result = <String, dynamic>{};
 
-    if (userId != null) {
-      result.addAll({'userId': userId});
+    if (docId != null) {
+      result.addAll({'docId': docId});
     }
-    if (devoteeName != null) {
-      result.addAll({'devoteeName': devoteeName});
+    if (name != null) {
+      result.addAll({'name': name});
     }
     if (sangha != null) {
       result.addAll({'sangha': sangha});
     }
     if (paaliDate != null) {
-      result.addAll({'paaliDate': paaliDate});
+      result.addAll({'paaliDate': paaliDate!.millisecondsSinceEpoch});
     }
     if (sammilaniNo != null) {
       result.addAll({'sammilaniNo': sammilaniNo});
@@ -91,13 +91,13 @@ class VaktaModel {
       result.addAll({'createdBy': createdBy});
     }
     if (createdOn != null) {
-      result.addAll({'createdOn': createdOn});
+      result.addAll({'createdOn': createdOn!.millisecondsSinceEpoch});
     }
     if (updatedBy != null) {
       result.addAll({'updatedBy': updatedBy});
     }
     if (updatedOn != null) {
-      result.addAll({'updatedOn': updatedOn});
+      result.addAll({'updatedOn': updatedOn!.millisecondsSinceEpoch});
     }
 
     return result;
@@ -105,18 +105,24 @@ class VaktaModel {
 
   factory VaktaModel.fromMap(Map<String, dynamic> map) {
     return VaktaModel(
-      userId: map['userId'],
-      devoteeName: map['devoteeName'],
+      docId: map['docId'],
+      name: map['name'],
       sangha: map['sangha'],
-      paaliDate: map['paaliDate'],
+      paaliDate: map['paaliDate'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(map['paaliDate'])
+          : null,
       sammilaniNo: map['sammilaniNo'],
       sammilaniYear: map['sammilaniYear'],
       pranaami: map['pranaami'],
       remark: map['remark'],
       createdBy: map['createdBy'],
-      createdOn: map['createdOn'],
+      createdOn: map['createdOn'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(map['createdOn'])
+          : null,
       updatedBy: map['updatedBy'],
-      updatedOn: map['updatedOn'],
+      updatedOn: map['updatedOn'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(map['updatedOn'])
+          : null,
     );
   }
 
@@ -127,7 +133,7 @@ class VaktaModel {
 
   @override
   String toString() {
-    return 'MedicineModel(userId: $userId, devoteeName: $devoteeName, sangha: $sangha, paaliDate: $paaliDate, sammilaniNo: $sammilaniNo, sammilaniYear: $sammilaniYear, pranaami: $pranaami, remark: $remark, createdBy: $createdBy, createdOn: $createdOn, updatedBy: $updatedBy, updatedOn: $updatedOn)';
+    return 'VaktaModel(docId: $docId, name: $name, sangha: $sangha, paaliDate: $paaliDate, sammilaniNo: $sammilaniNo, sammilaniYear: $sammilaniYear, pranaami: $pranaami, remark: $remark, createdBy: $createdBy, createdOn: $createdOn, updatedBy: $updatedBy, updatedOn: $updatedOn)';
   }
 
   @override
@@ -135,8 +141,8 @@ class VaktaModel {
     if (identical(this, other)) return true;
 
     return other is VaktaModel &&
-        other.userId == userId &&
-        other.devoteeName == devoteeName &&
+        other.docId == docId &&
+        other.name == name &&
         other.sangha == sangha &&
         other.paaliDate == paaliDate &&
         other.sammilaniNo == sammilaniNo &&
@@ -151,8 +157,8 @@ class VaktaModel {
 
   @override
   int get hashCode {
-    return userId.hashCode ^
-        devoteeName.hashCode ^
+    return docId.hashCode ^
+        name.hashCode ^
         sangha.hashCode ^
         paaliDate.hashCode ^
         sammilaniNo.hashCode ^
