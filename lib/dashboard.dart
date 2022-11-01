@@ -5,7 +5,7 @@ import 'package:sdp/API/medicineAPI.dart';
 import 'package:sdp/API/userAPI.dart';
 import 'package:sdp/Login/EmailSignIn.dart';
 import 'package:sdp/Models/medicineModel.dart';
-import 'package:sdp/add_medicine.dart';
+import 'package:sdp/add_edit_medicine.dart';
 import 'package:sdp/dataTable.dart';
 import 'package:sdp/edit_medicine.dart';
 
@@ -66,7 +66,7 @@ class _DashboardState extends State<Dashboard> {
         ],
         automaticallyImplyLeading: false,
         centerTitle: true,
-        title: Text('Medicine Master'),
+        title: Text('Sammilani Dinikia Paali'),
       ),
       body: Padding(
         padding: EdgeInsets.all(20),
@@ -101,7 +101,7 @@ class _DashboardState extends State<Dashboard> {
                               color: Colors.blue,
                             )),
                         contentPadding: EdgeInsets.all(15),
-                        hintText: 'Search Medicine',
+                        hintText: 'Search By',
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15),
                         ),
@@ -146,7 +146,8 @@ class _DashboardState extends State<Dashboard> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => AddMedicineScreen()));
+                              builder: (context) => Add_Edit_MedicineScreen(
+                                  title: 'Add Member', buttonText: 'Add')));
                       setState(() {});
                     }),
                     child: SizedBox(
@@ -175,15 +176,20 @@ class _DashboardState extends State<Dashboard> {
                     onPressed: (() {
                       if (selectedUser != null && isSelected) {
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => EditMedicineScreen(
-                                    VaktaData: selectedUser)));
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Add_Edit_MedicineScreen(
+                              VaktaData: selectedUser,
+                              title: 'Edit Details',
+                              buttonText: 'Edit',
+                            ),
+                          ),
+                        );
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             elevation: 6,
                             behavior: SnackBarBehavior.floating,
-                            content: Text('Choose a medicine first')));
+                            content: Text('select a Devotee first')));
                       }
                     }),
                     child: SizedBox(

@@ -25,8 +25,10 @@ class _EmailSignInState extends State<EmailSignIn> {
           child: Padding(
               padding: const EdgeInsets.all(20),
               child: AuthenticationWidget(
-                cardLeftPadding: 300,
-                cardRightPadding: 300,
+                cardWidth: 100,
+                cardHeight: 100,
+                cardLeftPadding: 500,
+                cardRightPadding: 600,
                 loginImage: AssetImage('assets/images/login.png'),
                 scaffoldbackGroundColor: Colors.white70,
                 onEmailLoginPressed: (userEmail, userPassword) async {
