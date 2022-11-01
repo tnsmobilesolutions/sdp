@@ -37,8 +37,8 @@ class _DataTableViewState extends State<DataTableView> {
     'Sammikani No.',
     'Sammilani Date',
     'UserId',
-    'Remark'
-        'CreatedBy',
+    'Remark',
+    'CreatedBy',
     'Created On',
     'Updated By',
     'Updated On',

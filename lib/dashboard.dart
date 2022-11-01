@@ -18,14 +18,13 @@ class Dashboard extends StatefulWidget {
 enum APIType { search, fetchAll }
 
 class _DashboardState extends State<Dashboard> {
-  final TextEditingController medicineSearchController =
-      TextEditingController();
+  final TextEditingController sdpSearchController = TextEditingController();
   String searchItem = '';
   APIType? type;
   bool isSelected = false;
   String? _selectedSearchType;
   VaktaModel? selectedUser;
-  List<String> searchBy = ['Name', 'Sangha', 'Date', 'Devotee', 'Date'];
+  List<String> searchBy = ['Name', 'Sangha', 'Paali Date', 'Devotee'];
   @override
   void initState() {
     super.initState();
@@ -79,7 +78,7 @@ class _DashboardState extends State<Dashboard> {
                     width: 300,
                     child: TextFormField(
                       autofocus: false,
-                      controller: medicineSearchController,
+                      controller: sdpSearchController,
                       keyboardType: TextInputType.emailAddress,
                       onSaved: (value) {},
                       onChanged: (value) {
@@ -157,7 +156,7 @@ class _DashboardState extends State<Dashboard> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Icon(Icons.add),
-                            Text('Add'),
+                            //Text('Add'),
                           ],
                         ),
                       ),
@@ -199,7 +198,7 @@ class _DashboardState extends State<Dashboard> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Icon(Icons.mode_edit_outline_rounded),
-                            Text('Edit'),
+                            //Text('Edit'),
                           ],
                         ),
                       ),
@@ -237,7 +236,7 @@ class _DashboardState extends State<Dashboard> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Icon(Icons.delete),
-                            Text('Delete'),
+                            // Text('Delete'),
                           ],
                         ),
                       ),
@@ -252,7 +251,7 @@ class _DashboardState extends State<Dashboard> {
                   future: type == APIType.fetchAll
                       ? MedicineAPI().fetchAllMedicines()
                       : MedicineAPI()
-                          .searchMedicine(_selectedSearchType, searchItem),
+                          .searchSDP(_selectedSearchType, searchItem),
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
                     print('allMeds from Dashboard - ${snapshot.data}');
                     return DataTableView(

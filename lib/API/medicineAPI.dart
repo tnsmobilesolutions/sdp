@@ -30,7 +30,7 @@ class MedicineAPI {
     );
   }
 
-  Future<List<VaktaModel>?> searchMedicine(
+  Future<List<VaktaModel>?> searchSDP(
       String? searchBy, String searchedItem) async {
     final CollectionReference medicineCollection =
         FirebaseFirestore.instance.collection('medicines');
