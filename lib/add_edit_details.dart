@@ -11,8 +11,8 @@ import 'package:sdp/dashboard.dart';
 
 import 'package:uuid/uuid.dart';
 
-class Add_Edit_MedicineScreen extends StatefulWidget {
-  Add_Edit_MedicineScreen(
+class Add_Edit_DetailsScreen extends StatefulWidget {
+  Add_Edit_DetailsScreen(
       {Key? key, required this.title, required this.buttonText, this.VaktaData})
       : super(key: key);
   final String title;
@@ -20,11 +20,10 @@ class Add_Edit_MedicineScreen extends StatefulWidget {
   VaktaModel? VaktaData;
 
   @override
-  State<Add_Edit_MedicineScreen> createState() =>
-      _Add_Edit_MedicineScreenState();
+  State<Add_Edit_DetailsScreen> createState() => _Add_Edit_DetailsScreenState();
 }
 
-class _Add_Edit_MedicineScreenState extends State<Add_Edit_MedicineScreen> {
+class _Add_Edit_DetailsScreenState extends State<Add_Edit_DetailsScreen> {
   String? _selectedMedicineType;
 
   final _formKey = GlobalKey<FormState>();
@@ -35,7 +34,7 @@ class _Add_Edit_MedicineScreenState extends State<Add_Edit_MedicineScreen> {
 
   final sanghaNameController = TextEditingController();
 
-  final medicineTypeController = TextEditingController();
+  //final medicineTypeController = TextEditingController();
 
   final pranamiController = TextEditingController();
 

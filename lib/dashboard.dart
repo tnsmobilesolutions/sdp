@@ -5,7 +5,7 @@ import 'package:sdp/API/medicineAPI.dart';
 import 'package:sdp/API/userAPI.dart';
 import 'package:sdp/Login/EmailSignIn.dart';
 import 'package:sdp/Models/vaktaModel.dart';
-import 'package:sdp/add_edit_medicine.dart';
+import 'package:sdp/add_edit_details.dart';
 import 'package:sdp/dataTable.dart';
 import 'package:sdp/edit_medicine.dart';
 
@@ -100,7 +100,7 @@ class _DashboardState extends State<Dashboard> {
                               color: Colors.blue,
                             )),
                         contentPadding: EdgeInsets.all(15),
-                        hintText: 'Search By',
+                        hintText: 'Search paali',
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15),
                         ),
@@ -145,7 +145,7 @@ class _DashboardState extends State<Dashboard> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => Add_Edit_MedicineScreen(
+                              builder: (context) => Add_Edit_DetailsScreen(
                                   title: 'Add Member', buttonText: 'Add')));
                       setState(() {});
                     }),
@@ -177,7 +177,7 @@ class _DashboardState extends State<Dashboard> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => Add_Edit_MedicineScreen(
+                            builder: (context) => Add_Edit_DetailsScreen(
                               VaktaData: selectedUser,
                               title: 'Edit Details',
                               buttonText: 'Edit',
