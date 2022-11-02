@@ -9,8 +9,8 @@ class UserAPI {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Future<userDetailsModel?> signIn(String email, String password) async {
-    final CollectionReference vendorsCollection =
-        FirebaseFirestore.instance.collection('vendors');
+    final CollectionReference usersCollection =
+        FirebaseFirestore.instance.collection('users');
     UserCredential? userCredential;
     try {
       userCredential = await _auth
@@ -18,7 +18,7 @@ class UserAPI {
           .then((uid) => uid);
       print('***********uid: ${userCredential?.user?.uid}*********');
       currentUserId = userCredential?.user?.uid;
-      final user = vendorsCollection
+      final user = usersCollection
           .where("FirebaseUID", isEqualTo: currentUserId)
           .get()
           .then(
@@ -51,9 +51,9 @@ class UserAPI {
   }
 
   Future<String?> getCurrentUserData() async {
-    final CollectionReference vendorsCollection =
-        FirebaseFirestore.instance.collection('vendors');
-    vendorsCollection.where('FirebaseUID', isEqualTo: currentUserId).get().then(
+    final CollectionReference usersCollection =
+        FirebaseFirestore.instance.collection('users');
+    usersCollection.where('FirebaseUID', isEqualTo: currentUserId).get().then(
       (querySnapshot) {
         final userData =
             querySnapshot.docs.first.data() as Map<String, dynamic>;
@@ -62,7 +62,7 @@ class UserAPI {
     );
     return null;
 
-    // final vendorDetails = await _vendorsCollection.doc(userId).get().then(
+    // final vendorDetails = await _usersCollection.doc(userId).get().then(
     //   (querySnapshot) {
     //     final userData = querySnapshot.data() as Map<String, dynamic>;
     //     final vendorData = UserModel.fromMap(userData);
@@ -82,14 +82,24 @@ class UserAPI {
     }
   }
 
+  // creat docID
+  Future<int> countUsers() async {
+    CollectionReference usercollection =
+        FirebaseFirestore.instance.collection('users');
+    QuerySnapshot _myDoc = await usercollection.get();
+    List<DocumentSnapshot> _myDocCount = _myDoc.docs;
+    print(_myDocCount.length);
+    return _myDocCount.length; // Count of Documents in Collection
+  }
+
   //VendorId $ VenderName
   Future<String?> currentUserName() async {
-    final CollectionReference vendorsCollection =
-        FirebaseFirestore.instance.collection('vendors');
+    final CollectionReference usersCollection =
+        FirebaseFirestore.instance.collection('users');
     try {
       String? currentUID = _auth.currentUser?.uid;
 
-      final user = vendorsCollection
+      final user = usersCollection
           .where("FirebaseUID", isEqualTo: currentUID)
           .get()
           .then(

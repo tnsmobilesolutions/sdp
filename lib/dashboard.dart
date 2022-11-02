@@ -5,9 +5,8 @@ import 'package:sdp/API/medicineAPI.dart';
 import 'package:sdp/API/userAPI.dart';
 import 'package:sdp/Login/EmailSignIn.dart';
 import 'package:sdp/Models/vaktaModel.dart';
-import 'package:sdp/add_edit_details.dart';
+import 'package:sdp/add_edit_user.dart';
 import 'package:sdp/dataTable.dart';
-import 'package:sdp/edit_medicine.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -216,8 +215,7 @@ class _DashboardState extends State<Dashboard> {
                     ),
                     onPressed: (() async {
                       if (selectedUser != null) {
-                        await MedicineAPI()
-                            .removeMedicine(selectedUser?.userId);
+                        await MedicineAPI().removeMedicine(selectedUser?.docId);
                         setState(() {});
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             elevation: 6,

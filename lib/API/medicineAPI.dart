@@ -9,7 +9,7 @@ class MedicineAPI {
   addMedicine(VaktaModel vakta) {
     final CollectionReference medicineCollection =
         FirebaseFirestore.instance.collection('medicines');
-    medicineCollection.doc(vakta.userId).set(vakta.toMap());
+    medicineCollection.doc(vakta.docId).set(vakta.toMap());
   }
 
   Future<List<VaktaModel>> fetchAllMedicines() async {
@@ -40,7 +40,7 @@ class MedicineAPI {
         final medicines = element.data() as Map<String, dynamic>;
         final vaktaDetails = VaktaModel.fromMap(medicines);
         if (searchBy == 'Name') {
-          if (vaktaDetails.devoteeName
+          if (vaktaDetails.name
                   ?.toLowerCase()
                   .contains(searchedItem.toLowerCase()) ??
               false) {
@@ -59,7 +59,7 @@ class MedicineAPI {
             result.add(vaktaDetails);
           }
         } else if (searchBy == 'Devotee') {
-          if (vaktaDetails.devoteeName
+          if (vaktaDetails.name
                   ?.toLowerCase()
                   .contains(searchedItem.toLowerCase()) ??
               false) {
@@ -75,7 +75,7 @@ class MedicineAPI {
     var medicineCollection = FirebaseFirestore.instance.collection('medicines');
 
     medicineCollection
-        .doc(newMedicineData.userId)
+        .doc(newMedicineData.docId)
         .update(newMedicineData.toMap());
   }
 
