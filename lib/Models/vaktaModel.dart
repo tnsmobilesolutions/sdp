@@ -6,15 +6,15 @@ class VaktaModel {
   String? docId;
   String? name;
   String? sangha;
-  DateTime? paaliDate;
+  String? paaliDate;
   String? sammilaniNo;
   String? sammilaniYear;
   String? pranaami;
   String? remark;
   String? createdBy;
-  DateTime? createdOn;
+  String? createdOn;
   String? updatedBy;
-  DateTime? updatedOn;
+  String? updatedOn;
   VaktaModel({
     this.docId,
     this.name,
@@ -34,15 +34,15 @@ class VaktaModel {
     String? docId,
     String? name,
     String? sangha,
-    DateTime? paaliDate,
+    String? paaliDate,
     String? sammilaniNo,
     String? sammilaniYear,
     String? pranaami,
     String? remark,
     String? createdBy,
-    DateTime? createdOn,
+    String? createdOn,
     String? updatedBy,
-    DateTime? updatedOn,
+    String? updatedOn,
   }) {
     return VaktaModel(
       docId: docId ?? this.docId,
@@ -73,7 +73,7 @@ class VaktaModel {
       result.addAll({'sangha': sangha});
     }
     if (paaliDate != null) {
-      result.addAll({'paaliDate': paaliDate!.millisecondsSinceEpoch});
+      result.addAll({'paaliDate': paaliDate});
     }
     if (sammilaniNo != null) {
       result.addAll({'sammilaniNo': sammilaniNo});
@@ -91,13 +91,13 @@ class VaktaModel {
       result.addAll({'createdBy': createdBy});
     }
     if (createdOn != null) {
-      result.addAll({'createdOn': createdOn!.millisecondsSinceEpoch});
+      result.addAll({'createdOn': createdOn});
     }
     if (updatedBy != null) {
       result.addAll({'updatedBy': updatedBy});
     }
     if (updatedOn != null) {
-      result.addAll({'updatedOn': updatedOn!.millisecondsSinceEpoch});
+      result.addAll({'updatedOn': updatedOn});
     }
 
     return result;
@@ -108,21 +108,15 @@ class VaktaModel {
       docId: map['docId'],
       name: map['name'],
       sangha: map['sangha'],
-      paaliDate: map['paaliDate'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(map['paaliDate'])
-          : null,
+      paaliDate: map['paaliDate'],
       sammilaniNo: map['sammilaniNo'],
       sammilaniYear: map['sammilaniYear'],
       pranaami: map['pranaami'],
       remark: map['remark'],
       createdBy: map['createdBy'],
-      createdOn: map['createdOn'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(map['createdOn'])
-          : null,
+      createdOn: map['createdOn'],
       updatedBy: map['updatedBy'],
-      updatedOn: map['updatedOn'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(map['updatedOn'])
-          : null,
+      updatedOn: map['updatedOn'],
     );
   }
 

@@ -1,7 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sdp/API/medicineAPI.dart';
+import 'package:sdp/API/devoteeAPI.dart';
 import 'package:sdp/API/userAPI.dart';
 import 'package:sdp/Login/EmailSignIn.dart';
 import 'package:sdp/Models/vaktaModel.dart';
@@ -50,6 +51,20 @@ class _DashboardState extends State<Dashboard> {
     return Scaffold(
       appBar: AppBar(
         actions: [
+          CupertinoButton(
+            child: Icon(
+              Icons.add,
+              color: Colors.white,
+            ),
+            onPressed: (() {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => Add_Edit_DetailsScreen(
+                          title: 'Add Member', buttonText: 'Add')));
+            }),
+          ),
+          SizedBox(width: 20),
           IconButton(
             onPressed: () {
               UserAPI().logout();
@@ -140,44 +155,13 @@ class _DashboardState extends State<Dashboard> {
                         ),
                       ),
                     ),
-                    onPressed: (() async {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Add_Edit_DetailsScreen(
-                                  title: 'Add Member', buttonText: 'Add')));
-                      setState(() {});
-                    }),
-                    child: SizedBox(
-                      height: 40,
-                      width: 70,
-                      child: Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Icon(Icons.add),
-                            //Text('Add'),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  ElevatedButton(
-                    style: ButtonStyle(
-                      elevation: MaterialStateProperty.all<double>(10),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5),
-                        ),
-                      ),
-                    ),
                     onPressed: (() {
                       if (selectedUser != null && isSelected) {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => Add_Edit_DetailsScreen(
-                              VaktaData: selectedUser,
+                              vaktaData: selectedUser,
                               title: 'Edit Details',
                               buttonText: 'Edit',
                             ),
@@ -215,7 +199,7 @@ class _DashboardState extends State<Dashboard> {
                     ),
                     onPressed: (() async {
                       if (selectedUser != null) {
-                        await MedicineAPI().removeMedicine(selectedUser?.docId);
+                        await DevoteeAPI().removeMedicine(selectedUser?.docId);
                         setState(() {});
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             elevation: 6,
@@ -249,9 +233,8 @@ class _DashboardState extends State<Dashboard> {
                 scrollDirection: Axis.horizontal,
                 child: FutureBuilder(
                   future: type == APIType.fetchAll
-                      ? MedicineAPI().fetchAllMedicines()
-                      : MedicineAPI()
-                          .searchSDP(_selectedSearchType, searchItem),
+                      ? DevoteeAPI().fetchAllMedicines()
+                      : DevoteeAPI().searchSDP(_selectedSearchType, searchItem),
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
                     print('allMeds from Dashboard - ${snapshot.data}');
                     return DataTableView(

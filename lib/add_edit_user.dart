@@ -5,28 +5,25 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import 'package:sdp/API/medicineAPI.dart';
+import 'package:sdp/API/devoteeAPI.dart';
 import 'package:sdp/API/userAPI.dart';
 import 'package:sdp/Models/vaktaModel.dart';
-import 'package:sdp/dashboard.dart';
 
 import 'package:uuid/uuid.dart';
 
 class Add_Edit_DetailsScreen extends StatefulWidget {
   Add_Edit_DetailsScreen(
-      {Key? key, required this.title, required this.buttonText, this.VaktaData})
+      {Key? key, required this.title, required this.buttonText, this.vaktaData})
       : super(key: key);
   final String title;
   final String buttonText;
-  VaktaModel? VaktaData;
+  VaktaModel? vaktaData;
 
   @override
   State<Add_Edit_DetailsScreen> createState() => _Add_Edit_DetailsScreenState();
 }
 
 class _Add_Edit_DetailsScreenState extends State<Add_Edit_DetailsScreen> {
-  String? _selectedMedicineType;
-
   final _formKey = GlobalKey<FormState>();
 
   final devoteeNameController = TextEditingController();
@@ -44,6 +41,28 @@ class _Add_Edit_DetailsScreenState extends State<Add_Edit_DetailsScreen> {
   final remarkController = TextEditingController();
 
   final sammilaniNumberController = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      devoteeNameController.text =
+          widget.vaktaData != null ? widget.vaktaData?.name ?? '' : '';
+
+      sanghaNameController.text =
+          widget.vaktaData != null ? widget.vaktaData?.sangha ?? '' : '';
+
+      pranamiController.text =
+          widget.vaktaData != null ? widget.vaktaData?.pranaami ?? '' : '';
+      paliDateController.text =
+          widget.vaktaData != null ? widget.vaktaData?.paaliDate ?? '' : '';
+      sammilaniNumberController.text =
+          widget.vaktaData != null ? widget.vaktaData?.sammilaniNo ?? '' : '';
+      sammilaniYearController.text =
+          widget.vaktaData != null ? widget.vaktaData?.sammilaniYear ?? '' : '';
+      remarkController.text =
+          widget.vaktaData != null ? widget.vaktaData?.remark ?? '' : '';
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -206,20 +225,27 @@ class _Add_Edit_DetailsScreenState extends State<Add_Edit_DetailsScreen> {
 
                         ElevatedButton(
                             onPressed: () async {
-                              DateTime now = DateTime.now();
-                              DateTime currentTime = DateTime(now.day,
-                                  now.month, now.year, now.hour, now.minute);
-                              log('$currentTime');
-                              final name = await UserAPI().currentUserName();
-                              int userId = await UserAPI().countUsers();
-                              if (widget.buttonText == 'Add') {
-                                if (_formKey.currentState != null) {
-                                  if (_formKey.currentState!.validate()) {
-                                    VaktaModel user = VaktaModel(
+                              final DateTime now = DateTime.now();
+                              final DateFormat formatter =
+                                  DateFormat('yyyy-MM-dd');
+                              final String formatted = formatter.format(now);
+                              log(formatted); // something like 2013-04-20,
+                              // DateTime now = DateTime.now();
+                              // DateTime currentTime = DateTime(now.day, now.year,
+                              //     now.month, now.hour, now.minute);
+                              // log('$currentTime');
+                              final currentUserData =
+                                  await UserAPI().getCurrentUserData();
+                              // int userId = await UserAPI().countUsers();
+
+                              if (_formKey.currentState != null) {
+                                if (_formKey.currentState!.validate()) {
+                                  if (widget.buttonText == 'Add') {
+                                    VaktaModel addUser = VaktaModel(
                                       name: devoteeNameController.text.trim(),
-                                      createdBy: name,
-                                      createdOn: currentTime,
-                                      docId: 'U${userId + 1}',
+                                      createdBy: currentUserData?.name,
+                                      createdOn: formatted.toString(),
+                                      docId: Uuid().v1(),
                                       pranaami: pranamiController.text.trim(),
                                       remark: remarkController.text.trim(),
                                       sammilaniNo:
@@ -227,13 +253,28 @@ class _Add_Edit_DetailsScreenState extends State<Add_Edit_DetailsScreen> {
                                       sammilaniYear:
                                           sammilaniYearController.text.trim(),
                                       sangha: sanghaNameController.text.trim(),
-                                      paaliDate: DateTime.tryParse(
-                                              paliDateController.text
-                                                  .split('-')
-                                                  .reversed
-                                                  .join('-')) ??
-                                          DateTime.tryParse(''),
+                                      paaliDate: paliDateController.text,
                                     );
+                                    DevoteeAPI().addUser(addUser);
+                                    Navigator.pop(context);
+                                  } else if (widget.buttonText == 'Edit') {
+                                    VaktaModel editUser = VaktaModel(
+                                      name: devoteeNameController.text.trim(),
+                                      updatedBy: currentUserData?.name,
+                                      updatedOn: formatted.toString(),
+                                      pranaami: pranamiController.text.trim(),
+                                      remark: remarkController.text.trim(),
+                                      sammilaniNo:
+                                          sammilaniNumberController.text.trim(),
+                                      sammilaniYear:
+                                          sammilaniYearController.text.trim(),
+                                      sangha: sanghaNameController.text.trim(),
+                                      paaliDate: paliDateController.text,
+                                      docId: widget.vaktaData?.docId,
+                                      //
+                                    );
+                                    DevoteeAPI().editMedicine(editUser);
+                                    Navigator.pop(context);
                                   }
                                 }
                               }

@@ -3,33 +3,36 @@ import 'package:sdp/Models/vaktaModel.dart';
 
 enum SearchBy { name, company }
 
-class MedicineAPI {
+class DevoteeAPI {
   SearchBy? searchBy;
-  //Add Medicine
-  addMedicine(VaktaModel vakta) {
-    final CollectionReference medicineCollection =
-        FirebaseFirestore.instance.collection('medicines');
-    medicineCollection.doc(vakta.docId).set(vakta.toMap());
+  //Add Devotee
+  addUser(VaktaModel addvakta) async {
+    final CollectionReference userCollection =
+        FirebaseFirestore.instance.collection('devoteeList');
+    await userCollection.doc(addvakta.docId).set(addvakta.toMap());
   }
 
+//FetchUser
   Future<List<VaktaModel>> fetchAllMedicines() async {
     final CollectionReference medicineCollection =
-        FirebaseFirestore.instance.collection('medicines');
-    return medicineCollection.get().then(
+        FirebaseFirestore.instance.collection('devoteeList');
+    final lstdevotee = await medicineCollection.get().then(
       (querysnapshot) {
         //print('********${querysnapshot.docs.length}');
         List<VaktaModel> lstMedicines = [];
         for (var element in querysnapshot.docs) {
-          final medicines = element.data() as Map<String, dynamic>;
-          final medicineModel = VaktaModel.fromMap(medicines);
-          //print('Medicine model in API $medicineModel');
-          lstMedicines.add(medicineModel);
+          final devoteeData = element.data() as Map<String, dynamic>;
+          final devoteModel = VaktaModel.fromMap(devoteeData);
+          print('Medicine model in API $devoteModel');
+          lstMedicines.add(devoteModel);
         }
         return lstMedicines;
       },
     );
+    return lstdevotee;
   }
 
+// search user
   Future<List<VaktaModel>?> searchSDP(
       String? searchBy, String searchedItem) async {
     final CollectionReference medicineCollection =
@@ -72,16 +75,17 @@ class MedicineAPI {
   }
 
   Future editMedicine(VaktaModel newMedicineData) async {
-    var medicineCollection = FirebaseFirestore.instance.collection('medicines');
+    var medicineCollection =
+        FirebaseFirestore.instance.collection('devoteeList');
 
     medicineCollection
         .doc(newMedicineData.docId)
         .update(newMedicineData.toMap());
   }
 
-  removeMedicine(String? medId) {
+  removeMedicine(String? docId) {
     final CollectionReference medicineCollection =
-        FirebaseFirestore.instance.collection('medicines');
-    medicineCollection.doc(medId).delete();
+        FirebaseFirestore.instance.collection('devoteeList');
+    medicineCollection.doc(docId).delete();
   }
 }

@@ -32,11 +32,23 @@ class _EmailSignInState extends State<EmailSignIn> {
                 loginImage: AssetImage('assets/images/login.png'),
                 scaffoldbackGroundColor: Colors.white70,
                 onEmailLoginPressed: (userEmail, userPassword) async {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Dashboard(),
-                      ));
+                  final user = await UserAPI().signIn(userEmail, userPassword);
+                  if (user != null) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Dashboard(),
+                        ));
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      elevation: 6,
+                      behavior: SnackBarBehavior.floating,
+                      content: Text(
+                        'Please Check your Email/Password',
+                      ),
+                    ));
+                  }
+
                   // log(userEmail);
                   // log(userPassword);
                   // final user = await UserAPI().signIn(userEmail, userPassword);
