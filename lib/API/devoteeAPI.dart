@@ -35,13 +35,13 @@ class DevoteeAPI {
 // search user
   Future<List<VaktaModel>?> searchSDP(
       String? searchBy, String searchedItem) async {
-    final CollectionReference medicineCollection =
-        FirebaseFirestore.instance.collection('medicines');
-    return medicineCollection.get().then((querysnapshot) {
+    final CollectionReference devoteeCollection =
+        FirebaseFirestore.instance.collection('devoteeList');
+    return devoteeCollection.get().then((querysnapshot) {
       List<VaktaModel> result = [];
       for (var element in querysnapshot.docs) {
-        final medicines = element.data() as Map<String, dynamic>;
-        final vaktaDetails = VaktaModel.fromMap(medicines);
+        final devotee = element.data() as Map<String, dynamic>;
+        final vaktaDetails = VaktaModel.fromMap(devotee);
         if (searchBy == 'Name') {
           if (vaktaDetails.name
                   ?.toLowerCase()
@@ -49,15 +49,15 @@ class DevoteeAPI {
               false) {
             result.add(vaktaDetails);
           }
-        } else if (searchBy == 'Date') {
+        } else if (searchBy == 'Sangha') {
           if (vaktaDetails.sangha
                   ?.toLowerCase()
                   .contains(searchedItem.toLowerCase()) ??
               false) {
             result.add(vaktaDetails);
           }
-        } else if (searchBy == 'Sangha') {
-          if (vaktaDetails.sangha?.contains(searchedItem.toLowerCase()) ??
+        } else if (searchBy == 'PaaliDate') {
+          if (vaktaDetails.paaliDate?.contains(searchedItem.toLowerCase()) ??
               false) {
             result.add(vaktaDetails);
           }
