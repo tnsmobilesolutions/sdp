@@ -28,14 +28,14 @@ class _DataTableViewState extends State<DataTableView> {
   bool isAscending = false;
   String? medId;
   bool isSelected = false;
-  late VaktaModel singleMed;
+  late VaktaModel singledevotee;
   final columns = [
     'Name',
     'Sangha',
     'Pranami',
     'Pali Date',
-    'Sammikani No.',
-    'Sammilani Date',
+    'Sammilani No.',
+    'Sammilani Year',
     'UserId',
     'Remark',
     'CreatedBy',
@@ -68,7 +68,9 @@ class _DataTableViewState extends State<DataTableView> {
       sortAscending: isAscending,
       sortColumnIndex: sortColumnIndex,
       columns: getColumns(columns),
-      rows: getRows(widget.allMeds),
+      rows: getRows(
+        widget.allMeds,
+      ),
     );
   }
 
@@ -88,26 +90,26 @@ class _DataTableViewState extends State<DataTableView> {
       )
       .toList();
 
-  List<DataRow> getRows(List<VaktaModel>? allMeds) {
-    if (allMeds != null) {
-      return allMeds.map((VaktaModel med) {
+  List<DataRow> getRows(List<VaktaModel>? alldevotee) {
+    if (alldevotee != null) {
+      return alldevotee.map((VaktaModel devoteedtails) {
         //print('mfg date - ${med.mfgDate}');
         setState(() {
-          singleMed = med;
+          singledevotee = devoteedtails;
         });
         final cells = [
-          med.name,
-          med.sangha,
-          med.sammilaniNo,
-          med.sammilaniYear,
-          med.paaliDate,
-          med.pranaami,
-          med.createdBy,
-          med.createdOn,
-          med.updatedBy,
-          med.updatedOn,
-          med.docId,
-          med..remark,
+          devoteedtails.name,
+          devoteedtails.sangha,
+          devoteedtails.pranaami,
+          devoteedtails.paaliDate,
+          devoteedtails.sammilaniNo,
+          devoteedtails.sammilaniYear,
+          devoteedtails.docId,
+          devoteedtails.remark,
+          devoteedtails.createdBy,
+          devoteedtails.createdOn,
+          devoteedtails.updatedBy,
+          devoteedtails.updatedOn,
         ];
 
         return DataRow(
@@ -118,7 +120,7 @@ class _DataTableViewState extends State<DataTableView> {
               isSelected = !isSelected;
             });
             if (isSelected) {
-              widget.onRowTapped!(med);
+              widget.onRowTapped!(devoteedtails);
               widget.isRowSelected!(isSelected);
             } else {
               // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
@@ -141,53 +143,32 @@ class _DataTableViewState extends State<DataTableView> {
         );
       }).toList();
 
-  // void onSort(int columnIndex, bool ascending) {
-  //   if (columnIndex == 0) {
-  //     widget.allMeds?.sort((user1, user2) => compareString(
-  //         ascending, user1.medicineName ?? '', user2.medicineName ?? ''));
-  //   } else if (columnIndex == 1) {
-  //     widget.allMeds?.sort((user1, user2) =>
-  //         compareString(ascending, user1.company ?? '', user2.company ?? ''));
-  //   } else if (columnIndex == 2) {
-  //     widget.allMeds?.sort((user1, user2) => compareString(
-  //         ascending, user1.genericName ?? '', user2.genericName ?? ''));
-  //   } else if (columnIndex == 3) {
-  //     widget.allMeds?.sort((user1, user2) => compareString(
-  //         ascending, user1.cimsClass ?? '', user2.cimsClass ?? ''));
-  //   } else if (columnIndex == 4) {
-  //     widget.allMeds?.sort((user1, user2) => compareString(ascending,
-  //         user1.actClassification ?? '', user2.actClassification ?? ''));
-  //   } else if (columnIndex == 5) {
-  //     widget.allMeds?.sort((user1, user2) =>
-  //         compareString(ascending, user1.packing ?? '', user2.packing ?? ''));
-  //   } else if (columnIndex == 6) {
-  //     widget.allMeds?.sort((user1, user2) =>
-  //         compareString(ascending, user1.form ?? '', user2.form ?? ''));
-  //   } else if (columnIndex == 7) {
-  //     widget.allMeds?.sort((user1, user2) =>
-  //         compareString(ascending, user1.contents ?? '', user2.contents ?? ''));
-  //   } else if (columnIndex == 8) {
-  //     widget.allMeds?.sort((user1, user2) => compareString(ascending,
-  //         user1.tabsPerStrip.toString(), user2.tabsPerStrip.toString()));
-  //   } else if (columnIndex == 9) {
-  //     widget.allMeds?.sort((user1, user2) => compareString(
-  //         ascending, user1.mfgDate.toString(), user2.mfgDate.toString()));
-  //   } else if (columnIndex == 10) {
-  //     widget.allMeds?.sort((user1, user2) => compareString(
-  //         ascending, user1.expDate.toString(), user2.expDate.toString()));
-  //   } else if (columnIndex == 11) {
-  //     widget.allMeds?.sort((user1, user2) => compareString(
-  //         ascending, user1.price.toString(), user2.price.toString()));
-  //   } else if (columnIndex == 12) {
-  //     widget.allMeds?.sort((user1, user2) => compareString(
-  //         ascending, user1.description ?? '', user2.description ?? ''));
-  //   }
+  void onSort(int columnIndex, bool ascending) {
+    if (columnIndex == 0) {
+      widget.allMeds?.sort((user1, user2) =>
+          compareString(ascending, user1.name ?? '', user2.name ?? ''));
+    } else if (columnIndex == 1) {
+      widget.allMeds?.sort((user1, user2) =>
+          compareString(ascending, user1.sangha ?? '', user2.sangha ?? ''));
+    } else if (columnIndex == 2) {
+      widget.allMeds?.sort((user1, user2) =>
+          compareString(ascending, user1.pranaami ?? '', user2.pranaami ?? ''));
+    } else if (columnIndex == 3) {
+      widget.allMeds?.sort((user1, user2) => compareString(
+          ascending, user1.paaliDate ?? '', user2.paaliDate ?? ''));
+    } else if (columnIndex == 4) {
+      widget.allMeds?.sort((user1, user2) => compareString(
+          ascending, user1.sammilaniNo ?? '', user2.sammilaniNo ?? ''));
+    } else if (columnIndex == 5) {
+      widget.allMeds?.sort((user1, user2) => compareString(
+          ascending, user1.sammilaniYear ?? '', user2.sammilaniYear ?? ''));
+    }
 
-  //   setState(() {
-  //     sortColumnIndex = columnIndex;
-  //     isAscending = ascending;
-  //   });
-  // }
+    setState(() {
+      sortColumnIndex = columnIndex;
+      isAscending = ascending;
+    });
+  }
 
   int compareString(bool ascending, String value1, String value2) =>
       ascending ? value1.compareTo(value2) : value2.compareTo(value1);
