@@ -1,13 +1,14 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+
 import 'package:sdp/Models/vaktaModel.dart';
 
 class DataTableView extends StatefulWidget {
-  DataTableView({Key? key, this.allMeds, this.onRowTapped, this.isRowSelected})
+  DataTableView(
+      {Key? key, this.allDevotees, this.onRowTapped, this.isRowSelected})
       : super(key: key);
-  List<VaktaModel>? allMeds;
+  List<VaktaModel>? allDevotees;
   Function? onRowTapped;
   Function? isRowSelected;
 
@@ -69,7 +70,7 @@ class _DataTableViewState extends State<DataTableView> {
       sortColumnIndex: sortColumnIndex,
       columns: getColumns(columns),
       rows: getRows(
-        widget.allMeds,
+        widget.allDevotees,
       ),
     );
   }
@@ -145,22 +146,22 @@ class _DataTableViewState extends State<DataTableView> {
 
   void onSort(int columnIndex, bool ascending) {
     if (columnIndex == 0) {
-      widget.allMeds?.sort((user1, user2) =>
+      widget.allDevotees?.sort((user1, user2) =>
           compareString(ascending, user1.name ?? '', user2.name ?? ''));
     } else if (columnIndex == 1) {
-      widget.allMeds?.sort((user1, user2) =>
+      widget.allDevotees?.sort((user1, user2) =>
           compareString(ascending, user1.sangha ?? '', user2.sangha ?? ''));
     } else if (columnIndex == 2) {
-      widget.allMeds?.sort((user1, user2) =>
+      widget.allDevotees?.sort((user1, user2) =>
           compareString(ascending, user1.pranaami ?? '', user2.pranaami ?? ''));
     } else if (columnIndex == 3) {
-      widget.allMeds?.sort((user1, user2) => compareString(
+      widget.allDevotees?.sort((user1, user2) => compareString(
           ascending, user1.paaliDate ?? '', user2.paaliDate ?? ''));
     } else if (columnIndex == 4) {
-      widget.allMeds?.sort((user1, user2) => compareString(
+      widget.allDevotees?.sort((user1, user2) => compareString(
           ascending, user1.sammilaniNo ?? '', user2.sammilaniNo ?? ''));
     } else if (columnIndex == 5) {
-      widget.allMeds?.sort((user1, user2) => compareString(
+      widget.allDevotees?.sort((user1, user2) => compareString(
           ascending, user1.sammilaniYear ?? '', user2.sammilaniYear ?? ''));
     }
 

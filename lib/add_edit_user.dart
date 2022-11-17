@@ -8,6 +8,7 @@ import 'package:intl/intl.dart';
 import 'package:sdp/API/devoteeAPI.dart';
 import 'package:sdp/API/userAPI.dart';
 import 'package:sdp/Models/vaktaModel.dart';
+import 'package:sdp/newDashboard.dart';
 
 import 'package:uuid/uuid.dart';
 
@@ -225,11 +226,11 @@ class _Add_Edit_DetailsScreenState extends State<Add_Edit_DetailsScreen> {
 
                         ElevatedButton(
                             onPressed: () async {
-                              final DateTime now = DateTime.now();
-                              final DateFormat formatter =
-                                  DateFormat('yyyy-MM-dd');
-                              final String formatted = formatter.format(now);
-                              log(formatted); // something like 2013-04-20,
+                              // final DateTime now = DateTime.now();
+                              // final DateFormat formatter =
+                              //     DateFormat('yyyy-MM-dd');
+                              // final String formatted = formatter.format(now);
+                              // log(formatted); // something like 2013-04-20,
                               // DateTime now = DateTime.now();
                               // DateTime currentTime = DateTime(now.day, now.year,
                               //     now.month, now.hour, now.minute);
@@ -237,6 +238,9 @@ class _Add_Edit_DetailsScreenState extends State<Add_Edit_DetailsScreen> {
                               final currentUserData =
                                   await UserAPI().getCurrentUserData();
                               // int userId = await UserAPI().countUsers();
+                              DateTime now = DateTime.now();
+                              String formattedDate =
+                                  DateFormat('yyyy-MM-dd – kk:mm').format(now);
 
                               if (_formKey.currentState != null) {
                                 if (_formKey.currentState!.validate()) {
@@ -244,7 +248,8 @@ class _Add_Edit_DetailsScreenState extends State<Add_Edit_DetailsScreen> {
                                     VaktaModel addUser = VaktaModel(
                                       name: devoteeNameController.text.trim(),
                                       createdBy: currentUserData?.name,
-                                      createdOn: formatted.toString(),
+                                      createdOn: formattedDate.toString(),
+                                      // formatted.toString(),
                                       docId: Uuid().v1(),
                                       pranaami: pranamiController.text.trim(),
                                       remark: remarkController.text.trim(),
@@ -257,24 +262,33 @@ class _Add_Edit_DetailsScreenState extends State<Add_Edit_DetailsScreen> {
                                     );
                                     DevoteeAPI().addUser(addUser);
                                     Navigator.pop(context);
-                                  } else if (widget.buttonText == 'Edit') {
+                                  } else if (widget.buttonText == 'Update') {
                                     VaktaModel editUser = VaktaModel(
-                                      name: devoteeNameController.text.trim(),
-                                      updatedBy: currentUserData?.name,
-                                      updatedOn: formatted.toString(),
-                                      pranaami: pranamiController.text.trim(),
-                                      remark: remarkController.text.trim(),
-                                      sammilaniNo:
-                                          sammilaniNumberController.text.trim(),
-                                      sammilaniYear:
-                                          sammilaniYearController.text.trim(),
-                                      sangha: sanghaNameController.text.trim(),
-                                      paaliDate: paliDateController.text,
-                                      docId: widget.vaktaData?.docId,
-                                      //
-                                    );
-                                    DevoteeAPI().editMedicine(editUser);
-                                    Navigator.pop(context);
+                                        name: devoteeNameController.text.trim(),
+                                        updatedBy: currentUserData?.name,
+                                        updatedOn: formattedDate.toString(),
+                                        pranaami: pranamiController.text.trim(),
+                                        remark: remarkController.text.trim(),
+                                        sammilaniNo: sammilaniNumberController
+                                            .text
+                                            .trim(),
+                                        sammilaniYear:
+                                            sammilaniYearController.text.trim(),
+                                        sangha:
+                                            sanghaNameController.text.trim(),
+                                        paaliDate: paliDateController.text,
+                                        docId: widget.vaktaData?.docId,
+                                        createdBy: widget.vaktaData?.createdBy,
+                                        createdOn: widget.vaktaData?.createdOn
+                                        //
+                                        );
+                                    await DevoteeAPI()
+                                        .editDevoteeDetails(editUser);
+                                    Navigator.push(context, MaterialPageRoute(
+                                      builder: (context) {
+                                        return NewDashboard();
+                                      },
+                                    ));
                                   }
                                 }
                               }

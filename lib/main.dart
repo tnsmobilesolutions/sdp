@@ -4,8 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:sdp/Login/EmailSignIn.dart';
-import 'package:sdp/dashboard.dart';
+
 import 'package:sdp/firebase_options.dart';
+import 'package:sdp/newDashboard.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'SDP',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -43,7 +44,7 @@ class MyApp extends StatelessWidget {
             if (user == null) {
               return EmailSignIn();
             } else {
-              return Dashboard();
+              return NewDashboard();
             }
           }
           return Center(child: CircularProgressIndicator());

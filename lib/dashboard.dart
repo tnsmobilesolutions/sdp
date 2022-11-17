@@ -163,7 +163,7 @@ class _DashboardState extends State<Dashboard> {
                             builder: (context) => Add_Edit_DetailsScreen(
                               vaktaData: selectedUser,
                               title: 'Edit Details',
-                              buttonText: 'Edit',
+                              buttonText: 'Update',
                             ),
                           ),
                         );
@@ -199,7 +199,7 @@ class _DashboardState extends State<Dashboard> {
                     ),
                     onPressed: (() async {
                       if (selectedUser != null) {
-                        await DevoteeAPI().removeMedicine(selectedUser?.docId);
+                        await DevoteeAPI().removeDevotee(selectedUser?.docId);
                         setState(() {});
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             elevation: 6,
@@ -233,12 +233,12 @@ class _DashboardState extends State<Dashboard> {
                 scrollDirection: Axis.horizontal,
                 child: FutureBuilder(
                   future: type == APIType.fetchAll
-                      ? DevoteeAPI().fetchAllMedicines()
+                      ? DevoteeAPI().fetchAllDevotees()
                       : DevoteeAPI().searchSDP(_selectedSearchType, searchItem),
                   builder: (BuildContext context, AsyncSnapshot snapshot) {
                     print('allMeds from Dashboard - ${snapshot.data}');
                     return DataTableView(
-                      allMeds: snapshot.data,
+                      allDevotees: snapshot.data,
                       onRowTapped: onRowSelected,
                       isRowSelected: isRowselected,
                     );

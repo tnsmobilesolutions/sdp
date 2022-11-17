@@ -6,6 +6,7 @@ import 'package:authentication/EmailLogin/authenticationWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:sdp/API/userAPI.dart';
 import 'package:sdp/dashboard.dart';
+import 'package:sdp/newDashboard.dart';
 
 class EmailSignIn extends StatefulWidget {
   const EmailSignIn({super.key});
@@ -20,24 +21,23 @@ class _EmailSignInState extends State<EmailSignIn> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.cyanAccent.shade200,
+        backgroundColor: Colors.white,
         body: Center(
           child: Padding(
               padding: const EdgeInsets.all(20),
               child: AuthenticationWidget(
-                cardWidth: 100,
-                cardHeight: 100,
-                cardLeftPadding: 500,
-                cardRightPadding: 600,
+                imageWidth: 240,
+                imageHeight: 240,
+                cardWidth: 240,
+                cardHeight: 240,
                 loginImage: AssetImage('assets/images/login.png'),
-                scaffoldbackGroundColor: Colors.white70,
                 onEmailLoginPressed: (userEmail, userPassword) async {
                   final user = await UserAPI().signIn(userEmail, userPassword);
                   if (user != null) {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Dashboard(),
+                          builder: (context) => NewDashboard(),
                         ));
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
@@ -48,30 +48,24 @@ class _EmailSignInState extends State<EmailSignIn> {
                       ),
                     ));
                   }
-
-                  // log(userEmail);
-                  // log(userPassword);
-                  // final user = await UserAPI().signIn(userEmail, userPassword);
-                  // if (user != null) {
-                  //   Navigator.push(
-                  //       context,
-                  //       MaterialPageRoute(
-                  //         builder: (context) => Dashboard(),
-                  //       ));
-                  // } else {
-                  //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  //     elevation: 6,
-                  //     behavior: SnackBarBehavior.floating,
-                  //     content: Text(
-                  //       'Please Check your Email/Password',
-                  //     ),
-                  //   ));
-                  // }
                 },
                 phoneAuthentication: false,
                 isSignUpVisible: false,
-                buttonColor: Colors.greenAccent.shade700,
+                buttonColor: Color(0xFFeb1589),
+                loginButonTextColor: Colors.white,
+                // titleTextColor: Colors.white,
+                loginPageTextStyle: TextStyle(
+                  color: Colors.white,
+                  fontSize: 40,
+                  fontWeight: FontWeight.bold,
+                ),
                 isImageVisible: true,
+                textFieldBorderColor: Colors.white,
+                //  Color(0xFFeb1589),
+                cardColor: Color(0XFF3f51b5),
+                // textfieldHintColor: Colors.white,
+                emailHintTextStyle: TextStyle(color: Colors.white),
+                passwordHintTextStyle: TextStyle(color: Colors.white),
               )),
         ),
       ),

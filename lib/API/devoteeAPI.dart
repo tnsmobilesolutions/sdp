@@ -13,20 +13,20 @@ class DevoteeAPI {
   }
 
 //FetchUser
-  Future<List<VaktaModel>> fetchAllMedicines() async {
-    final CollectionReference medicineCollection =
+  Future<List<VaktaModel>> fetchAllDevotees() async {
+    final CollectionReference devoteeCollection =
         FirebaseFirestore.instance.collection('devoteeList');
-    final lstdevotee = await medicineCollection.get().then(
+    final lstdevotee = await devoteeCollection.get().then(
       (querysnapshot) {
         //print('********${querysnapshot.docs.length}');
-        List<VaktaModel> lstMedicines = [];
+        List<VaktaModel> lstDevotees = [];
         for (var element in querysnapshot.docs) {
           final devoteeData = element.data() as Map<String, dynamic>;
           final devoteModel = VaktaModel.fromMap(devoteeData);
           print('Medicine model in API $devoteModel');
-          lstMedicines.add(devoteModel);
+          lstDevotees.add(devoteModel);
         }
-        return lstMedicines;
+        return lstDevotees;
       },
     );
     return lstdevotee;
@@ -74,16 +74,14 @@ class DevoteeAPI {
     });
   }
 
-  Future editMedicine(VaktaModel newMedicineData) async {
+  Future editDevoteeDetails(VaktaModel devotee) async {
     var medicineCollection =
         FirebaseFirestore.instance.collection('devoteeList');
 
-    medicineCollection
-        .doc(newMedicineData.docId)
-        .update(newMedicineData.toMap());
+    medicineCollection.doc(devotee.docId).update(devotee.toMap());
   }
 
-  removeMedicine(String? docId) {
+  removeDevotee(String? docId) {
     final CollectionReference medicineCollection =
         FirebaseFirestore.instance.collection('devoteeList');
     medicineCollection.doc(docId).delete();
