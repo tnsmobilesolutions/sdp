@@ -56,16 +56,8 @@ class DevoteeAPI {
               false) {
             result.add(vaktaDetails);
           }
-        } else if (searchBy == 'PaaliDate') {
-          if (vaktaDetails.paaliDate?.contains(searchedItem.toLowerCase()) ??
-              false) {
-            result.add(vaktaDetails);
-          }
-        } else if (searchBy == 'Devotee') {
-          if (vaktaDetails.name
-                  ?.toLowerCase()
-                  .contains(searchedItem.toLowerCase()) ??
-              false) {
+        } else if (searchBy == 'Pali Date') {
+          if (vaktaDetails.paaliDate?.contains(searchedItem) ?? false) {
             result.add(vaktaDetails);
           }
         }

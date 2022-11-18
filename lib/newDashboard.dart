@@ -48,12 +48,16 @@ class _NewDashboardState extends State<NewDashboard> {
 
   final sammilaniNumberController = TextEditingController();
   String? currentAppMode;
-  String searchItem = '';
+  List<VaktaModel>? searchItem;
   APIType? type;
   bool isSelected = false;
-  String? _selectedSearchType;
+  String _selectedSearchType = 'Name';
   VaktaModel? selectedUser;
-  List<String> searchBy = ['Name', 'Sangha', 'Paali Date', 'Devotee'];
+  List<String> searchBy = [
+    'Name',
+    'Sangha',
+    'Pali Date',
+  ];
   showdilouge(
     String title,
     String buttonText,
@@ -68,18 +72,32 @@ class _NewDashboardState extends State<NewDashboard> {
             children: [
               Text(
                 title,
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Color(0XFF3f51b5),
+                ),
               ),
               IconButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  icon: Icon(Icons.close))
+                  icon: const Icon(Icons.close))
             ],
           ),
           content: SingleChildScrollView(
             child: Container(
-              height: 417,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(2.0),
+                color: Colors.white,
+                // boxShadow: [
+                //   BoxShadow(
+                //     color: Colors.grey,
+                //     offset: Offset(0.0, 1.0), //(x,y)
+                //     blurRadius: 1.0,
+                //   ),
+                // ],
+              ),
+              height: 435,
               width: 400,
               child: Form(
                 key: _formKey,
@@ -92,7 +110,6 @@ class _NewDashboardState extends State<NewDashboard> {
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Name',
-                        labelStyle: TextStyle(fontSize: 12),
                       ),
                       validator: (value) {
                         if (value!.isEmpty) {
@@ -106,7 +123,7 @@ class _NewDashboardState extends State<NewDashboard> {
                       },
                     ),
 
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 5),
                     TextFormField(
                       focusNode: FocusNode(
                         descendantsAreFocusable: false,
@@ -127,7 +144,7 @@ class _NewDashboardState extends State<NewDashboard> {
                         return null;
                       },
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 5),
                     TextFormField(
                       focusNode: FocusNode(
                         descendantsAreFocusable: false,
@@ -147,7 +164,7 @@ class _NewDashboardState extends State<NewDashboard> {
                       //   return null;
                       // },
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 5),
                     TextFormField(
                       focusNode: FocusNode(
                         descendantsAreFocusable: false,
@@ -178,7 +195,7 @@ class _NewDashboardState extends State<NewDashboard> {
                       ),
                     ),
                     const SizedBox(
-                      height: 10,
+                      height: 5,
                     ),
                     TextFormField(
                       focusNode: FocusNode(
@@ -191,7 +208,7 @@ class _NewDashboardState extends State<NewDashboard> {
                         labelText: 'Sammilani Number',
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 5),
                     TextFormField(
                       focusNode: FocusNode(
                         descendantsAreFocusable: false,
@@ -202,7 +219,7 @@ class _NewDashboardState extends State<NewDashboard> {
                         labelText: 'sammilani Year',
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 5),
                     TextFormField(
                       focusNode: FocusNode(
                         descendantsAreFocusable: false,
@@ -221,7 +238,7 @@ class _NewDashboardState extends State<NewDashboard> {
           actions: <Widget>[
             Center(
               child: CupertinoButton(
-                color: Color(0XFF3f51b5),
+                color: const Color(0XFF3f51b5),
                 child: Text(buttonText),
                 onPressed: () async {
                   final currentUserData = await UserAPI().getCurrentUserData();
@@ -308,11 +325,12 @@ class _NewDashboardState extends State<NewDashboard> {
     });
   }
 
-  TableRow buildRow(cell) =>
-      TableRow(children: [cell.map((cells) => Text(cells)).tolist()]);
+  // TableRow buildRow(cell) =>
+  //     TableRow(children: [cell.map((cells) => Text(cells)).tolist()]);
 
   @override
   Widget build(BuildContext context) {
+    //DashboardList
     List<TableRow> devoteesTableRows = devotedetails.map<TableRow>((item) {
       return TableHelper().getTableRowData(item,
           //Edit
@@ -340,6 +358,41 @@ class _NewDashboardState extends State<NewDashboard> {
       }));
     }).toList();
     devoteesTableRows.insert(0, TableHelper().getTableHeader());
+//SearchItem
+    List<TableRow> searchRow = searchItem != null
+        ? searchItem!.map<TableRow>(
+            (item) {
+              return TableHelper().getTableRowData(
+                item,
+                (() {
+                  setState(() {
+                    editedVaktadata = item;
+                    devoteeNameController.text = item.name ?? '';
+                    sanghaNameController.text = item.sangha ?? '';
+                    pranamiController.text = item.pranaami ?? '';
+                    paliDateController.text = item.paaliDate ?? '';
+                    sammilaniNumberController.text = item.sammilaniNo ?? '';
+                    sammilaniYearController.text = item.sammilaniYear ?? '';
+                    remarkController.text = item.remark ?? '';
+                  });
+                  showdilouge('Update Devotee Details', 'Update');
+                }),
+                (() {
+                  DevoteeAPI().removeDevotee(item.docId);
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) {
+                      return NewDashboard();
+                    },
+                  ));
+                }),
+              );
+            },
+          ).toList()
+        : [];
+    searchRow.insert(0, TableHelper().getTableHeader());
+
+    // List<TableRow> searchTableRows =
+    // searchTableRows.insert(0, TableHelper().getTableHeader());
 
     return Scaffold(
       appBar: AppBar(
@@ -347,43 +400,84 @@ class _NewDashboardState extends State<NewDashboard> {
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: SizedBox(
-              width: 300,
-              child: TextFormField(
-                autofocus: false,
-                controller: sdpSearchController,
-                keyboardType: TextInputType.emailAddress,
-                onSaved: (value) {},
-                onChanged: (value) {
-                  setState(() {
-                    searchItem = value.toLowerCase();
-                  });
-                },
-                textInputAction: TextInputAction.next,
-                decoration: InputDecoration(
-                  prefixIcon: IconButton(
-                      onPressed: () async {
+            child: Container(
+              decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Colors.white,
+                  ),
+                  borderRadius: BorderRadius.circular(15)),
+              width: 500,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      autofocus: false,
+                      controller: sdpSearchController,
+                      keyboardType: TextInputType.emailAddress,
+                      onSaved: (value) {},
+                      onChanged: (value) async {
+                        final result = await DevoteeAPI()
+                            .searchSDP(_selectedSearchType, value);
                         setState(() {
-                          type = APIType.search;
+                          searchItem = result;
                         });
                       },
-                      icon: const Icon(
-                        Icons.search,
-                        color: Colors.white,
-                      )),
-                  contentPadding: const EdgeInsets.all(15),
-                  hintText: 'Search paali',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
+                      textInputAction: TextInputAction.next,
+                      decoration: InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(color: Colors.white),
+                              borderRadius: BorderRadius.circular(15)),
+                          prefixIcon: IconButton(
+                              onPressed: () async {
+                                final result = await DevoteeAPI().searchSDP(
+                                    _selectedSearchType,
+                                    sdpSearchController.text);
+                                setState(() {
+                                  searchItem = result;
+                                });
+                              },
+                              icon: const Icon(
+                                Icons.search,
+                                color: Colors.white,
+                              )),
+                          contentPadding: const EdgeInsets.all(15),
+                          hintText: 'Search item',
+                          suffixIcon: _selectedSearchType == 'Pali Date'
+                              ? IconButton(
+                                  onPressed: () async {
+                                    DateTime? selectedDate =
+                                        await showDatePicker(
+                                            context: context,
+                                            initialDate: DateTime.now(),
+                                            firstDate: DateTime(2022),
+                                            lastDate: DateTime(2050));
+                                    if (selectedDate != null) {
+                                      setState(() {
+                                        sdpSearchController.text =
+                                            DateFormat('dd-MM-yyyy')
+                                                .format(selectedDate);
+                                      });
+                                    } else {
+                                      sdpSearchController.text = '';
+                                    }
+                                  },
+                                  icon: const Icon(
+                                    Icons.calendar_month_rounded,
+                                    color: Colors.white,
+                                  ))
+                              : null),
+                      onTap: () {},
+                    ),
                   ),
-                  suffixIcon: DropdownButton(
-                    focusColor: Colors.white,
+                  DropdownButton(
+                    // focusColor: Colors.white,
                     hint: const Text('Search By'),
                     borderRadius: BorderRadius.circular(15),
                     value: _selectedSearchType,
                     onChanged: (value) {
                       setState(() {
-                        _selectedSearchType = value;
+                        _selectedSearchType = value.toString();
                       });
                     },
                     items: searchBy.map(
@@ -394,8 +488,9 @@ class _NewDashboardState extends State<NewDashboard> {
                         );
                       },
                     ).toList(),
-                    iconEnabledColor: Colors.blue,
-                    iconDisabledColor: Colors.blue,
+                    iconEnabledColor: Colors.white,
+
+                    iconDisabledColor: Colors.black,
                     iconSize: 40,
                     icon: const Icon(
                       Icons.arrow_drop_down_outlined,
@@ -403,8 +498,7 @@ class _NewDashboardState extends State<NewDashboard> {
                     ),
                     underline: const Text(''),
                   ),
-                ),
-                onTap: () {},
+                ],
               ),
             ),
           ),
@@ -449,37 +543,47 @@ class _NewDashboardState extends State<NewDashboard> {
           )
         ],
       ),
-      body: SafeArea(
-          child: Padding(
-        padding: const EdgeInsets.all(18.0),
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: FutureBuilder(
-                  future: DevoteeAPI().fetchAllDevotees(),
-                  builder: (BuildContext context, AsyncSnapshot snapshot) {
-                    if (snapshot.hasError) {
-                      return const Text('SNAPSHOT ERROR');
-                    }
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      return Table(
-                        border: TableBorder
-                            .all(), // Allows to add a border decoration around your table
-                        children: devoteesTableRows,
-                      );
-                    }
-                    return const Center(
-                        child: CircularProgressIndicator(
-                      color: Colors.black,
-                    ));
-                  },
-                ),
+      body: searchItem == null
+          ? SafeArea(
+              child: Padding(
+              padding: const EdgeInsets.all(18.0),
+              child: Column(
+                children: [
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: FutureBuilder(
+                        future: DevoteeAPI().fetchAllDevotees(),
+                        builder:
+                            (BuildContext context, AsyncSnapshot snapshot) {
+                          if (snapshot.hasError) {
+                            return const Text('SNAPSHOT ERROR');
+                          }
+                          if (snapshot.connectionState ==
+                              ConnectionState.done) {
+                            return Table(
+                              border: TableBorder
+                                  .all(), // Allows to add a border decoration around your table
+                              children: devoteesTableRows,
+                            );
+                          }
+                          return const Center(
+                              child: CircularProgressIndicator(
+                            color: Colors.black,
+                          ));
+                        },
+                      ),
+                    ),
+                  ),
+                ],
               ),
+            ))
+          : Padding(
+              padding: const EdgeInsets.all(18.0),
+              child: Table(
+                  border: TableBorder
+                      .all(), // Allows to add a border decoration around your table
+                  children: searchRow),
             ),
-          ],
-        ),
-      )),
     );
   }
 }

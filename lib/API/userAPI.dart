@@ -16,7 +16,7 @@ class UserAPI {
           .then((uid) => uid);
       print('***********uid: ${userCredential?.user?.uid}*********');
       final currentUserId = userCredential?.user?.uid;
-      final user = await usersCollection
+      final userDetails = await usersCollection
           .where("uid", isEqualTo: currentUserId)
           .get()
           .then(
@@ -27,7 +27,7 @@ class UserAPI {
           return user;
         },
       );
-      return user;
+      return userDetails;
 
       //return uid.user?.uid;
     } on FirebaseAuthException catch (e) {
