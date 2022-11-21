@@ -5,14 +5,14 @@ import 'package:sdp/API/devoteeAPI.dart';
 import 'package:sdp/API/userAPI.dart';
 import 'package:sdp/Login/EmailSignIn.dart';
 import 'package:sdp/Models/vaktaModel.dart';
-import 'package:sdp/add_edit_user.dart';
-import 'package:sdp/dashboard.dart';
-import 'package:sdp/showdialougeboxwidget.dart';
+
 import 'package:sdp/table_header.dart';
+import 'package:sdp/utility.dart';
+import 'package:sdp/viewDevotee.dart';
 import 'package:uuid/uuid.dart';
 
 class NewDashboard extends StatefulWidget {
-  NewDashboard({Key? key}) : super(key: key);
+  const NewDashboard({Key? key}) : super(key: key);
 
   @override
   State<NewDashboard> createState() => _NewDashboardState();
@@ -21,6 +21,7 @@ class NewDashboard extends StatefulWidget {
 class _NewDashboardState extends State<NewDashboard> {
   VaktaModel? editedVaktadata;
   List<VaktaModel> devotedetails = [];
+  bool showButtons = false;
   fetchDetails() async {
     final dddevotedetails = await DevoteeAPI().fetchAllDevotees();
     setState(() {
@@ -49,7 +50,7 @@ class _NewDashboardState extends State<NewDashboard> {
   final sammilaniNumberController = TextEditingController();
   String? currentAppMode;
   List<VaktaModel>? searchItem;
-  APIType? type;
+  // APIType? type;
   bool isSelected = false;
   String _selectedSearchType = 'Name';
   VaktaModel? selectedUser;
@@ -57,7 +58,34 @@ class _NewDashboardState extends State<NewDashboard> {
     'Name',
     'Sangha',
     'Pali Date',
+    'Sammilani No',
+    'Sammilani Year'
   ];
+  showViewDialouge(VaktaModel item) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'Devotee Detils',
+                    style: TextStyle(
+                      color: Color(0XFF3f51b5),
+                    ),
+                  ),
+                  IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: const Icon(Icons.close, color: Color(0XFF3f51b5)))
+                ],
+              ),
+              content: ViewDevotee(item: item));
+        });
+  }
+
   showdilouge(
     String title,
     String buttonText,
@@ -182,7 +210,7 @@ class _NewDashboardState extends State<NewDashboard> {
                               if (selectedDate != null) {
                                 setState(() {
                                   paliDateController.text =
-                                      DateFormat('dd-MM-yyyy')
+                                      DateFormat('dd/MM/yyyy')
                                           .format(selectedDate);
                                 });
                               } else {
@@ -245,7 +273,8 @@ class _NewDashboardState extends State<NewDashboard> {
 
                   DateTime now = DateTime.now();
                   String formattedDate =
-                      DateFormat('yyyy-MM-dd – kk:mm').format(now);
+                      DateFormat('dd-MM-yyyy  hh:mm a').format(now);
+                  // DateFormat('yyyy-MM-dd – kk:mm').format(now);
 
                   if (_formKey.currentState != null) {
                     if (_formKey.currentState!.validate()) {
@@ -256,7 +285,10 @@ class _NewDashboardState extends State<NewDashboard> {
                           createdOn: formattedDate.toString(),
                           // formatted.toString(),
                           docId: const Uuid().v1(),
-                          pranaami: pranamiController.text.trim(),
+                          pranaami: double.parse(
+                              pranamiController.text.trim() == ''
+                                  ? '0.0'
+                                  : pranamiController.text.trim()),
                           remark: remarkController.text.trim(),
                           sammilaniNo: sammilaniNumberController.text.trim(),
                           sammilaniYear: sammilaniYearController.text.trim(),
@@ -264,10 +296,10 @@ class _NewDashboardState extends State<NewDashboard> {
                           paaliDate: paliDateController.text,
                         );
                         await DevoteeAPI().addUser(addUser);
-                        // ignore: use_build_context_synchronously
+                        Navigator.popUntil(context, (route) => route.isFirst);
                         Navigator.push(context, MaterialPageRoute(
                           builder: (context) {
-                            return NewDashboard();
+                            return const NewDashboard();
                           },
                         ));
                       }
@@ -276,7 +308,10 @@ class _NewDashboardState extends State<NewDashboard> {
                             name: devoteeNameController.text.trim(),
                             updatedBy: currentUserData?.name,
                             updatedOn: formattedDate.toString(),
-                            pranaami: pranamiController.text.trim(),
+                            pranaami: double.parse(
+                                pranamiController.text.trim() == ''
+                                    ? '0.0'
+                                    : pranamiController.text.trim()),
                             remark: remarkController.text.trim(),
                             sammilaniNo: sammilaniNumberController.text.trim(),
                             sammilaniYear: sammilaniYearController.text.trim(),
@@ -288,10 +323,10 @@ class _NewDashboardState extends State<NewDashboard> {
                             //
                             );
                         await DevoteeAPI().editDevoteeDetails(editUser);
-                        // ignore: use_build_context_synchronously
+                        Navigator.popUntil(context, (route) => route.isFirst);
                         Navigator.push(context, MaterialPageRoute(
                           builder: (context) {
-                            return NewDashboard();
+                            return const NewDashboard();
                           },
                         ));
                         // Navigator.pop(context);
@@ -308,15 +343,15 @@ class _NewDashboardState extends State<NewDashboard> {
     );
   }
 
-  var tblHelper;
-  TableRow? _headingtablerow;
-  TableRow? _tablerow;
+  // var tblHelper;
+  // TableRow? _headingtablerow;
+  // TableRow? _tablerow;
   @override
   void initState() {
     super.initState();
 
-    tblHelper = TableHelper();
-    _headingtablerow = tblHelper.getTableHeader();
+    // tblHelper = TableHelper();
+    // _headingtablerow = tblHelper.getTableHeader();
 
     fetchDetails();
 
@@ -333,13 +368,17 @@ class _NewDashboardState extends State<NewDashboard> {
     //DashboardList
     List<TableRow> devoteesTableRows = devotedetails.map<TableRow>((item) {
       return TableHelper().getTableRowData(item,
+          //View
+          () {
+        showViewDialouge(item);
+      },
           //Edit
           (() {
         setState(() {
           editedVaktadata = item;
           devoteeNameController.text = item.name ?? '';
           sanghaNameController.text = item.sangha ?? '';
-          pranamiController.text = item.pranaami ?? '';
+          pranamiController.text = item.pranaami.toString();
           paliDateController.text = item.paaliDate ?? '';
           sammilaniNumberController.text = item.sammilaniNo ?? '';
           sammilaniYearController.text = item.sammilaniYear ?? '';
@@ -352,60 +391,77 @@ class _NewDashboardState extends State<NewDashboard> {
         DevoteeAPI().removeDevotee(item.docId);
         Navigator.push(context, MaterialPageRoute(
           builder: (context) {
-            return NewDashboard();
+            return const NewDashboard();
           },
         ));
-      }));
+      }), showButtons);
     }).toList();
-    devoteesTableRows.insert(0, TableHelper().getTableHeader());
+    devoteesTableRows.insert(0, TableHelper().getTableHeader(showButtons));
 //SearchItem
     List<TableRow> searchRow = searchItem != null
         ? searchItem!.map<TableRow>(
             (item) {
-              return TableHelper().getTableRowData(
-                item,
-                (() {
-                  setState(() {
-                    editedVaktadata = item;
-                    devoteeNameController.text = item.name ?? '';
-                    sanghaNameController.text = item.sangha ?? '';
-                    pranamiController.text = item.pranaami ?? '';
-                    paliDateController.text = item.paaliDate ?? '';
-                    sammilaniNumberController.text = item.sammilaniNo ?? '';
-                    sammilaniYearController.text = item.sammilaniYear ?? '';
-                    remarkController.text = item.remark ?? '';
-                  });
-                  showdilouge('Update Devotee Details', 'Update');
-                }),
-                (() {
-                  DevoteeAPI().removeDevotee(item.docId);
-                  Navigator.push(context, MaterialPageRoute(
-                    builder: (context) {
-                      return NewDashboard();
-                    },
-                  ));
-                }),
-              );
+              return TableHelper().getTableRowData(item,
+                  //view
+                  () {
+                showViewDialouge(item);
+              },
+                  //Edit
+                  (() {
+                setState(() {
+                  editedVaktadata = item;
+                  devoteeNameController.text = item.name ?? '';
+                  sanghaNameController.text = item.sangha ?? '';
+                  pranamiController.text =
+                      Utility.formatCurrency(item.pranaami);
+                  paliDateController.text = item.paaliDate ?? '';
+                  sammilaniNumberController.text = item.sammilaniNo ?? '';
+                  sammilaniYearController.text = item.sammilaniYear ?? '';
+                  remarkController.text = item.remark ?? '';
+                });
+                showdilouge('Update Devotee Details', 'Update');
+              }),
+                  //delete
+                  (() {
+                DevoteeAPI().removeDevotee(item.docId);
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (context) {
+                    return const NewDashboard();
+                  },
+                ));
+              }), showButtons);
             },
           ).toList()
         : [];
-    searchRow.insert(0, TableHelper().getTableHeader());
+    searchRow.insert(0, TableHelper().getTableHeader(showButtons));
 
     // List<TableRow> searchTableRows =
     // searchTableRows.insert(0, TableHelper().getTableHeader());
 
     return Scaffold(
       appBar: AppBar(
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 10),
+          child: const Image(
+            image: AssetImage('assets/images/login.png'),
+            fit: BoxFit.contain,
+            height: 60,
+          ),
+        ),
+        automaticallyImplyLeading: false,
         title: const Text('Sammilani Dinikia Pali'),
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
+              // color: Colors.white,
               decoration: BoxDecoration(
                   border: Border.all(
-                    color: Colors.white,
+                    width: 0.5,
+                    // color: Colors.white,
                   ),
-                  borderRadius: BorderRadius.circular(15)),
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20)),
               width: 500,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -416,33 +472,25 @@ class _NewDashboardState extends State<NewDashboard> {
                       controller: sdpSearchController,
                       keyboardType: TextInputType.emailAddress,
                       onSaved: (value) {},
-                      onChanged: (value) async {
-                        final result = await DevoteeAPI()
-                            .searchSDP(_selectedSearchType, value);
-                        setState(() {
-                          searchItem = result;
-                        });
-                      },
+                      // onChanged: (value) async {
+                      //   final result = await DevoteeAPI()
+                      //       .searchSDP(_selectedSearchType, value);
+                      //   setState(() {
+                      //     searchItem = result;
+                      //   });
+                      // },
                       textInputAction: TextInputAction.next,
                       decoration: InputDecoration(
-                          enabledBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(color: Colors.white),
-                              borderRadius: BorderRadius.circular(15)),
-                          prefixIcon: IconButton(
-                              onPressed: () async {
-                                final result = await DevoteeAPI().searchSDP(
-                                    _selectedSearchType,
-                                    sdpSearchController.text);
-                                setState(() {
-                                  searchItem = result;
-                                });
-                              },
-                              icon: const Icon(
-                                Icons.search,
-                                color: Colors.white,
-                              )),
+                          prefixIcon: const Icon(
+                            Icons.search,
+                            color: Color(0XFF3f51b5),
+                          ),
                           contentPadding: const EdgeInsets.all(15),
+                          border: InputBorder.none,
                           hintText: 'Search item',
+                          hintStyle: const TextStyle(
+                            color: Color(0XFF3f51b5),
+                          ),
                           suffixIcon: _selectedSearchType == 'Pali Date'
                               ? IconButton(
                                   onPressed: () async {
@@ -464,16 +512,25 @@ class _NewDashboardState extends State<NewDashboard> {
                                   },
                                   icon: const Icon(
                                     Icons.calendar_month_rounded,
-                                    color: Colors.white,
+                                    color: Color(0XFF3f51b5),
                                   ))
                               : null),
                       onTap: () {},
                     ),
                   ),
+                  const VerticalDivider(
+                    color: Color(0XFF3f51b5),
+                    thickness: 0.5,
+                  ),
                   DropdownButton(
+                    style: const TextStyle(
+                        color: Color(0XFF3f51b5), //Font color
+                        fontSize: 16 //font size on dropdown button
+                        ),
                     // focusColor: Colors.white,
                     hint: const Text('Search By'),
-                    borderRadius: BorderRadius.circular(15),
+
+                    borderRadius: BorderRadius.circular(20),
                     value: _selectedSearchType,
                     onChanged: (value) {
                       setState(() {
@@ -494,10 +551,31 @@ class _NewDashboardState extends State<NewDashboard> {
                     iconSize: 40,
                     icon: const Icon(
                       Icons.arrow_drop_down_outlined,
-                      color: Colors.white,
+                      color: Color(0XFF3f51b5),
                     ),
                     underline: const Text(''),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 5),
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        final result = await DevoteeAPI().searchSDP(
+                            _selectedSearchType, sdpSearchController.text);
+                        setState(() {
+                          searchItem = result;
+                        });
+                      },
+                      child: const Text('Search'),
+                      style: ButtonStyle(
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
                 ],
               ),
             ),
@@ -530,17 +608,20 @@ class _NewDashboardState extends State<NewDashboard> {
             ),
           ),
           const SizedBox(width: 20),
-          IconButton(
-            onPressed: () {
-              UserAPI().logout();
-              Navigator.push(context, MaterialPageRoute(
-                builder: (context) {
-                  return const EmailSignIn();
-                },
-              ));
-            },
-            icon: const Icon(Icons.logout_rounded),
-          )
+          Padding(
+            padding: const EdgeInsets.only(right: 20),
+            child: IconButton(
+              onPressed: () {
+                UserAPI().logout();
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (context) {
+                    return const EmailSignIn();
+                  },
+                ));
+              },
+              icon: const Icon(Icons.logout_rounded),
+            ),
+          ),
         ],
       ),
       body: searchItem == null
@@ -549,6 +630,34 @@ class _NewDashboardState extends State<NewDashboard> {
               padding: const EdgeInsets.all(18.0),
               child: Column(
                 children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          setState(() {
+                            showButtons = !showButtons;
+                          });
+                        },
+                        icon: const Icon(
+                          Icons.settings,
+                          color: Color(0XFF3f51b5),
+                        ),
+                      ),
+                      SizedBox(width: 20),
+                      IconButton(
+                        onPressed: () {
+                          //   setState(() {
+                          //         showButtons = !showButtons;
+                          //   });
+                        },
+                        icon: const Icon(
+                          Icons.print,
+                          color: Color(0XFF3f51b5),
+                        ),
+                      ),
+                    ],
+                  ),
                   Expanded(
                     child: SingleChildScrollView(
                       child: FutureBuilder(
@@ -561,6 +670,18 @@ class _NewDashboardState extends State<NewDashboard> {
                           if (snapshot.connectionState ==
                               ConnectionState.done) {
                             return Table(
+                              columnWidths: const {
+                                0: FlexColumnWidth(1),
+                                1: FlexColumnWidth(1),
+                                2: FlexColumnWidth(1),
+                                3: FlexColumnWidth(0.5),
+                                4: FlexColumnWidth(0.5),
+                                5: FlexColumnWidth(0.5),
+                                6: FlexColumnWidth(0.5),
+                              }, // border: TableBorder.symmetric(
+                              //   inside: BorderSide.none,
+                              //   outside: BorderSide.none,
+                              // ),
                               border: TableBorder
                                   .all(), // Allows to add a border decoration around your table
                               children: devoteesTableRows,
@@ -579,10 +700,31 @@ class _NewDashboardState extends State<NewDashboard> {
             ))
           : Padding(
               padding: const EdgeInsets.all(18.0),
-              child: Table(
-                  border: TableBorder
-                      .all(), // Allows to add a border decoration around your table
-                  children: searchRow),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(' Search Item - ${searchItem?.length}'),
+                      TextButton(
+                          onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(
+                              builder: (context) {
+                                return const NewDashboard();
+                              },
+                            ));
+                          },
+                          child: const Text('Reset')),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Table(
+                      border: TableBorder
+                          .all(), // Allows to add a border decoration around your table
+                      children: searchRow),
+                ],
+              ),
             ),
     );
   }

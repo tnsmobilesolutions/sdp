@@ -3,6 +3,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:material_color_generator/material_color_generator.dart';
 import 'package:sdp/Login/EmailSignIn.dart';
 
 import 'package:sdp/firebase_options.dart';
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'SDP',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: generateMaterialColor(color: Color(0XFF3f51b5)),
       ),
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),

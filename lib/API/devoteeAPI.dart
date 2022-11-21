@@ -14,22 +14,32 @@ class DevoteeAPI {
 
 //FetchUser
   Future<List<VaktaModel>> fetchAllDevotees() async {
-    final CollectionReference devoteeCollection =
-        FirebaseFirestore.instance.collection('devoteeList');
-    final lstdevotee = await devoteeCollection.get().then(
-      (querysnapshot) {
-        //print('********${querysnapshot.docs.length}');
-        List<VaktaModel> lstDevotees = [];
-        for (var element in querysnapshot.docs) {
-          final devoteeData = element.data() as Map<String, dynamic>;
-          final devoteModel = VaktaModel.fromMap(devoteeData);
-          print('Medicine model in API $devoteModel');
-          lstDevotees.add(devoteModel);
-        }
-        return lstDevotees;
-      },
-    );
-    return lstdevotee;
+    try {
+      CollectionReference devoteeCollection =
+          FirebaseFirestore.instance.collection('devoteeList');
+      final lstdevotee = await devoteeCollection.get().then(
+        (querysnapshot) async {
+          //print('********${querysnapshot.docs.length}');
+          List<VaktaModel> lstDevotees = [];
+          for (var element in querysnapshot.docs) {
+            final devoteeData = element.data() as Map<String, dynamic>;
+            final devoteModel = VaktaModel.fromMap(devoteeData);
+            print('Medicine model in API $devoteModel');
+            lstDevotees.add(devoteModel);
+          }
+          lstDevotees.sort(
+            (a, b) {
+              return b.createdOn.toString().compareTo(a.createdOn.toString());
+            },
+          );
+          return lstDevotees;
+        },
+      );
+      return lstdevotee;
+    } catch (e) {
+      print(e);
+    }
+    return [];
   }
 
 // search user
@@ -58,6 +68,14 @@ class DevoteeAPI {
           }
         } else if (searchBy == 'Pali Date') {
           if (vaktaDetails.paaliDate?.contains(searchedItem) ?? false) {
+            result.add(vaktaDetails);
+          }
+        } else if (searchBy == 'Sammilani No') {
+          if (vaktaDetails.sammilaniNo?.contains(searchedItem) ?? false) {
+            result.add(vaktaDetails);
+          }
+        } else if (searchBy == 'sammilani Year') {
+          if (vaktaDetails.sammilaniYear?.contains(searchedItem) ?? false) {
             result.add(vaktaDetails);
           }
         }

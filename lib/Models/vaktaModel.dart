@@ -9,7 +9,7 @@ class VaktaModel {
   String? paaliDate;
   String? sammilaniNo;
   String? sammilaniYear;
-  String? pranaami;
+  double? pranaami;
   String? remark;
   String? createdBy;
   String? createdOn;
@@ -37,7 +37,7 @@ class VaktaModel {
     String? paaliDate,
     String? sammilaniNo,
     String? sammilaniYear,
-    String? pranaami,
+    double? pranaami,
     String? remark,
     String? createdBy,
     String? createdOn,
@@ -111,7 +111,7 @@ class VaktaModel {
       paaliDate: map['paaliDate'],
       sammilaniNo: map['sammilaniNo'],
       sammilaniYear: map['sammilaniYear'],
-      pranaami: map['pranaami'],
+      pranaami: map['pranaami']?.toDouble(),
       remark: map['remark'],
       createdBy: map['createdBy'],
       createdOn: map['createdOn'],
