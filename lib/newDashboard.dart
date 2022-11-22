@@ -5,7 +5,9 @@ import 'package:sdp/API/devoteeAPI.dart';
 import 'package:sdp/API/userAPI.dart';
 import 'package:sdp/Login/EmailSignIn.dart';
 import 'package:sdp/Models/vaktaModel.dart';
-
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:printing/printing.dart';
 import 'package:sdp/table_header.dart';
 import 'package:sdp/utility.dart';
 import 'package:sdp/viewDevotee.dart';
@@ -440,16 +442,16 @@ class _NewDashboardState extends State<NewDashboard> {
 
     return Scaffold(
       appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 10),
-          child: const Image(
+        leading: const Padding(
+          padding: EdgeInsets.only(left: 10),
+          child: Image(
             image: AssetImage('assets/images/login.png'),
             fit: BoxFit.contain,
             height: 60,
           ),
         ),
         automaticallyImplyLeading: false,
-        title: const Text('Sammilani Dinikia Pali'),
+        title: const Text('ସମ୍ମିଳନୀ ଦିନିକିଆ ପାଳି,SDP'),
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -468,16 +470,16 @@ class _NewDashboardState extends State<NewDashboard> {
                 children: [
                   Expanded(
                     child: TextFormField(
+                      onFieldSubmitted: (value) async {
+                        final result = await DevoteeAPI().searchSDP(
+                            _selectedSearchType, sdpSearchController.text);
+                        setState(() {
+                          searchItem = result;
+                        });
+                      },
                       autofocus: false,
                       controller: sdpSearchController,
                       keyboardType: TextInputType.emailAddress,
-                      onSaved: (value) {},
-                      // onChanged: (value) async {
-                      //   final result = await DevoteeAPI()
-                      //       .searchSDP(_selectedSearchType, value);
-                      //   setState(() {
-                      //     searchItem = result;
-                      //   });
                       // },
                       textInputAction: TextInputAction.next,
                       decoration: InputDecoration(
@@ -644,12 +646,31 @@ class _NewDashboardState extends State<NewDashboard> {
                           color: Color(0XFF3f51b5),
                         ),
                       ),
-                      SizedBox(width: 20),
+                      const SizedBox(width: 20),
                       IconButton(
-                        onPressed: () {
-                          //   setState(() {
-                          //         showButtons = !showButtons;
-                          //   });
+                        onPressed: () async {
+                          final doc = pw.Document();
+                          // await Printing.layoutPdf(
+                          // onLayout: (PdfPageFormat format) async => await Printing.convertHtml(
+                          //       format: format,
+                          //       html: '<html><body><p>Hello!</p></body></html>',
+                          //     ));
+
+                          doc.addPage(pw.Page(
+                              pageFormat: PdfPageFormat.a4,
+                              build: (pw.Context context) {
+                                return pw.Center(
+                                  child: pw.Text('Hello World'),
+                                ); // Center
+                              }));
+                          PdfPreview(
+                            build: (format) => doc.save(),
+                          );
+                          await Printing.layoutPdf(
+                              onLayout: (PdfPageFormat format) async =>
+                                  doc.save());
+
+                          print(doc);
                         },
                         icon: const Icon(
                           Icons.print,

@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'SDP',
+      title: 'ସମ୍ମିଳନୀ ଦିନିକିଆ ପାଳି',
       theme: ThemeData(
         primarySwatch: generateMaterialColor(color: Color(0XFF3f51b5)),
       ),
