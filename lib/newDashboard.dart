@@ -8,10 +8,14 @@ import 'package:sdp/Models/vaktaModel.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
+import 'package:sdp/add_edit_dilougeBox.dart';
+import 'package:sdp/search.dart';
 import 'package:sdp/table_header.dart';
 import 'package:sdp/utility.dart';
 import 'package:sdp/viewDevotee.dart';
 import 'package:uuid/uuid.dart';
+
+// typedef OnSearchPress = void Function(List<VaktaModel>?);
 
 class NewDashboard extends StatefulWidget {
   const NewDashboard({Key? key}) : super(key: key);
@@ -21,7 +25,9 @@ class NewDashboard extends StatefulWidget {
 }
 
 class _NewDashboardState extends State<NewDashboard> {
+  // List<VaktaModel>? searchItem;
   VaktaModel? editedVaktadata;
+  List<VaktaModel>? searchItem;
   List<VaktaModel> devotedetails = [];
   bool showButtons = false;
   fetchDetails() async {
@@ -30,8 +36,6 @@ class _NewDashboardState extends State<NewDashboard> {
       devotedetails = dddevotedetails;
     });
   }
-
-  final TextEditingController sdpSearchController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
 
@@ -50,19 +54,13 @@ class _NewDashboardState extends State<NewDashboard> {
   final remarkController = TextEditingController();
 
   final sammilaniNumberController = TextEditingController();
-  String? currentAppMode;
-  List<VaktaModel>? searchItem;
+  // String? currentAppMode;
+
   // APIType? type;
   bool isSelected = false;
-  String _selectedSearchType = 'Name';
+
   VaktaModel? selectedUser;
-  List<String> searchBy = [
-    'Name',
-    'Sangha',
-    'Pali Date',
-    'Sammilani No',
-    'Sammilani Year'
-  ];
+
   showViewDialouge(VaktaModel item) {
     showDialog(
         context: context,
@@ -115,156 +113,16 @@ class _NewDashboardState extends State<NewDashboard> {
             ],
           ),
           content: SingleChildScrollView(
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(2.0),
-                color: Colors.white,
-                // boxShadow: [
-                //   BoxShadow(
-                //     color: Colors.grey,
-                //     offset: Offset(0.0, 1.0), //(x,y)
-                //     blurRadius: 1.0,
-                //   ),
-                // ],
-              ),
-              height: 435,
-              width: 400,
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    //Devotee Name
-                    TextFormField(
-                      controller: devoteeNameController,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Name',
-                      ),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Please Enter Name';
-                        } else if (!RegExp(
-                                r'^[a-zA-Z0-9]+(?:[\w -]*[a-zA-Z0-9]+)*$')
-                            .hasMatch(value)) {
-                          return 'Please Enter Name';
-                        }
-                        return null;
-                      },
-                    ),
-
-                    const SizedBox(height: 5),
-                    TextFormField(
-                      focusNode: FocusNode(
-                        descendantsAreFocusable: false,
-                      ),
-                      controller: sanghaNameController,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Sangha Name',
-                      ),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Please Enter Sangha Name';
-                        } else if (!RegExp(
-                                r'^[a-zA-Z0-9]+(?:[\w -]*[a-zA-Z0-9]+)*$')
-                            .hasMatch(value)) {
-                          return 'Please Enter Sangha Name';
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 5),
-                    TextFormField(
-                      focusNode: FocusNode(
-                        descendantsAreFocusable: false,
-                      ),
-                      controller: pranamiController,
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Pranami',
-                      ),
-                      // validator: (value) {
-                      //   if (value!.isEmpty) {
-                      //     return 'Please Enter Tab/Strip';
-                      //   } else if (!RegExp(r'^[0-9.]*$').hasMatch(value)) {
-                      //     return 'Please Enter Correct Tab/Strip';
-                      //   }
-                      //   return null;
-                      // },
-                    ),
-                    const SizedBox(height: 5),
-                    TextFormField(
-                      focusNode: FocusNode(
-                        descendantsAreFocusable: false,
-                      ),
-                      controller: paliDateController,
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        suffixIcon: IconButton(
-                            onPressed: () async {
-                              DateTime? selectedDate = await showDatePicker(
-                                  context: context,
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime(2022),
-                                  lastDate: DateTime(2050));
-                              if (selectedDate != null) {
-                                setState(() {
-                                  paliDateController.text =
-                                      DateFormat('dd/MM/yyyy')
-                                          .format(selectedDate);
-                                });
-                              } else {
-                                paliDateController.text = '';
-                              }
-                            },
-                            icon: const Icon(Icons.calendar_month_rounded)),
-                        border: const OutlineInputBorder(),
-                        labelText: 'Pali Date',
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    TextFormField(
-                      focusNode: FocusNode(
-                        descendantsAreFocusable: false,
-                      ),
-                      controller: sammilaniNumberController,
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Sammilani Number',
-                      ),
-                    ),
-                    const SizedBox(height: 5),
-                    TextFormField(
-                      focusNode: FocusNode(
-                        descendantsAreFocusable: false,
-                      ),
-                      controller: sammilaniYearController,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'sammilani Year',
-                      ),
-                    ),
-                    const SizedBox(height: 5),
-                    TextFormField(
-                      focusNode: FocusNode(
-                        descendantsAreFocusable: false,
-                      ),
-                      controller: remarkController,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Remark',
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
+              child: Add_Edit_Dialougebox(
+            devoteeNameController: devoteeNameController,
+            formKey: _formKey,
+            paliDateController: paliDateController,
+            pranamiController: pranamiController,
+            remarkController: remarkController,
+            sammilaniNumberController: sammilaniNumberController,
+            sammilaniYearController: sammilaniYearController,
+            sanghaNameController: sanghaNameController,
+          )),
           actions: <Widget>[
             Center(
               child: CupertinoButton(
@@ -345,31 +203,20 @@ class _NewDashboardState extends State<NewDashboard> {
     );
   }
 
-  // var tblHelper;
-  // TableRow? _headingtablerow;
-  // TableRow? _tablerow;
   @override
   void initState() {
     super.initState();
 
-    // tblHelper = TableHelper();
-    // _headingtablerow = tblHelper.getTableHeader();
-
     fetchDetails();
-
-    setState(() {
-      currentAppMode = 'fetched';
-    });
   }
-
-  // TableRow buildRow(cell) =>
-  //     TableRow(children: [cell.map((cells) => Text(cells)).tolist()]);
 
   @override
   Widget build(BuildContext context) {
     //DashboardList
     List<TableRow> devoteesTableRows = devotedetails.map<TableRow>((item) {
+      // List<Map<String, dynamic>> _data = List.generate(200, ((index) => {}));
       return TableHelper().getTableRowData(item,
+
           //View
           () {
         showViewDialouge(item);
@@ -437,8 +284,14 @@ class _NewDashboardState extends State<NewDashboard> {
         : [];
     searchRow.insert(0, TableHelper().getTableHeader(showButtons));
 
-    // List<TableRow> searchTableRows =
-    // searchTableRows.insert(0, TableHelper().getTableHeader());
+    final List<int> _data = List.generate(100,
+        (i) => i); // generate a sample data ( integers ) list of 100 length
+    int _page = 0; // default page to 0
+    final int _perPage = 2; // per page items you want to show
+    final dataToShow = _data.sublist(
+        (_page * _perPage),
+        ((_page * _perPage) +
+            _perPage)); // extract a list of items to show on per page basis
 
     return Scaffold(
       appBar: AppBar(
@@ -448,140 +301,21 @@ class _NewDashboardState extends State<NewDashboard> {
             image: AssetImage('assets/images/login.png'),
             fit: BoxFit.contain,
             height: 60,
+            width: 60,
           ),
         ),
         automaticallyImplyLeading: false,
-        title: const Text('ସମ୍ମିଳନୀ ଦିନିକିଆ ପାଳି,SDP'),
+        title: const Text('Sammilani Dinikia Pali'),
         actions: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              // color: Colors.white,
-              decoration: BoxDecoration(
-                  border: Border.all(
-                    width: 0.5,
-                    // color: Colors.white,
-                  ),
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20)),
-              width: 500,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      onFieldSubmitted: (value) async {
-                        final result = await DevoteeAPI().searchSDP(
-                            _selectedSearchType, sdpSearchController.text);
-                        setState(() {
-                          searchItem = result;
-                        });
-                      },
-                      autofocus: false,
-                      controller: sdpSearchController,
-                      keyboardType: TextInputType.emailAddress,
-                      // },
-                      textInputAction: TextInputAction.next,
-                      decoration: InputDecoration(
-                          prefixIcon: const Icon(
-                            Icons.search,
-                            color: Color(0XFF3f51b5),
-                          ),
-                          contentPadding: const EdgeInsets.all(15),
-                          border: InputBorder.none,
-                          hintText: 'Search item',
-                          hintStyle: const TextStyle(
-                            color: Color(0XFF3f51b5),
-                          ),
-                          suffixIcon: _selectedSearchType == 'Pali Date'
-                              ? IconButton(
-                                  onPressed: () async {
-                                    DateTime? selectedDate =
-                                        await showDatePicker(
-                                            context: context,
-                                            initialDate: DateTime.now(),
-                                            firstDate: DateTime(2022),
-                                            lastDate: DateTime(2050));
-                                    if (selectedDate != null) {
-                                      setState(() {
-                                        sdpSearchController.text =
-                                            DateFormat('dd-MM-yyyy')
-                                                .format(selectedDate);
-                                      });
-                                    } else {
-                                      sdpSearchController.text = '';
-                                    }
-                                  },
-                                  icon: const Icon(
-                                    Icons.calendar_month_rounded,
-                                    color: Color(0XFF3f51b5),
-                                  ))
-                              : null),
-                      onTap: () {},
-                    ),
-                  ),
-                  const VerticalDivider(
-                    color: Color(0XFF3f51b5),
-                    thickness: 0.5,
-                  ),
-                  DropdownButton(
-                    style: const TextStyle(
-                        color: Color(0XFF3f51b5), //Font color
-                        fontSize: 16 //font size on dropdown button
-                        ),
-                    // focusColor: Colors.white,
-                    hint: const Text('Search By'),
-
-                    borderRadius: BorderRadius.circular(20),
-                    value: _selectedSearchType,
-                    onChanged: (value) {
-                      setState(() {
-                        _selectedSearchType = value.toString();
-                      });
-                    },
-                    items: searchBy.map(
-                      (val) {
-                        return DropdownMenuItem(
-                          value: val,
-                          child: Text(val),
-                        );
-                      },
-                    ).toList(),
-                    iconEnabledColor: Colors.white,
-
-                    iconDisabledColor: Colors.black,
-                    iconSize: 40,
-                    icon: const Icon(
-                      Icons.arrow_drop_down_outlined,
-                      color: Color(0XFF3f51b5),
-                    ),
-                    underline: const Text(''),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(right: 5),
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        final result = await DevoteeAPI().searchSDP(
-                            _selectedSearchType, sdpSearchController.text);
-                        setState(() {
-                          searchItem = result;
-                        });
-                      },
-                      child: const Text('Search'),
-                      style: ButtonStyle(
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
+              padding: const EdgeInsets.all(8.0),
+              child: SearchSDP(
+                onSubmitPress: (result) {
+                  setState(() {
+                    searchItem = result;
+                  });
+                },
+              )),
           CupertinoButton(
             onPressed: (() {
               showdilouge(
@@ -690,22 +424,52 @@ class _NewDashboardState extends State<NewDashboard> {
                           }
                           if (snapshot.connectionState ==
                               ConnectionState.done) {
-                            return Table(
-                              columnWidths: const {
-                                0: FlexColumnWidth(1),
-                                1: FlexColumnWidth(1),
-                                2: FlexColumnWidth(1),
-                                3: FlexColumnWidth(0.5),
-                                4: FlexColumnWidth(0.5),
-                                5: FlexColumnWidth(0.5),
-                                6: FlexColumnWidth(0.5),
-                              }, // border: TableBorder.symmetric(
-                              //   inside: BorderSide.none,
-                              //   outside: BorderSide.none,
-                              // ),
-                              border: TableBorder
-                                  .all(), // Allows to add a border decoration around your table
-                              children: devoteesTableRows,
+                            return Card(
+                              elevation: 10,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  children: [
+                                    Table(
+                                      columnWidths: const {
+                                        0: FlexColumnWidth(0.2),
+                                        1: FlexColumnWidth(1),
+                                        2: FlexColumnWidth(1),
+                                        3: FlexColumnWidth(0.5),
+                                        4: FlexColumnWidth(0.5),
+                                        5: FlexColumnWidth(0.5),
+                                        6: FlexColumnWidth(0.5),
+                                      }, // border: TableBorder.symmetric(
+                                      //   inside: BorderSide.none,
+                                      //   outside: BorderSide.none,
+                                      // ),
+                                      border: TableBorder
+                                          .all(), // Allows to add a border decoration around your table
+                                      children: devoteesTableRows,
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Text('Items Per Page'),
+                                        IconButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                _page -= 1;
+                                              });
+                                            },
+                                            icon: Icon(Icons.arrow_left)),
+                                        IconButton(
+                                            onPressed: () {
+                                              setState(() {
+                                                _page += 1;
+                                              });
+                                            },
+                                            icon: Icon(Icons.arrow_right))
+                                      ],
+                                    )
+                                  ],
+                                ),
+                              ),
                             );
                           }
                           return const Center(
@@ -719,32 +483,81 @@ class _NewDashboardState extends State<NewDashboard> {
                 ],
               ),
             ))
-          : Padding(
-              padding: const EdgeInsets.all(18.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(' Search Item - ${searchItem?.length}'),
-                      TextButton(
-                          onPressed: () {
-                            Navigator.push(context, MaterialPageRoute(
-                              builder: (context) {
-                                return const NewDashboard();
+          : SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(18.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(' Search Item - ${searchItem?.length}'),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            TextButton(
+                                onPressed: () {
+                                  Navigator.push(context, MaterialPageRoute(
+                                    builder: (context) {
+                                      return const NewDashboard();
+                                    },
+                                  ));
+                                },
+                                child: const Text('Reset')),
+                            IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  showButtons = !showButtons;
+                                });
                               },
-                            ));
-                          },
-                          child: const Text('Reset')),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  Table(
-                      border: TableBorder
-                          .all(), // Allows to add a border decoration around your table
-                      children: searchRow),
-                ],
+                              icon: const Icon(
+                                Icons.settings,
+                                color: Color(0XFF3f51b5),
+                              ),
+                            ),
+                            const SizedBox(width: 20),
+                            IconButton(
+                              onPressed: () async {
+                                final doc = pw.Document();
+                                // await Printing.layoutPdf(
+                                // onLayout: (PdfPageFormat format) async => await Printing.convertHtml(
+                                //       format: format,
+                                //       html: '<html><body><p>Hello!</p></body></html>',
+                                //     ));
+
+                                doc.addPage(pw.Page(
+                                    pageFormat: PdfPageFormat.a4,
+                                    build: (pw.Context context) {
+                                      return pw.Center(
+                                        child: pw.Text('Hello World'),
+                                      ); // Center
+                                    }));
+                                PdfPreview(
+                                  build: (format) => doc.save(),
+                                );
+                                await Printing.layoutPdf(
+                                    onLayout: (PdfPageFormat format) async =>
+                                        doc.save());
+
+                                print(doc);
+                              },
+                              icon: const Icon(
+                                Icons.print,
+                                color: Color(0XFF3f51b5),
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    Table(
+                        border: TableBorder
+                            .all(), // Allows to add a border decoration around your table
+                        children: searchRow),
+                  ],
+                ),
               ),
             ),
     );

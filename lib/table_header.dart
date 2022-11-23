@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:sdp/Models/vaktaModel.dart';
 
 class TableHelper {
-  int? i;
   TableRow getTableHeader(bool showButtons) {
     return TableRow(children: <Widget>[
       const Padding(
@@ -18,7 +17,7 @@ class TableHelper {
       const Padding(
         padding: EdgeInsets.all(10.0),
         child: Text(
-          'ପାଳିଆ ନାମ',
+          'Name',
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
         ),
@@ -120,6 +119,10 @@ class TableHelper {
       VoidCallback deleteOnPressed,
       bool showButtons) {
     return TableRow(decoration: const BoxDecoration(), children: [
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Text('1'),
+      ),
       Padding(
         padding: const EdgeInsets.all(8.0),
         child: Text(item.name.toString()),
