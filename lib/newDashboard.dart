@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:intl/intl.dart';
 import 'package:sdp/API/devoteeAPI.dart';
 import 'package:sdp/API/userAPI.dart';
@@ -25,17 +26,22 @@ class NewDashboard extends StatefulWidget {
 }
 
 class _NewDashboardState extends State<NewDashboard> {
+  final List<int> _data = List.generate(
+      100, (i) => i); // generate a sample data ( integers ) list of 100 length
+  int _page = 0; // default page to 0
+  final int _perPage = 10; // per page items you want to show
+
   // List<VaktaModel>? searchItem;
   VaktaModel? editedVaktadata;
   List<VaktaModel>? searchItem;
-  List<VaktaModel> devotedetails = [];
+  // List<VaktaModel> devotedetails = [];
   bool showButtons = false;
-  fetchDetails() async {
-    final dddevotedetails = await DevoteeAPI().fetchAllDevotees();
-    setState(() {
-      devotedetails = dddevotedetails;
-    });
-  }
+  // fetchDetails() async {
+  //   final dddevotedetails = await DevoteeAPI().fetchAllDevotees();
+  //   setState(() {
+  //     devotedetails = dddevotedetails;
+  //   });
+  // }
 
   final _formKey = GlobalKey<FormState>();
 
@@ -207,45 +213,51 @@ class _NewDashboardState extends State<NewDashboard> {
   void initState() {
     super.initState();
 
-    fetchDetails();
+    // fetchDetails();
   }
 
   @override
   Widget build(BuildContext context) {
     //DashboardList
-    List<TableRow> devoteesTableRows = devotedetails.map<TableRow>((item) {
-      // List<Map<String, dynamic>> _data = List.generate(200, ((index) => {}));
-      return TableHelper().getTableRowData(item,
+    List<TableRow> devoteesTableRows(List<VaktaModel> devotedetails) {
+      List<TableRow> devoteesTableRows = devotedetails.map<TableRow>((item) {
+        // List<Map<String, dynamic>> _data = List.generate(200, ((index) => {}));
+        return TableHelper().getTableRowData(item,
 
-          //View
-          () {
-        showViewDialouge(item);
-      },
-          //Edit
-          (() {
-        setState(() {
-          editedVaktadata = item;
-          devoteeNameController.text = item.name ?? '';
-          sanghaNameController.text = item.sangha ?? '';
-          pranamiController.text = item.pranaami.toString();
-          paliDateController.text = item.paaliDate ?? '';
-          sammilaniNumberController.text = item.sammilaniNo ?? '';
-          sammilaniYearController.text = item.sammilaniYear ?? '';
-          remarkController.text = item.remark ?? '';
-        });
-        showdilouge('Update Devotee Details', 'Update');
-      }),
-          //delete
-          (() {
-        DevoteeAPI().removeDevotee(item.docId);
-        Navigator.push(context, MaterialPageRoute(
-          builder: (context) {
-            return const NewDashboard();
-          },
-        ));
-      }), showButtons);
-    }).toList();
-    devoteesTableRows.insert(0, TableHelper().getTableHeader(showButtons));
+            //View
+            () {
+          showViewDialouge(item);
+        },
+            //Edit
+            (() {
+          setState(() {
+            editedVaktadata = item;
+            devoteeNameController.text = item.name ?? '';
+            sanghaNameController.text = item.sangha ?? '';
+            pranamiController.text = item.pranaami.toString();
+            paliDateController.text = item.paaliDate ?? '';
+            sammilaniNumberController.text = item.sammilaniNo ?? '';
+            sammilaniYearController.text = item.sammilaniYear ?? '';
+            remarkController.text = item.remark ?? '';
+          });
+          showdilouge('Update Devotee Details', 'Update');
+        }),
+            //delete
+            (() {
+          DevoteeAPI().removeDevotee(item.docId);
+          Navigator.push(context, MaterialPageRoute(
+            builder: (context) {
+              return const NewDashboard();
+            },
+          ));
+          // Navigator.pop(context);
+        }), showButtons);
+      }).toList();
+
+      devoteesTableRows.insert(0, TableHelper().getTableHeader(showButtons));
+      return devoteesTableRows;
+    }
+
 //SearchItem
     List<TableRow> searchRow = searchItem != null
         ? searchItem!.map<TableRow>(
@@ -283,15 +295,8 @@ class _NewDashboardState extends State<NewDashboard> {
           ).toList()
         : [];
     searchRow.insert(0, TableHelper().getTableHeader(showButtons));
-
-    final List<int> _data = List.generate(100,
-        (i) => i); // generate a sample data ( integers ) list of 100 length
-    int _page = 0; // default page to 0
-    final int _perPage = 2; // per page items you want to show
     final dataToShow = _data.sublist(
-        (_page * _perPage),
-        ((_page * _perPage) +
-            _perPage)); // extract a list of items to show on per page basis
+        (_page * _perPage), ((_page * _perPage) + _perPage)); // extract a l
 
     return Scaffold(
       appBar: AppBar(
@@ -419,9 +424,19 @@ class _NewDashboardState extends State<NewDashboard> {
                         future: DevoteeAPI().fetchAllDevotees(),
                         builder:
                             (BuildContext context, AsyncSnapshot snapshot) {
+                          // SchedulerBinding.instance.addPostFrameCallback((_) {
+                          //   setState(() {
+                          //     devotedetails = snapshot.data;
+                          //   });
+                          // });
+
+                          // setState(() {
+                          //   devotedetails = snapshot.data;
+                          // });
                           if (snapshot.hasError) {
                             return const Text('SNAPSHOT ERROR');
                           }
+
                           if (snapshot.connectionState ==
                               ConnectionState.done) {
                             return Card(
@@ -433,38 +448,42 @@ class _NewDashboardState extends State<NewDashboard> {
                                     Table(
                                       columnWidths: const {
                                         0: FlexColumnWidth(0.2),
-                                        1: FlexColumnWidth(1),
-                                        2: FlexColumnWidth(1),
-                                        3: FlexColumnWidth(0.5),
-                                        4: FlexColumnWidth(0.5),
-                                        5: FlexColumnWidth(0.5),
-                                        6: FlexColumnWidth(0.5),
-                                      }, // border: TableBorder.symmetric(
-                                      //   inside: BorderSide.none,
-                                      //   outside: BorderSide.none,
-                                      // ),
-                                      border: TableBorder
-                                          .all(), // Allows to add a border decoration around your table
-                                      children: devoteesTableRows,
+                                        1: FlexColumnWidth(0.4),
+                                        2: FlexColumnWidth(0.4),
+                                        3: FlexColumnWidth(0.4),
+                                        4: FlexColumnWidth(0.4),
+                                        5: FlexColumnWidth(0.4),
+                                        6: FlexColumnWidth(0.4),
+                                      },
+                                      defaultVerticalAlignment:
+                                          TableCellVerticalAlignment.middle,
+                                      border: const TableBorder(
+                                        horizontalInside: BorderSide(
+                                            width: 0.3,
+                                            color: Color(0XFF3f51b5),
+                                            style: BorderStyle.solid),
+                                      ),
+                                      children:
+                                          devoteesTableRows(snapshot.data),
                                     ),
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
-                                        Text('Items Per Page'),
+                                        const Text('Items Per Page'),
                                         IconButton(
                                             onPressed: () {
                                               setState(() {
                                                 _page -= 1;
                                               });
                                             },
-                                            icon: Icon(Icons.arrow_left)),
+                                            icon: const Icon(Icons.arrow_left)),
                                         IconButton(
                                             onPressed: () {
                                               setState(() {
                                                 _page += 1;
                                               });
                                             },
-                                            icon: Icon(Icons.arrow_right))
+                                            icon: const Icon(Icons.arrow_right))
                                       ],
                                     )
                                   ],
@@ -553,8 +572,14 @@ class _NewDashboardState extends State<NewDashboard> {
                     ),
                     const SizedBox(height: 20),
                     Table(
-                        border: TableBorder
-                            .all(), // Allows to add a border decoration around your table
+                        border: const TableBorder(
+                          horizontalInside: BorderSide(
+                              width: 0.3,
+                              color: Color(0XFF3f51b5),
+                              style: BorderStyle.solid),
+                        ),
+                        defaultVerticalAlignment:
+                            TableCellVerticalAlignment.middle,
                         children: searchRow),
                   ],
                 ),

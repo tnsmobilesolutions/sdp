@@ -10,7 +10,6 @@ class TableHelper {
         padding: EdgeInsets.all(10.0),
         child: Text(
           'Sl No.',
-          textAlign: TextAlign.center,
           style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
         ),
       ),
@@ -18,7 +17,6 @@ class TableHelper {
         padding: EdgeInsets.all(10.0),
         child: Text(
           'Name',
-          textAlign: TextAlign.center,
           style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
         ),
       ),
