@@ -10,6 +10,7 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 import 'package:sdp/add_edit_dilougeBox.dart';
+import 'package:sdp/print.dart';
 import 'package:sdp/search.dart';
 import 'package:sdp/table_header.dart';
 import 'package:sdp/utility.dart';
@@ -258,6 +259,29 @@ class _NewDashboardState extends State<NewDashboard> {
       return devoteesTableRows;
     }
 
+    //printDashboardTable
+    List<pw.TableRow> devoteesprintTableRows(List<VaktaModel> devotedetails) {
+      List<pw.TableRow> devoteesPrintTableRows =
+          devotedetails.map<pw.TableRow>((item) {
+        // List<Map<String, dynamic>> _data = List.generate(200, ((index) => {}));
+        return PrintTableHelper().getPrintTableRowData(item);
+      }).toList();
+
+      devoteesPrintTableRows.insert(
+          0, PrintTableHelper().getPrintTableHeader());
+      return devoteesPrintTableRows;
+    }
+
+    //printSearchTable
+    List<pw.TableRow> PrintablesearchRow = searchItem != null
+        ? searchItem!.map<pw.TableRow>(
+            (item) {
+              return PrintTableHelper().getPrintTableRowData(item);
+            },
+          ).toList()
+        : [];
+    PrintablesearchRow.insert(0, PrintTableHelper().getPrintTableHeader());
+
 //SearchItem
     List<TableRow> searchRow = searchItem != null
         ? searchItem!.map<TableRow>(
@@ -371,123 +395,136 @@ class _NewDashboardState extends State<NewDashboard> {
               padding: const EdgeInsets.all(18.0),
               child: Column(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          setState(() {
-                            showButtons = !showButtons;
-                          });
-                        },
-                        icon: const Icon(
-                          Icons.settings,
-                          color: Color(0XFF3f51b5),
-                        ),
-                      ),
-                      const SizedBox(width: 20),
-                      IconButton(
-                        onPressed: () async {
-                          final doc = pw.Document();
-                          // await Printing.layoutPdf(
-                          // onLayout: (PdfPageFormat format) async => await Printing.convertHtml(
-                          //       format: format,
-                          //       html: '<html><body><p>Hello!</p></body></html>',
-                          //     ));
-
-                          doc.addPage(pw.Page(
-                              pageFormat: PdfPageFormat.a4,
-                              build: (pw.Context context) {
-                                return pw.Center(
-                                  child: pw.Text('Hello World'),
-                                ); // Center
-                              }));
-                          PdfPreview(
-                            build: (format) => doc.save(),
-                          );
-                          await Printing.layoutPdf(
-                              onLayout: (PdfPageFormat format) async =>
-                                  doc.save());
-
-                          print(doc);
-                        },
-                        icon: const Icon(
-                          Icons.print,
-                          color: Color(0XFF3f51b5),
-                        ),
-                      ),
-                    ],
-                  ),
                   Expanded(
                     child: SingleChildScrollView(
                       child: FutureBuilder(
                         future: DevoteeAPI().fetchAllDevotees(),
                         builder:
                             (BuildContext context, AsyncSnapshot snapshot) {
-                          // SchedulerBinding.instance.addPostFrameCallback((_) {
-                          //   setState(() {
-                          //     devotedetails = snapshot.data;
-                          //   });
-                          // });
-
-                          // setState(() {
-                          //   devotedetails = snapshot.data;
-                          // });
                           if (snapshot.hasError) {
                             return const Text('SNAPSHOT ERROR');
                           }
 
                           if (snapshot.connectionState ==
                               ConnectionState.done) {
-                            return Card(
-                              elevation: 10,
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  children: [
-                                    Table(
-                                      columnWidths: const {
-                                        0: FlexColumnWidth(0.2),
-                                        1: FlexColumnWidth(0.4),
-                                        2: FlexColumnWidth(0.4),
-                                        3: FlexColumnWidth(0.4),
-                                        4: FlexColumnWidth(0.4),
-                                        5: FlexColumnWidth(0.4),
-                                        6: FlexColumnWidth(0.4),
-                                      },
-                                      defaultVerticalAlignment:
-                                          TableCellVerticalAlignment.middle,
-                                      border: const TableBorder(
-                                        horizontalInside: BorderSide(
-                                            width: 0.3,
-                                            color: Color(0XFF3f51b5),
-                                            style: BorderStyle.solid),
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      IconButton(
+                                        onPressed: () {
+                                          setState(() {
+                                            showButtons = !showButtons;
+                                          });
+                                        },
+                                        icon: const Icon(
+                                          Icons.settings,
+                                          color: Color(0XFF3f51b5),
+                                        ),
                                       ),
-                                      children:
-                                          devoteesTableRows(snapshot.data),
-                                    ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      const SizedBox(width: 20),
+                                      IconButton(
+                                        onPressed: () async {
+                                          final doc = pw.Document();
+
+                                          doc.addPage(
+                                            pw.Page(
+                                              orientation:
+                                                  pw.PageOrientation.portrait,
+                                              pageFormat: PdfPageFormat.a4,
+                                              build: (pw.Context context) {
+                                                // return pw.Text('Hello');
+                                                return pw.Column(children: [
+                                                  pw.Table(
+                                                    border:
+                                                        const pw.TableBorder(
+                                                      horizontalInside:
+                                                          pw.BorderSide(
+                                                              width: 0.3,
+                                                              // color: Color(0XFF3f51b5),
+                                                              style: pw
+                                                                  .BorderStyle
+                                                                  .solid),
+                                                    ),
+                                                    children:
+                                                        devoteesprintTableRows(
+                                                            snapshot.data),
+                                                  ),
+                                                ]);
+                                              },
+                                            ),
+                                          );
+
+                                          PdfPreview(
+                                            build: (format) => doc.save(),
+                                          );
+                                          await Printing.layoutPdf(
+                                              onLayout: (PdfPageFormat
+                                                      format) async =>
+                                                  doc.save());
+                                        },
+                                        icon: const Icon(
+                                          Icons.print,
+                                          color: Color(0XFF3f51b5),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Card(
+                                    elevation: 10,
+                                    child: Column(
                                       children: [
-                                        const Text('Items Per Page'),
-                                        IconButton(
-                                            onPressed: () {
-                                              setState(() {
-                                                _page -= 1;
-                                              });
-                                            },
-                                            icon: const Icon(Icons.arrow_left)),
-                                        IconButton(
-                                            onPressed: () {
-                                              setState(() {
-                                                _page += 1;
-                                              });
-                                            },
-                                            icon: const Icon(Icons.arrow_right))
+                                        Table(
+                                          columnWidths: const {
+                                            0: FlexColumnWidth(0.2),
+                                            1: FlexColumnWidth(0.4),
+                                            2: FlexColumnWidth(0.4),
+                                            3: FlexColumnWidth(0.4),
+                                            4: FlexColumnWidth(0.4),
+                                            5: FlexColumnWidth(0.4),
+                                            6: FlexColumnWidth(0.4),
+                                          },
+                                          defaultVerticalAlignment:
+                                              TableCellVerticalAlignment.middle,
+                                          border: const TableBorder(
+                                            horizontalInside: BorderSide(
+                                                width: 0.3,
+                                                color: Color(0XFF3f51b5),
+                                                style: BorderStyle.solid),
+                                          ),
+                                          children:
+                                              devoteesTableRows(snapshot.data),
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            const Text('Items Per Page'),
+                                            IconButton(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    _page -= 1;
+                                                  });
+                                                },
+                                                icon: const Icon(
+                                                    Icons.arrow_left)),
+                                            IconButton(
+                                                onPressed: () {
+                                                  setState(() {
+                                                    _page += 1;
+                                                  });
+                                                },
+                                                icon: const Icon(
+                                                    Icons.arrow_right))
+                                          ],
+                                        )
                                       ],
-                                    )
-                                  ],
-                                ),
+                                    ),
+                                  )
+                                ],
                               ),
                             );
                           }
@@ -539,27 +576,34 @@ class _NewDashboardState extends State<NewDashboard> {
                             IconButton(
                               onPressed: () async {
                                 final doc = pw.Document();
-                                // await Printing.layoutPdf(
-                                // onLayout: (PdfPageFormat format) async => await Printing.convertHtml(
-                                //       format: format,
-                                //       html: '<html><body><p>Hello!</p></body></html>',
-                                //     ));
 
-                                doc.addPage(pw.Page(
+                                doc.addPage(
+                                  pw.Page(
+                                    orientation: pw.PageOrientation.portrait,
                                     pageFormat: PdfPageFormat.a4,
                                     build: (pw.Context context) {
-                                      return pw.Center(
-                                        child: pw.Text('Hello World'),
-                                      ); // Center
-                                    }));
+                                      // return pw.Text('Hello');
+                                      return pw.Column(children: [
+                                        pw.Table(
+                                          border: const pw.TableBorder(
+                                            horizontalInside: pw.BorderSide(
+                                                width: 0.3,
+                                                // color: Color(0XFF3f51b5),
+                                                style: pw.BorderStyle.solid),
+                                          ),
+                                          children: PrintablesearchRow,
+                                        ),
+                                      ]);
+                                    },
+                                  ),
+                                );
+
                                 PdfPreview(
                                   build: (format) => doc.save(),
                                 );
                                 await Printing.layoutPdf(
                                     onLayout: (PdfPageFormat format) async =>
                                         doc.save());
-
-                                print(doc);
                               },
                               icon: const Icon(
                                 Icons.print,
