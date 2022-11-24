@@ -583,17 +583,23 @@ class _NewDashboardState extends State<NewDashboard> {
                                     pageFormat: PdfPageFormat.a4,
                                     build: (pw.Context context) {
                                       // return pw.Text('Hello');
-                                      return pw.Column(children: [
-                                        pw.Table(
-                                          border: const pw.TableBorder(
-                                            horizontalInside: pw.BorderSide(
-                                                width: 0.3,
-                                                // color: Color(0XFF3f51b5),
-                                                style: pw.BorderStyle.solid),
-                                          ),
-                                          children: PrintablesearchRow,
-                                        ),
-                                      ]);
+                                      return pw.Column(
+                                          crossAxisAlignment:
+                                              pw.CrossAxisAlignment.start,
+                                          children: [
+                                            pw.Text(
+                                                ' Search Item - ${searchItem?.length}'),
+                                            pw.Table(
+                                              border: const pw.TableBorder(
+                                                horizontalInside: pw.BorderSide(
+                                                    width: 0.3,
+                                                    // color: Color(0XFF3f51b5),
+                                                    style:
+                                                        pw.BorderStyle.solid),
+                                              ),
+                                              children: PrintablesearchRow,
+                                            ),
+                                          ]);
                                     },
                                   ),
                                 );
