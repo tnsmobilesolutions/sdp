@@ -27,11 +27,6 @@ class NewDashboard extends StatefulWidget {
 }
 
 class _NewDashboardState extends State<NewDashboard> {
-  final List<int> _data = List.generate(
-      100, (i) => i); // generate a sample data ( integers ) list of 100 length
-  int _page = 0; // default page to 0
-  final int _perPage = 10; // per page items you want to show
-
   // List<VaktaModel>? searchItem;
   VaktaModel? editedVaktadata;
   List<VaktaModel>? searchItem;
@@ -319,22 +314,20 @@ class _NewDashboardState extends State<NewDashboard> {
           ).toList()
         : [];
     searchRow.insert(0, TableHelper().getTableHeader(showButtons));
-    final dataToShow = _data.sublist(
-        (_page * _perPage), ((_page * _perPage) + _perPage)); // extract a l
 
     return Scaffold(
       appBar: AppBar(
-        leading: const Padding(
-          padding: EdgeInsets.only(left: 10),
+        leading: const SizedBox(
           child: Image(
-            image: AssetImage('assets/images/login.png'),
-            fit: BoxFit.contain,
-            height: 60,
-            width: 60,
-          ),
+              image: AssetImage('assets/images/login.png'),
+              fit: BoxFit.cover,
+              height: 5.00,
+              width: 20.00),
         ),
         automaticallyImplyLeading: false,
-        title: const Text('Sammilani Dinikia Pali'),
+        title: Text(
+          'Sammilani Dinikia Pali',
+        ),
         actions: [
           Padding(
               padding: const EdgeInsets.all(8.0),
@@ -486,6 +479,7 @@ class _NewDashboardState extends State<NewDashboard> {
                                             4: FlexColumnWidth(0.4),
                                             5: FlexColumnWidth(0.4),
                                             6: FlexColumnWidth(0.4),
+                                            7: FlexColumnWidth(0.4),
                                           },
                                           defaultVerticalAlignment:
                                               TableCellVerticalAlignment.middle,
@@ -498,29 +492,6 @@ class _NewDashboardState extends State<NewDashboard> {
                                           children:
                                               devoteesTableRows(snapshot.data),
                                         ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            const Text('Items Per Page'),
-                                            IconButton(
-                                                onPressed: () {
-                                                  setState(() {
-                                                    _page -= 1;
-                                                  });
-                                                },
-                                                icon: const Icon(
-                                                    Icons.arrow_left)),
-                                            IconButton(
-                                                onPressed: () {
-                                                  setState(() {
-                                                    _page += 1;
-                                                  });
-                                                },
-                                                icon: const Icon(
-                                                    Icons.arrow_right))
-                                          ],
-                                        )
                                       ],
                                     ),
                                   )
@@ -548,7 +519,7 @@ class _NewDashboardState extends State<NewDashboard> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(' Search Item - ${searchItem?.length}'),
+                        Text(' Search Result Count - ${searchItem?.length}'),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
@@ -588,7 +559,7 @@ class _NewDashboardState extends State<NewDashboard> {
                                               pw.CrossAxisAlignment.start,
                                           children: [
                                             pw.Text(
-                                                ' Search Item - ${searchItem?.length}'),
+                                                ' Search Result count - ${searchItem?.length}'),
                                             pw.Table(
                                               border: const pw.TableBorder(
                                                 horizontalInside: pw.BorderSide(

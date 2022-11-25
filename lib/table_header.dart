@@ -87,6 +87,7 @@ class TableHelper {
         const Padding(
           padding: EdgeInsets.all(10.0),
           child: Text(
+            textAlign: TextAlign.center,
             'View',
             style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
           ),
@@ -95,6 +96,7 @@ class TableHelper {
         const Padding(
           padding: EdgeInsets.all(10.0),
           child: Text(
+            textAlign: TextAlign.center,
             'Edit',
             style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
           ),
@@ -103,6 +105,7 @@ class TableHelper {
         const Padding(
           padding: EdgeInsets.all(10.0),
           child: Text(
+            textAlign: TextAlign.center,
             'Delete',
             style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
           ),
@@ -116,7 +119,7 @@ class TableHelper {
       VoidCallback editOnPressed,
       VoidCallback deleteOnPressed,
       bool showButtons) {
-    return TableRow(decoration: const BoxDecoration(), children: [
+    return TableRow(children: [
       Padding(
         padding: const EdgeInsets.all(8.0),
         child: Text('1'),
@@ -135,7 +138,9 @@ class TableHelper {
       ),
       Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Text('₹${item.pranaami}'),
+        child: Text(
+          '₹${item.pranaami}',
+        ),
       ),
       // Padding(
       //   padding: const EdgeInsets.all(8.0),
@@ -162,26 +167,38 @@ class TableHelper {
       //   child: Text(item.updatedOn.toString()),
       // ),
       if (showButtons == true)
-        IconButton(
-            onPressed: onViewPressed,
-            icon: const Icon(
-              Icons.visibility,
-              color: Color(0XFF3f51b5),
-            )),
+        Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: IconButton(
+              alignment: Alignment.center,
+              onPressed: onViewPressed,
+              icon: const Icon(
+                Icons.visibility,
+                color: Color(0XFF3f51b5),
+              )),
+        ),
       if (showButtons == true)
-        IconButton(
-            onPressed: editOnPressed,
-            icon: const Icon(
-              Icons.edit,
-              color: Color(0XFF3f51b5),
-            )),
+        Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: IconButton(
+              alignment: Alignment.center,
+              onPressed: editOnPressed,
+              icon: const Icon(
+                Icons.edit,
+                color: Color(0XFF3f51b5),
+              )),
+        ),
       if (showButtons == true)
-        IconButton(
-            onPressed: deleteOnPressed,
-            icon: const Icon(
-              Icons.delete,
-              color: Color(0XFF3f51b5),
-            ))
+        Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: IconButton(
+              alignment: Alignment.center,
+              onPressed: deleteOnPressed,
+              icon: const Icon(
+                Icons.delete,
+                color: Color(0XFF3f51b5),
+              )),
+        )
     ]);
   }
 }
