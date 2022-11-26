@@ -31,6 +31,10 @@ class _NewDashboardState extends State<NewDashboard> {
   VaktaModel? editedVaktadata;
   List<VaktaModel>? searchItem;
   // List<VaktaModel> devotedetails = [];
+  int dashboardList = 0;
+  int searchList = 0;
+  int printDashboard = 0;
+  int printSearch = 0;
   bool showButtons = false;
   // fetchDetails() async {
   //   final dddevotedetails = await DevoteeAPI().fetchAllDevotees();
@@ -217,8 +221,9 @@ class _NewDashboardState extends State<NewDashboard> {
     //DashboardList
     List<TableRow> devoteesTableRows(List<VaktaModel> devotedetails) {
       List<TableRow> devoteesTableRows = devotedetails.map<TableRow>((item) {
+        dashboardList = dashboardList + 1;
         // List<Map<String, dynamic>> _data = List.generate(200, ((index) => {}));
-        return TableHelper().getTableRowData(item,
+        return TableHelper().getTableRowData(item, dashboardList,
 
             //View
             () {
@@ -258,8 +263,9 @@ class _NewDashboardState extends State<NewDashboard> {
     List<pw.TableRow> devoteesprintTableRows(List<VaktaModel> devotedetails) {
       List<pw.TableRow> devoteesPrintTableRows =
           devotedetails.map<pw.TableRow>((item) {
+        printDashboard = printDashboard + 1;
         // List<Map<String, dynamic>> _data = List.generate(200, ((index) => {}));
-        return PrintTableHelper().getPrintTableRowData(item);
+        return PrintTableHelper().getPrintTableRowData(item, printDashboard);
       }).toList();
 
       devoteesPrintTableRows.insert(
@@ -271,7 +277,8 @@ class _NewDashboardState extends State<NewDashboard> {
     List<pw.TableRow> PrintablesearchRow = searchItem != null
         ? searchItem!.map<pw.TableRow>(
             (item) {
-              return PrintTableHelper().getPrintTableRowData(item);
+              printSearch = printSearch + 1;
+              return PrintTableHelper().getPrintTableRowData(item, printSearch);
             },
           ).toList()
         : [];
@@ -281,7 +288,8 @@ class _NewDashboardState extends State<NewDashboard> {
     List<TableRow> searchRow = searchItem != null
         ? searchItem!.map<TableRow>(
             (item) {
-              return TableHelper().getTableRowData(item,
+              searchList = searchList + 1;
+              return TableHelper().getTableRowData(item, searchList,
                   //view
                   () {
                 showViewDialouge(item);

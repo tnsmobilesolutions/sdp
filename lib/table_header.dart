@@ -115,6 +115,7 @@ class TableHelper {
 
   TableRow getTableRowData(
       VaktaModel item,
+      int i,
       VoidCallback onViewPressed,
       VoidCallback editOnPressed,
       VoidCallback deleteOnPressed,
@@ -122,7 +123,7 @@ class TableHelper {
     return TableRow(children: [
       Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Text('1'),
+        child: Text(i.toString()),
       ),
       Padding(
         padding: const EdgeInsets.all(8.0),

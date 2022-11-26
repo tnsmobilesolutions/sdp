@@ -15,10 +15,8 @@ class DevoteeAPI {
 //FetchUser
   Future<List<VaktaModel>> fetchAllDevotees() async {
     try {
-      CollectionReference devoteeCollection =
-          FirebaseFirestore.instance.collection('devoteeList');
-      final lstdevotee = await devoteeCollection.get().then(
-        (querysnapshot) async {
+      return FirebaseFirestore.instance.collection('devoteeList').get().then(
+        (querysnapshot) {
           //print('********${querysnapshot.docs.length}');
           List<VaktaModel> lstDevotees = [];
           for (var element in querysnapshot.docs) {
@@ -35,7 +33,7 @@ class DevoteeAPI {
           return lstDevotees;
         },
       );
-      return lstdevotee;
+      // return lstdevotee;
     } catch (e) {
       print(e);
     }

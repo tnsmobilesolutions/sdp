@@ -44,9 +44,10 @@ class _SearchSDPState extends State<SearchSDP> {
                     .searchSDP(_selectedSearchType, sdpSearchController.text);
                 widget.onSubmitPress(result);
               },
+
               autofocus: false,
               controller: sdpSearchController,
-              keyboardType: TextInputType.emailAddress,
+              // keyboardType: TextInputType.datetime,
               // },
               textInputAction: TextInputAction.next,
               decoration: InputDecoration(
@@ -83,7 +84,23 @@ class _SearchSDPState extends State<SearchSDP> {
                             color: Color(0XFF3f51b5),
                           ))
                       : null),
-              onTap: () {},
+              onTap: _selectedSearchType == 'Pali Date'
+                  ? () async {
+                      DateTime? selectedDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(2022),
+                          lastDate: DateTime(2050));
+                      if (selectedDate != null) {
+                        setState(() {
+                          sdpSearchController.text =
+                              DateFormat('dd/MM/yyyy').format(selectedDate);
+                        });
+                      } else {
+                        sdpSearchController.text = '';
+                      }
+                    }
+                  : () {},
             ),
           ),
           const VerticalDivider(

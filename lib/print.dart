@@ -46,11 +46,11 @@ class PrintTableHelper {
     ]);
   }
 
-  pw.TableRow getPrintTableRowData(VaktaModel item) {
+  pw.TableRow getPrintTableRowData(VaktaModel item, int i) {
     return pw.TableRow(decoration: const pw.BoxDecoration(), children: [
       pw.Padding(
         padding: const pw.EdgeInsets.all(8.0),
-        child: pw.Text('1'),
+        child: pw.Text(i.toString()),
       ),
       pw.Padding(
         padding: const pw.EdgeInsets.all(8.0),
@@ -67,7 +67,7 @@ class PrintTableHelper {
       pw.Padding(
         padding: const pw.EdgeInsets.all(8.0),
         child: pw.Text(
-          '₹${item.pranaami}',
+          item.pranaami.toString(),
         ),
       )
     ]);
