@@ -67,7 +67,7 @@ class PrintTableHelper {
       pw.Padding(
         padding: const pw.EdgeInsets.all(8.0),
         child: pw.Text(
-          item.pranaami.toString(),
+          'Rs. ${item.pranaami}',
         ),
       )
     ]);
