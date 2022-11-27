@@ -32,7 +32,7 @@ class _NewDashboardState extends State<NewDashboard> {
   List<VaktaModel>? searchItem;
   // List<VaktaModel> devotedetails = [];
   int dashboardindexNumber = 0;
-  int searchIndexNumber = 0;
+  int searchDasboardIndexNumber = 0;
   int printDashboardIndexNumber = 0;
   int printSearchIndexNumber = 0;
   bool showButtons = false;
@@ -83,6 +83,7 @@ class _NewDashboardState extends State<NewDashboard> {
                   ),
                   IconButton(
                       onPressed: () {
+                        searchDasboardIndexNumber = 0;
                         dashboardindexNumber = 0;
                         Navigator.pop(context);
                       },
@@ -293,16 +294,18 @@ class _NewDashboardState extends State<NewDashboard> {
     List<TableRow> searchRow = searchItem != null
         ? searchItem!.map<TableRow>(
             (item) {
-              searchIndexNumber = searchIndexNumber + 1;
-              return TableHelper().getTableRowData(item, searchIndexNumber,
-                  //view
-                  () {
-                searchIndexNumber = 0;
+              searchDasboardIndexNumber = searchDasboardIndexNumber + 1;
+              return TableHelper()
+                  .getTableRowData(item, searchDasboardIndexNumber,
+                      //view
+                      () {
+                searchDasboardIndexNumber = 0;
+
                 showViewDialouge(item);
               },
-                  //Edit
-                  (() {
-                searchIndexNumber = 0;
+                      //Edit
+                      (() {
+                searchDasboardIndexNumber = 0;
                 setState(() {
                   editedVaktadata = item;
                   devoteeNameController.text = item.name ?? '';
@@ -316,9 +319,9 @@ class _NewDashboardState extends State<NewDashboard> {
                 });
                 showdilouge('Update Devotee Details', 'Update');
               }),
-                  //delete
-                  (() {
-                searchIndexNumber = 0;
+                      //delete
+                      (() {
+                searchDasboardIndexNumber = 0;
                 DevoteeAPI().removeDevotee(item.docId);
                 Navigator.push(context, MaterialPageRoute(
                   builder: (context) {
@@ -348,7 +351,11 @@ class _NewDashboardState extends State<NewDashboard> {
           Padding(
               padding: const EdgeInsets.all(8.0),
               child: SearchSDP(
+                dashboardindexNumber: 0,
+                searchDasboardIndexNumber: 0,
                 onSubmitPress: (result) {
+                  searchDasboardIndexNumber = 0;
+                  dashboardindexNumber = 0;
                   setState(() {
                     searchItem = result;
                   });
@@ -356,6 +363,10 @@ class _NewDashboardState extends State<NewDashboard> {
               )),
           CupertinoButton(
             onPressed: (() {
+              dashboardindexNumber = 0;
+              searchDasboardIndexNumber = 0;
+              printDashboardIndexNumber = 0;
+              printSearchIndexNumber = 0;
               showdilouge(
                 'Add Devotee',
                 'Add',
@@ -425,10 +436,12 @@ class _NewDashboardState extends State<NewDashboard> {
                                     children: [
                                       IconButton(
                                         onPressed: () {
+                                          dashboardindexNumber = 0;
+                                          searchDasboardIndexNumber = 0;
+                                          printDashboardIndexNumber = 0;
+                                          printSearchIndexNumber = 0;
                                           setState(() {
                                             showButtons = !showButtons;
-                                            dashboardindexNumber = 0;
-                                            searchIndexNumber = 0;
                                           });
                                         },
                                         icon: const Icon(
@@ -554,6 +567,10 @@ class _NewDashboardState extends State<NewDashboard> {
                                 child: const Text('Reset')),
                             IconButton(
                               onPressed: () {
+                                searchDasboardIndexNumber = 0;
+                                printSearchIndexNumber = 0;
+                                printDashboardIndexNumber = 0;
+
                                 setState(() {
                                   showButtons = !showButtons;
                                 });
@@ -567,6 +584,10 @@ class _NewDashboardState extends State<NewDashboard> {
                             IconButton(
                               onPressed: () async {
                                 final doc = pw.Document();
+                                printSearchIndexNumber = 0;
+                                printDashboardIndexNumber = 0;
+                                dashboardindexNumber = 0;
+                                searchDasboardIndexNumber = 0;
 
                                 doc.addPage(
                                   pw.Page(

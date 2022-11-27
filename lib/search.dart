@@ -4,8 +4,14 @@ import 'package:sdp/API/devoteeAPI.dart';
 import 'package:sdp/Models/vaktaModel.dart';
 
 class SearchSDP extends StatefulWidget {
-  SearchSDP({Key? key, required this.onSubmitPress}) : super(key: key);
-
+  SearchSDP(
+      {Key? key,
+      required this.onSubmitPress,
+      this.dashboardindexNumber,
+      this.searchDasboardIndexNumber})
+      : super(key: key);
+  int? searchDasboardIndexNumber = 0;
+  int? dashboardindexNumber = 0;
   final Function onSubmitPress;
 
   @override
@@ -144,6 +150,8 @@ class _SearchSDPState extends State<SearchSDP> {
             padding: const EdgeInsets.only(right: 5),
             child: ElevatedButton(
               onPressed: () async {
+                widget.searchDasboardIndexNumber = 0;
+                widget.dashboardindexNumber = 0;
                 final result = await DevoteeAPI()
                     .searchSDP(_selectedSearchType, sdpSearchController.text);
                 widget.onSubmitPress(result);
