@@ -133,7 +133,7 @@ class _Add_Edit_DialougeboxState extends State<Add_Edit_Dialougebox> {
                     },
                     icon: const Icon(Icons.calendar_month_rounded)),
                 border: const OutlineInputBorder(),
-                labelText: 'Pali Date',
+                labelText: 'Pali Date (DD/MM/YYYY)',
               ),
             ),
             const SizedBox(

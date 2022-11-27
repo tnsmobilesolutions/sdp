@@ -31,10 +31,10 @@ class _NewDashboardState extends State<NewDashboard> {
   VaktaModel? editedVaktadata;
   List<VaktaModel>? searchItem;
   // List<VaktaModel> devotedetails = [];
-  int dashboardList = 0;
-  int searchList = 0;
-  int printDashboard = 0;
-  int printSearch = 0;
+  int dashboardindexNumber = 0;
+  int searchIndexNumber = 0;
+  int printDashboardIndexNumber = 0;
+  int printSearchIndexNumber = 0;
   bool showButtons = false;
   // fetchDetails() async {
   //   final dddevotedetails = await DevoteeAPI().fetchAllDevotees();
@@ -83,6 +83,7 @@ class _NewDashboardState extends State<NewDashboard> {
                   ),
                   IconButton(
                       onPressed: () {
+                        dashboardindexNumber = 0;
                         Navigator.pop(context);
                       },
                       icon: const Icon(Icons.close, color: Color(0XFF3f51b5)))
@@ -221,9 +222,9 @@ class _NewDashboardState extends State<NewDashboard> {
     //DashboardList
     List<TableRow> devoteesTableRows(List<VaktaModel> devotedetails) {
       List<TableRow> devoteesTableRows = devotedetails.map<TableRow>((item) {
-        dashboardList = dashboardList + 1;
+        dashboardindexNumber = dashboardindexNumber + 1;
         // List<Map<String, dynamic>> _data = List.generate(200, ((index) => {}));
-        return TableHelper().getTableRowData(item, dashboardList,
+        return TableHelper().getTableRowData(item, dashboardindexNumber,
 
             //View
             () {
@@ -231,6 +232,7 @@ class _NewDashboardState extends State<NewDashboard> {
         },
             //Edit
             (() {
+          dashboardindexNumber = 0;
           setState(() {
             editedVaktadata = item;
             devoteeNameController.text = item.name ?? '';
@@ -245,6 +247,7 @@ class _NewDashboardState extends State<NewDashboard> {
         }),
             //delete
             (() {
+          dashboardindexNumber = 0;
           DevoteeAPI().removeDevotee(item.docId);
           Navigator.push(context, MaterialPageRoute(
             builder: (context) {
@@ -263,9 +266,10 @@ class _NewDashboardState extends State<NewDashboard> {
     List<pw.TableRow> devoteesprintTableRows(List<VaktaModel> devotedetails) {
       List<pw.TableRow> devoteesPrintTableRows =
           devotedetails.map<pw.TableRow>((item) {
-        printDashboard = printDashboard + 1;
+        printDashboardIndexNumber = printDashboardIndexNumber + 1;
         // List<Map<String, dynamic>> _data = List.generate(200, ((index) => {}));
-        return PrintTableHelper().getPrintTableRowData(item, printDashboard);
+        return PrintTableHelper()
+            .getPrintTableRowData(item, printDashboardIndexNumber);
       }).toList();
 
       devoteesPrintTableRows.insert(
@@ -277,8 +281,9 @@ class _NewDashboardState extends State<NewDashboard> {
     List<pw.TableRow> PrintablesearchRow = searchItem != null
         ? searchItem!.map<pw.TableRow>(
             (item) {
-              printSearch = printSearch + 1;
-              return PrintTableHelper().getPrintTableRowData(item, printSearch);
+              printSearchIndexNumber = printSearchIndexNumber + 1;
+              return PrintTableHelper()
+                  .getPrintTableRowData(item, printSearchIndexNumber);
             },
           ).toList()
         : [];
@@ -288,14 +293,16 @@ class _NewDashboardState extends State<NewDashboard> {
     List<TableRow> searchRow = searchItem != null
         ? searchItem!.map<TableRow>(
             (item) {
-              searchList = searchList + 1;
-              return TableHelper().getTableRowData(item, searchList,
+              searchIndexNumber = searchIndexNumber + 1;
+              return TableHelper().getTableRowData(item, searchIndexNumber,
                   //view
                   () {
+                searchIndexNumber = 0;
                 showViewDialouge(item);
               },
                   //Edit
                   (() {
+                searchIndexNumber = 0;
                 setState(() {
                   editedVaktadata = item;
                   devoteeNameController.text = item.name ?? '';
@@ -311,6 +318,7 @@ class _NewDashboardState extends State<NewDashboard> {
               }),
                   //delete
                   (() {
+                searchIndexNumber = 0;
                 DevoteeAPI().removeDevotee(item.docId);
                 Navigator.push(context, MaterialPageRoute(
                   builder: (context) {
@@ -419,6 +427,8 @@ class _NewDashboardState extends State<NewDashboard> {
                                         onPressed: () {
                                           setState(() {
                                             showButtons = !showButtons;
+                                            dashboardindexNumber = 0;
+                                            searchIndexNumber = 0;
                                           });
                                         },
                                         icon: const Icon(
@@ -429,6 +439,8 @@ class _NewDashboardState extends State<NewDashboard> {
                                       const SizedBox(width: 20),
                                       IconButton(
                                         onPressed: () async {
+                                          printDashboardIndexNumber = 0;
+                                          printSearchIndexNumber = 0;
                                           final doc = pw.Document();
 
                                           doc.addPage(
