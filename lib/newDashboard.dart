@@ -1,6 +1,7 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:intl/intl.dart';
 import 'package:sdp/API/devoteeAPI.dart';
 import 'package:sdp/API/userAPI.dart';
@@ -36,6 +37,8 @@ class _NewDashboardState extends State<NewDashboard> {
   int printDashboardIndexNumber = 0;
   int printSearchIndexNumber = 0;
   bool showButtons = false;
+  String? selectedtypesearch;
+  String? sdpseacrchfield;
   // fetchDetails() async {
   //   final dddevotedetails = await DevoteeAPI().fetchAllDevotees();
   //   setState(() {
@@ -353,11 +356,17 @@ class _NewDashboardState extends State<NewDashboard> {
               child: SearchSDP(
                 dashboardindexNumber: 0,
                 searchDasboardIndexNumber: 0,
-                onSubmitPress: (result) {
+                onSubmitPress:
+                    (result, selectedSearchType, sdpSearchController) {
                   searchDasboardIndexNumber = 0;
                   dashboardindexNumber = 0;
+                  log(selectedSearchType);
+                  log(sdpSearchController);
                   setState(() {
+                    selectedtypesearch = selectedSearchType;
+                    sdpseacrchfield = sdpSearchController;
                     searchItem = result;
+                    print(result);
                   });
                 },
               )),
@@ -412,137 +421,139 @@ class _NewDashboardState extends State<NewDashboard> {
       body: searchItem == null
           ? SafeArea(
               child: Padding(
-              padding: const EdgeInsets.all(18.0),
-              child: Column(
-                children: [
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: FutureBuilder(
-                        future: DevoteeAPI().fetchAllDevotees(),
-                        builder:
-                            (BuildContext context, AsyncSnapshot snapshot) {
-                          if (snapshot.hasError) {
-                            return const Text('SNAPSHOT ERROR');
-                          }
+                padding: const EdgeInsets.all(18.0),
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: FutureBuilder(
+                          future: DevoteeAPI().fetchAllDevotees(),
+                          builder:
+                              (BuildContext context, AsyncSnapshot snapshot) {
+                            if (snapshot.hasError) {
+                              return const Text('SNAPSHOT ERROR');
+                            }
 
-                          if (snapshot.connectionState ==
-                              ConnectionState.done) {
-                            return Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      IconButton(
-                                        onPressed: () {
-                                          dashboardindexNumber = 0;
-                                          searchDasboardIndexNumber = 0;
-                                          printDashboardIndexNumber = 0;
-                                          printSearchIndexNumber = 0;
-                                          setState(() {
-                                            showButtons = !showButtons;
-                                          });
-                                        },
-                                        icon: const Icon(
-                                          Icons.settings,
-                                          color: Color(0XFF3f51b5),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 20),
-                                      IconButton(
-                                        onPressed: () async {
-                                          printDashboardIndexNumber = 0;
-                                          printSearchIndexNumber = 0;
-                                          final doc = pw.Document();
-
-                                          doc.addPage(
-                                            pw.Page(
-                                              orientation:
-                                                  pw.PageOrientation.portrait,
-                                              pageFormat: PdfPageFormat.a4,
-                                              build: (pw.Context context) {
-                                                // return pw.Text('Hello');
-                                                return pw.Column(children: [
-                                                  pw.Table(
-                                                    border:
-                                                        const pw.TableBorder(
-                                                      horizontalInside:
-                                                          pw.BorderSide(
-                                                              width: 0.3,
-                                                              // color: Color(0XFF3f51b5),
-                                                              style: pw
-                                                                  .BorderStyle
-                                                                  .solid),
-                                                    ),
-                                                    children:
-                                                        devoteesprintTableRows(
-                                                            snapshot.data),
-                                                  ),
-                                                ]);
-                                              },
-                                            ),
-                                          );
-
-                                          PdfPreview(
-                                            build: (format) => doc.save(),
-                                          );
-                                          await Printing.layoutPdf(
-                                              onLayout: (PdfPageFormat
-                                                      format) async =>
-                                                  doc.save());
-                                        },
-                                        icon: const Icon(
-                                          Icons.print,
-                                          color: Color(0XFF3f51b5),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Card(
-                                    elevation: 10,
-                                    child: Column(
+                            if (snapshot.connectionState ==
+                                ConnectionState.done) {
+                              return Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
-                                        Table(
-                                          columnWidths: const {
-                                            0: FlexColumnWidth(0.2),
-                                            1: FlexColumnWidth(0.4),
-                                            2: FlexColumnWidth(0.4),
-                                            3: FlexColumnWidth(0.4),
-                                            4: FlexColumnWidth(0.4),
-                                            5: FlexColumnWidth(0.4),
-                                            6: FlexColumnWidth(0.4),
-                                            7: FlexColumnWidth(0.4),
+                                        IconButton(
+                                          onPressed: () {
+                                            dashboardindexNumber = 0;
+                                            searchDasboardIndexNumber = 0;
+                                            printDashboardIndexNumber = 0;
+                                            printSearchIndexNumber = 0;
+                                            setState(() {
+                                              showButtons = !showButtons;
+                                            });
                                           },
-                                          defaultVerticalAlignment:
-                                              TableCellVerticalAlignment.middle,
-                                          border: const TableBorder(
-                                            horizontalInside: BorderSide(
-                                                width: 0.3,
-                                                color: Color(0XFF3f51b5),
-                                                style: BorderStyle.solid),
+                                          icon: const Icon(
+                                            Icons.settings,
+                                            color: Color(0XFF3f51b5),
                                           ),
-                                          children:
-                                              devoteesTableRows(snapshot.data),
+                                        ),
+                                        const SizedBox(width: 20),
+                                        IconButton(
+                                          onPressed: () async {
+                                            printDashboardIndexNumber = 0;
+                                            printSearchIndexNumber = 0;
+                                            final doc = pw.Document();
+
+                                            doc.addPage(
+                                              pw.Page(
+                                                orientation:
+                                                    pw.PageOrientation.portrait,
+                                                pageFormat: PdfPageFormat.a4,
+                                                build: (pw.Context context) {
+                                                  // return pw.Text('Hello');
+                                                  return pw.Column(children: [
+                                                    pw.Table(
+                                                      border:
+                                                          const pw.TableBorder(
+                                                        horizontalInside:
+                                                            pw.BorderSide(
+                                                                width: 0.3,
+                                                                // color: Color(0XFF3f51b5),
+                                                                style: pw
+                                                                    .BorderStyle
+                                                                    .solid),
+                                                      ),
+                                                      children:
+                                                          devoteesprintTableRows(
+                                                              snapshot.data),
+                                                    ),
+                                                  ]);
+                                                },
+                                              ),
+                                            );
+
+                                            PdfPreview(
+                                              build: (format) => doc.save(),
+                                            );
+                                            await Printing.layoutPdf(
+                                                onLayout: (PdfPageFormat
+                                                        format) async =>
+                                                    doc.save());
+                                          },
+                                          icon: const Icon(
+                                            Icons.print,
+                                            color: Color(0XFF3f51b5),
+                                          ),
                                         ),
                                       ],
                                     ),
-                                  )
-                                ],
-                              ),
-                            );
-                          }
-                          return const Center(
-                              child: CircularProgressIndicator(
-                            color: Colors.black,
-                          ));
-                        },
+                                    Card(
+                                      elevation: 10,
+                                      child: Column(
+                                        children: [
+                                          Table(
+                                            columnWidths: const {
+                                              0: FlexColumnWidth(0.2),
+                                              1: FlexColumnWidth(0.4),
+                                              2: FlexColumnWidth(0.4),
+                                              3: FlexColumnWidth(0.4),
+                                              4: FlexColumnWidth(0.4),
+                                              5: FlexColumnWidth(0.4),
+                                              6: FlexColumnWidth(0.4),
+                                              7: FlexColumnWidth(0.4),
+                                            },
+                                            defaultVerticalAlignment:
+                                                TableCellVerticalAlignment
+                                                    .middle,
+                                            border: const TableBorder(
+                                              horizontalInside: BorderSide(
+                                                  width: 0.3,
+                                                  color: Color(0XFF3f51b5),
+                                                  style: BorderStyle.solid),
+                                            ),
+                                            children: devoteesTableRows(
+                                                snapshot.data),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              );
+                            }
+                            return const Center(
+                                child: CircularProgressIndicator(
+                              color: Colors.black,
+                            ));
+                          },
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ))
+            )
           : SafeArea(
               child: Padding(
                 padding: const EdgeInsets.all(18.0),
@@ -553,6 +564,8 @@ class _NewDashboardState extends State<NewDashboard> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(' Search Result Count - ${searchItem?.length}'),
+                        Text(
+                            'Search By- $selectedtypesearch on $sdpseacrchfield'),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [

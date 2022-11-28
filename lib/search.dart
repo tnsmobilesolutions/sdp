@@ -48,7 +48,8 @@ class _SearchSDPState extends State<SearchSDP> {
               onFieldSubmitted: (value) async {
                 final result = await DevoteeAPI()
                     .searchSDP(_selectedSearchType, sdpSearchController.text);
-                widget.onSubmitPress(result);
+                widget.onSubmitPress(
+                    result, _selectedSearchType, sdpSearchController.text);
               },
 
               autofocus: false,
@@ -154,7 +155,8 @@ class _SearchSDPState extends State<SearchSDP> {
                 widget.dashboardindexNumber = 0;
                 final result = await DevoteeAPI()
                     .searchSDP(_selectedSearchType, sdpSearchController.text);
-                widget.onSubmitPress(result);
+                widget.onSubmitPress(
+                    result, _selectedSearchType, sdpSearchController.text);
                 // setState(() {
                 //   widget.searchItem = result;
                 // });
