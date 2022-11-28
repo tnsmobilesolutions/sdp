@@ -563,7 +563,7 @@ class _NewDashboardState extends State<NewDashboard> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(' Search Result Count - ${searchItem?.length}'),
+                        Text(' Total Record - ${searchItem?.length}'),
                         Text(
                             'Search By- $selectedtypesearch on $sdpseacrchfield'),
                         Row(
@@ -613,7 +613,9 @@ class _NewDashboardState extends State<NewDashboard> {
                                               pw.CrossAxisAlignment.start,
                                           children: [
                                             pw.Text(
-                                                ' Search Result count - ${searchItem?.length}'),
+                                                ' Total Record - ${searchItem?.length}'),
+                                            pw.Text(
+                                                'Search By- $selectedtypesearch on $sdpseacrchfield'),
                                             pw.Table(
                                               border: const pw.TableBorder(
                                                 horizontalInside: pw.BorderSide(
