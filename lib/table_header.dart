@@ -9,80 +9,45 @@ class TableHelper {
       const Padding(
         padding: EdgeInsets.all(10.0),
         child: Text(
-          'Sl No.',
+          '',
           style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
         ),
       ),
       const Padding(
         padding: EdgeInsets.all(10.0),
         child: Text(
-          'Name',
+          'କ୍ରମିକ ନଂ.',
           style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
         ),
       ),
       const Padding(
         padding: EdgeInsets.all(10.0),
         child: Text(
-          'Sangha',
+          'ପାଳିଆ ନାମ',
           style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
         ),
       ),
       const Padding(
         padding: EdgeInsets.all(10.0),
         child: Text(
-          'Pali Date',
+          'ସଂଘ',
           style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
         ),
       ),
       const Padding(
         padding: EdgeInsets.all(10.0),
         child: Text(
-          'Pranami',
+          'ପାଳି ତାରିଖ',
           style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
         ),
       ),
-      // Padding(
-      //   padding: EdgeInsets.all(10.0),
-      //   child: Text(
-      //     'Sammilani No.',
-      //     style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-      //   ),
-      // ),
-      // Padding(
-      //   padding: EdgeInsets.all(10.0),
-      //   child: Text(
-      //     'Sammilani Year',
-      //     style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-      //   ),
-      // ),
-      // Padding(
-      //   padding: EdgeInsets.all(10.0),
-      //   child: Text(
-      //     'Created By',
-      //     style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-      //   ),
-      // ),
-      // Padding(
-      //   padding: EdgeInsets.all(10.0),
-      //   child: Text(
-      //     'Created On',
-      //     style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-      //   ),
-      // ),
-      // Padding(
-      //   padding: EdgeInsets.all(10.0),
-      //   child: Text(
-      //     'Updated By',
-      //     style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-      //   ),
-      // ),
-      // Padding(
-      //   padding: EdgeInsets.all(10.0),
-      //   child: Text(
-      //     'Updated On',
-      //     style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-      //   ),
-      // ),
+      const Padding(
+        padding: EdgeInsets.all(10.0),
+        child: Text(
+          'ପ୍ରଣାମି',
+          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+        ),
+      ),
       if (showButtons == true)
         const Padding(
           padding: EdgeInsets.all(10.0),
@@ -114,13 +79,23 @@ class TableHelper {
   }
 
   TableRow getTableRowData(
-      VaktaModel item,
-      int i,
-      VoidCallback onViewPressed,
-      VoidCallback editOnPressed,
-      VoidCallback deleteOnPressed,
-      bool showButtons) {
+    VaktaModel item,
+    int i,
+    VoidCallback onViewPressed,
+    VoidCallback editOnPressed,
+    VoidCallback deleteOnPressed,
+    Function(bool?) onCheckedBox,
+    bool? value,
+    bool? showButtons,
+  ) {
     return TableRow(children: [
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Checkbox(
+          value: value,
+          onChanged: onCheckedBox,
+        ),
+      ),
       Padding(
         padding: const EdgeInsets.all(8.0),
         child: Text(i.toString()),
@@ -143,30 +118,6 @@ class TableHelper {
           '₹${item.pranaami}',
         ),
       ),
-      // Padding(
-      //   padding: const EdgeInsets.all(8.0),
-      //   child: Text(item.sammilaniNo.toString()),
-      // ),
-      // Padding(
-      //   padding: const EdgeInsets.all(8.0),
-      //   child: Text(item.sammilaniYear.toString()),
-      // ),
-      // Padding(
-      //   padding: const EdgeInsets.all(8.0),
-      //   child: Text(item.createdBy.toString()),
-      // ),
-      // Padding(
-      //   padding: const EdgeInsets.all(8.0),
-      //   child: Text(item.createdOn.toString()),
-      // ),
-      // Padding(
-      //   padding: const EdgeInsets.all(8.0),
-      //   child: Text(item.updatedBy.toString()),
-      // ),
-      // Padding(
-      //   padding: const EdgeInsets.all(8.0),
-      //   child: Text(item.updatedOn.toString()),
-      // ),
       if (showButtons == true)
         Padding(
           padding: const EdgeInsets.all(10.0),

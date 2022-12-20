@@ -5,7 +5,7 @@ import 'dart:developer';
 import 'package:authentication/EmailLogin/authenticationWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:sdp/API/userAPI.dart';
-import 'package:sdp/newDashboard.dart';
+import 'package:sdp/homeScreen.dart';
 
 class EmailSignIn extends StatefulWidget {
   const EmailSignIn({super.key});
@@ -25,10 +25,10 @@ class _EmailSignInState extends State<EmailSignIn> {
           child: Padding(
               padding: const EdgeInsets.all(20),
               child: AuthenticationWidget(
-                imageWidth: 240,
-                imageHeight: 240,
-                cardWidth: 240,
-                cardHeight: 260,
+                imageWidth: 245,
+                imageHeight: 230,
+                cardWidth: 245,
+                cardHeight: 295,
                 loginImage: AssetImage('assets/images/login.png'),
                 onEmailLoginPressed: (userEmail, userPassword) async {
                   final user = await UserAPI().signIn(userEmail, userPassword);
@@ -36,7 +36,7 @@ class _EmailSignInState extends State<EmailSignIn> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => NewDashboard(),
+                          builder: (context) => HomeScreen(),
                         ));
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

@@ -46,7 +46,11 @@ class PrintTableHelper {
     ]);
   }
 
-  pw.TableRow getPrintTableRowData(VaktaModel item, int i) {
+  pw.TableRow getPrintTableRowData(
+    VaktaModel item,
+    int i,
+  ) {
+    // final ttf = pw.Font.ttf(rootBundle.load("assets/open-sans.ttf"));
     return pw.TableRow(decoration: const pw.BoxDecoration(), children: [
       pw.Padding(
         padding: const pw.EdgeInsets.all(8.0),
@@ -54,7 +58,9 @@ class PrintTableHelper {
       ),
       pw.Padding(
         padding: const pw.EdgeInsets.all(8.0),
-        child: pw.Text(item.name.toString()),
+        child: pw.Text(
+          item.name.toString(),
+        ),
       ),
       pw.Padding(
         padding: const pw.EdgeInsets.all(8.0),

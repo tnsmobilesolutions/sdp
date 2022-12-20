@@ -1,11 +1,11 @@
 import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sdp/API/devoteeAPI.dart';
 import 'package:sdp/API/userAPI.dart';
 import 'package:sdp/Login/EmailSignIn.dart';
+import 'package:sdp/Models/sammilaniModel.dart';
 import 'package:sdp/Models/vaktaModel.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -20,14 +20,15 @@ import 'package:uuid/uuid.dart';
 
 // typedef OnSearchPress = void Function(List<VaktaModel>?);
 
-class NewDashboard extends StatefulWidget {
-  const NewDashboard({Key? key}) : super(key: key);
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  State<NewDashboard> createState() => _NewDashboardState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _NewDashboardState extends State<NewDashboard> {
+class _HomeScreenState extends State<HomeScreen> {
+  bool isChecked = false;
   // List<VaktaModel>? searchItem;
   VaktaModel? editedVaktadata;
   List<VaktaModel>? searchItem;
@@ -39,8 +40,11 @@ class _NewDashboardState extends State<NewDashboard> {
   bool showButtons = false;
   String? selectedtypesearch;
   String? sdpseacrchfield;
+  var baloobhaina2font;
+  var notoSansfont;
+
   // fetchDetails() async {
-  //   final dddevotedetails = await DevoteeAPI().fetchAllDevotees();
+  //   final dddevotedetails = await PaliaAPI().fetchAllPalias();
   //   setState(() {
   //     devotedetails = dddevotedetails;
   //   });
@@ -48,13 +52,15 @@ class _NewDashboardState extends State<NewDashboard> {
 
   final _formKey = GlobalKey<FormState>();
 
-  final devoteeNameController = TextEditingController();
+  final PaliaNameController = TextEditingController();
 
   final paliDateController = TextEditingController();
+  final receiptDateController = TextEditingController();
 
   final sanghaNameController = TextEditingController();
 
   //final medicineTypeController = TextEditingController();
+  final sammilaniPlaceController = TextEditingController();
 
   final pranamiController = TextEditingController();
 
@@ -63,6 +69,7 @@ class _NewDashboardState extends State<NewDashboard> {
   final remarkController = TextEditingController();
 
   final sammilaniNumberController = TextEditingController();
+  final receiptNumberController = TextEditingController();
   // String? currentAppMode;
 
   // APIType? type;
@@ -79,7 +86,7 @@ class _NewDashboardState extends State<NewDashboard> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   const Text(
-                    'Devotee Detils',
+                    'Palia Detils',
                     style: TextStyle(
                       color: Color(0XFF3f51b5),
                     ),
@@ -93,7 +100,7 @@ class _NewDashboardState extends State<NewDashboard> {
                       icon: const Icon(Icons.close, color: Color(0XFF3f51b5)))
                 ],
               ),
-              content: ViewDevotee(item: item));
+              content: ViewPalia(item: item));
         });
   }
 
@@ -125,7 +132,9 @@ class _NewDashboardState extends State<NewDashboard> {
           ),
           content: SingleChildScrollView(
               child: Add_Edit_Dialougebox(
-            devoteeNameController: devoteeNameController,
+            receiptDateController: receiptDateController,
+            receiptNumberController: receiptNumberController,
+            PaliaNameController: PaliaNameController,
             formKey: _formKey,
             paliDateController: paliDateController,
             pranamiController: pranamiController,
@@ -133,6 +142,7 @@ class _NewDashboardState extends State<NewDashboard> {
             sammilaniNumberController: sammilaniNumberController,
             sammilaniYearController: sammilaniYearController,
             sanghaNameController: sanghaNameController,
+            sammilaniPlaceController: sammilaniPlaceController,
           )),
           actions: <Widget>[
             Center(
@@ -144,14 +154,21 @@ class _NewDashboardState extends State<NewDashboard> {
 
                   DateTime now = DateTime.now();
                   String formattedDate =
-                      DateFormat('dd-MM-yyyy  hh:mm a').format(now);
+                      DateFormat('dd-MMM-yyyy  hh:mm a').format(now);
                   // DateFormat('yyyy-MM-dd – kk:mm').format(now);
 
                   if (_formKey.currentState != null) {
                     if (_formKey.currentState!.validate()) {
                       if (buttonText == 'Add') {
                         VaktaModel addUser = VaktaModel(
-                          name: devoteeNameController.text.trim(),
+                          sammilaniData: SammilaniModel(
+                              sammilaniNumber:
+                                  sammilaniNumberController.text.trim(),
+                              sammilaniYear:
+                                  sammilaniYearController.text.trim(),
+                              sammilaniPlace:
+                                  sammilaniPlaceController.text.trim()),
+                          name: PaliaNameController.text.trim(),
                           createdBy: currentUserData?.name,
                           createdOn: formattedDate.toString(),
                           // formatted.toString(),
@@ -161,43 +178,50 @@ class _NewDashboardState extends State<NewDashboard> {
                                   ? '0.0'
                                   : pranamiController.text.trim()),
                           remark: remarkController.text.trim(),
-                          sammilaniNo: sammilaniNumberController.text.trim(),
-                          sammilaniYear: sammilaniYearController.text.trim(),
                           sangha: sanghaNameController.text.trim(),
                           paaliDate: paliDateController.text,
+                          receiptDate: receiptDateController.text,
+                          receiptNo: receiptNumberController.text,
                         );
-                        await DevoteeAPI().addUser(addUser);
+                        await PaliaAPI().addUser(addUser);
                         Navigator.popUntil(context, (route) => route.isFirst);
                         Navigator.push(context, MaterialPageRoute(
                           builder: (context) {
-                            return const NewDashboard();
+                            return const HomeScreen();
                           },
                         ));
                       }
                       if (buttonText == 'Update') {
                         VaktaModel editUser = VaktaModel(
-                            name: devoteeNameController.text.trim(),
-                            updatedBy: currentUserData?.name,
-                            updatedOn: formattedDate.toString(),
-                            pranaami: double.parse(
-                                pranamiController.text.trim() == ''
-                                    ? '0.0'
-                                    : pranamiController.text.trim()),
-                            remark: remarkController.text.trim(),
-                            sammilaniNo: sammilaniNumberController.text.trim(),
+                          name: PaliaNameController.text.trim(),
+                          updatedBy: currentUserData?.name,
+                          updatedOn: formattedDate.toString(),
+                          pranaami: double.parse(
+                              pranamiController.text.trim() == ''
+                                  ? '0.0'
+                                  : pranamiController.text.trim()),
+                          remark: remarkController.text.trim(),
+                          sammilaniData: SammilaniModel(
+                            sammilaniNumber:
+                                sammilaniNumberController.text.trim(),
                             sammilaniYear: sammilaniYearController.text.trim(),
-                            sangha: sanghaNameController.text.trim(),
-                            paaliDate: paliDateController.text,
-                            docId: editedVaktadata?.docId,
-                            createdBy: editedVaktadata?.createdBy,
-                            createdOn: editedVaktadata?.createdOn
-                            //
-                            );
-                        await DevoteeAPI().editDevoteeDetails(editUser);
+                            sammilaniPlace:
+                                sammilaniPlaceController.text.trim(),
+                          ),
+                          sangha: sanghaNameController.text.trim(),
+                          paaliDate: paliDateController.text,
+                          docId: editedVaktadata?.docId,
+                          createdBy: editedVaktadata?.createdBy,
+                          createdOn: editedVaktadata?.createdOn,
+                          receiptDate: receiptDateController.text,
+                          receiptNo: receiptNumberController.text,
+                          //
+                        );
+                        await PaliaAPI().editPaliaDetails(editUser);
                         Navigator.popUntil(context, (route) => route.isFirst);
                         Navigator.push(context, MaterialPageRoute(
                           builder: (context) {
-                            return const NewDashboard();
+                            return const HomeScreen();
                           },
                         ));
                         // Navigator.pop(context);
@@ -224,8 +248,8 @@ class _NewDashboardState extends State<NewDashboard> {
   @override
   Widget build(BuildContext context) {
     //DashboardList
-    List<TableRow> devoteesTableRows(List<VaktaModel> devotedetails) {
-      List<TableRow> devoteesTableRows = devotedetails.map<TableRow>((item) {
+    List<TableRow> PaliasTableRows(List<VaktaModel> devotedetails) {
+      List<TableRow> PaliasTableRows = devotedetails.map<TableRow>((item) {
         dashboardindexNumber = dashboardindexNumber + 1;
         // List<Map<String, dynamic>> _data = List.generate(200, ((index) => {}));
         return TableHelper().getTableRowData(item, dashboardindexNumber,
@@ -239,46 +263,83 @@ class _NewDashboardState extends State<NewDashboard> {
           dashboardindexNumber = 0;
           setState(() {
             editedVaktadata = item;
-            devoteeNameController.text = item.name ?? '';
+            PaliaNameController.text = item.name ?? '';
             sanghaNameController.text = item.sangha ?? '';
             pranamiController.text = item.pranaami.toString();
             paliDateController.text = item.paaliDate ?? '';
-            sammilaniNumberController.text = item.sammilaniNo ?? '';
-            sammilaniYearController.text = item.sammilaniYear ?? '';
+            sammilaniNumberController.text =
+                item.sammilaniData?.sammilaniNumber ?? '';
+            sammilaniYearController.text =
+                item.sammilaniData?.sammilaniYear ?? '';
+            sammilaniPlaceController.text =
+                item.sammilaniData?.sammilaniPlace ?? '';
             remarkController.text = item.remark ?? '';
+            receiptDateController.text = item.receiptDate ?? '';
+            receiptNumberController.text = item.receiptNo ?? '';
           });
-          showdilouge('Update Devotee Details', 'Update');
+          showdilouge('Update Palia Details', 'Update');
         }),
             //delete
             (() {
-          dashboardindexNumber = 0;
-          DevoteeAPI().removeDevotee(item.docId);
-          Navigator.push(context, MaterialPageRoute(
-            builder: (context) {
-              return const NewDashboard();
-            },
-          ));
-          // Navigator.pop(context);
-        }), showButtons);
+          showDialog<String>(
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+              title: const Text('Delete User'),
+              content:
+                  const Text('Do You Want to delete the user permanently?'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () => Navigator.pop(context, 'Cancel'),
+                  child: const Text('Cancel'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    dashboardindexNumber = 0;
+                    PaliaAPI().removePalia(item.docId);
+                    Navigator.push(context, MaterialPageRoute(
+                      builder: (context) {
+                        return const HomeScreen();
+                      },
+                    ));
+                    Navigator.pop(context);
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            ),
+          );
+        }),
+// Check
+// View
+            ((value) {
+          setState(() {
+            isChecked = !isChecked;
+          });
+        }),
+            // ckeckbox value
+            isChecked,
+            showButtons);
       }).toList();
 
-      devoteesTableRows.insert(0, TableHelper().getTableHeader(showButtons));
-      return devoteesTableRows;
+      PaliasTableRows.insert(0, TableHelper().getTableHeader(showButtons));
+      return PaliasTableRows;
     }
 
     //printDashboardTable
-    List<pw.TableRow> devoteesprintTableRows(List<VaktaModel> devotedetails) {
-      List<pw.TableRow> devoteesPrintTableRows =
+    List<pw.TableRow> PaliasprintTableRows(
+        List<VaktaModel> devotedetails, font) {
+      List<pw.TableRow> PaliasPrintTableRows =
           devotedetails.map<pw.TableRow>((item) {
         printDashboardIndexNumber = printDashboardIndexNumber + 1;
         // List<Map<String, dynamic>> _data = List.generate(200, ((index) => {}));
-        return PrintTableHelper()
-            .getPrintTableRowData(item, printDashboardIndexNumber);
+        return PrintTableHelper().getPrintTableRowData(
+          item,
+          printDashboardIndexNumber,
+        );
       }).toList();
 
-      devoteesPrintTableRows.insert(
-          0, PrintTableHelper().getPrintTableHeader());
-      return devoteesPrintTableRows;
+      PaliasPrintTableRows.insert(0, PrintTableHelper().getPrintTableHeader());
+      return PaliasPrintTableRows;
     }
 
     //printSearchTable
@@ -286,8 +347,10 @@ class _NewDashboardState extends State<NewDashboard> {
         ? searchItem!.map<pw.TableRow>(
             (item) {
               printSearchIndexNumber = printSearchIndexNumber + 1;
-              return PrintTableHelper()
-                  .getPrintTableRowData(item, printSearchIndexNumber);
+              return PrintTableHelper().getPrintTableRowData(
+                item,
+                printSearchIndexNumber,
+              );
             },
           ).toList()
         : [];
@@ -311,27 +374,62 @@ class _NewDashboardState extends State<NewDashboard> {
                 searchDasboardIndexNumber = 0;
                 setState(() {
                   editedVaktadata = item;
-                  devoteeNameController.text = item.name ?? '';
+                  PaliaNameController.text = item.name ?? '';
                   sanghaNameController.text = item.sangha ?? '';
                   pranamiController.text =
                       Utility.formatCurrency(item.pranaami);
                   paliDateController.text = item.paaliDate ?? '';
-                  sammilaniNumberController.text = item.sammilaniNo ?? '';
-                  sammilaniYearController.text = item.sammilaniYear ?? '';
+                  sammilaniNumberController.text =
+                      item.sammilaniData?.sammilaniNumber ?? '';
+                  sammilaniYearController.text =
+                      item.sammilaniData?.sammilaniYear ?? '';
+                  sammilaniPlaceController.text =
+                      item.sammilaniData?.sammilaniPlace ?? '';
                   remarkController.text = item.remark ?? '';
+                  receiptDateController.text = item.receiptDate ?? '';
+                  receiptNumberController.text = item.receiptNo ?? '';
                 });
-                showdilouge('Update Devotee Details', 'Update');
+                showdilouge('Update Palia Details', 'Update');
               }),
                       //delete
                       (() {
-                searchDasboardIndexNumber = 0;
-                DevoteeAPI().removeDevotee(item.docId);
-                Navigator.push(context, MaterialPageRoute(
-                  builder: (context) {
-                    return const NewDashboard();
-                  },
-                ));
-              }), showButtons);
+                showDialog<String>(
+                  context: context,
+                  builder: (BuildContext context) => AlertDialog(
+                    title: const Text('Delete User'),
+                    content: const Text(
+                        'Do You Want to delete the user permanently?'),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, 'Cancel'),
+                        child: const Text('Cancel'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          searchDasboardIndexNumber = 0;
+                          PaliaAPI().removePalia(item.docId);
+                          Navigator.push(context, MaterialPageRoute(
+                            builder: (context) {
+                              return const HomeScreen();
+                            },
+                          ));
+                          Navigator.pop(context);
+                        },
+                        child: const Text('OK'),
+                      ),
+                    ],
+                  ),
+                );
+              }),
+                      // View
+                      ((value) {
+                setState(() {
+                  isChecked = !isChecked;
+                });
+              }),
+                      // ckeckbox value
+                      isChecked,
+                      showButtons);
             },
           ).toList()
         : [];
@@ -347,73 +445,132 @@ class _NewDashboardState extends State<NewDashboard> {
               width: 20.00),
         ),
         automaticallyImplyLeading: false,
-        title: Text(
-          'Sammilani Dinikia Pali',
+        title: const Text(
+          'ସମ୍ମିଳନୀ ଦିନିକିଆ ପାଳି',
         ),
         actions: [
           Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: SearchSDP(
-                dashboardindexNumber: 0,
-                searchDasboardIndexNumber: 0,
-                onSubmitPress:
-                    (result, selectedSearchType, sdpSearchController) {
-                  searchDasboardIndexNumber = 0;
-                  dashboardindexNumber = 0;
-                  log(selectedSearchType);
-                  log(sdpSearchController);
-                  setState(() {
-                    selectedtypesearch = selectedSearchType;
-                    sdpseacrchfield = sdpSearchController;
-                    searchItem = result;
-                    print(result);
-                  });
-                },
-              )),
-          CupertinoButton(
-            onPressed: (() {
-              dashboardindexNumber = 0;
-              searchDasboardIndexNumber = 0;
-              printDashboardIndexNumber = 0;
-              printSearchIndexNumber = 0;
-              showdilouge(
-                'Add Devotee',
-                'Add',
-              );
-              devoteeNameController.text = '';
-
-              sanghaNameController.text = '';
-
-              pranamiController.text = '';
-              paliDateController.text = '';
-              sammilaniNumberController.text = '';
-              sammilaniYearController.text = '';
-              remarkController.text = '';
-
-              // Navigator.push(
-              //     context,
-              //     MaterialPageRoute(
-              //         builder: (context) => Add_Edit_DetailsScreen(
-              //             title: 'Add Member', buttonText: 'Add')));
-            }),
-            child: const Icon(
-              Icons.add,
-              color: Colors.white,
+            padding: const EdgeInsets.all(8.0),
+            child: OutlinedButton(
+              style: OutlinedButton.styleFrom(
+                side: const BorderSide(
+                  width: 1.0,
+                  color: Colors.white,
+                ),
+                foregroundColor: Colors.white,
+              ),
+              onPressed: () {
+                showDialog<String>(
+                  context: context,
+                  builder: (BuildContext context) => AlertDialog(
+                    title: const Text('Search Palia'),
+                    content: Column(
+                      children: [
+                        TextFormField(),
+                      ],
+                    ),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, 'Cancel'),
+                        child: const Text('Cancel'),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, 'OK'),
+                        child: const Text('OK'),
+                      ),
+                    ],
+                  ),
+                );
+              },
+              child: const Text('Search'),
             ),
+            // SearchSDP(
+            //   dashboardindexNumber: 0,
+            //   searchDasboardIndexNumber: 0,
+            //   onSubmitPress: (result, selectedSearchType, sdpSearchController) {
+            //     searchDasboardIndexNumber = 0;
+            //     dashboardindexNumber = 0;
+            //     log(selectedSearchType);
+            //     log(sdpSearchController);
+            //     setState(() {
+            //       selectedtypesearch = selectedSearchType;
+            //       sdpseacrchfield = sdpSearchController;
+            //       searchItem = result;
+            //       print(result);
+            //     });
+            //   },
+            // ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  side: const BorderSide(
+                    width: 1.0,
+                    color: Colors.white,
+                  ),
+                  foregroundColor: Colors.white,
+                ),
+                onPressed: (() {
+                  dashboardindexNumber = 0;
+                  searchDasboardIndexNumber = 0;
+                  printDashboardIndexNumber = 0;
+                  printSearchIndexNumber = 0;
+                  showdilouge(
+                    'Add Palia',
+                    'Add',
+                  );
+                  PaliaNameController.text = '';
+
+                  sanghaNameController.text = '';
+
+                  pranamiController.text = '';
+                  paliDateController.text = '';
+                  sammilaniNumberController.text = '';
+                  sammilaniYearController.text = '';
+                  sammilaniPlaceController.text = '';
+                  remarkController.text = '';
+                  receiptDateController.text = '';
+                  receiptNumberController.text = '';
+
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (context) => Add_Edit_DetailsScreen(
+                  //             title: 'Add Member', buttonText: 'Add')));
+                }),
+                child: const Text(
+                  'Add Palia',
+                  style: TextStyle(color: Colors.white),
+                )),
           ),
           const SizedBox(width: 20),
           Padding(
             padding: const EdgeInsets.only(right: 20),
-            child: IconButton(
-              onPressed: () {
-                UserAPI().logout();
-                Navigator.push(context, MaterialPageRoute(
-                  builder: (context) {
-                    return const EmailSignIn();
-                  },
-                ));
-              },
-              icon: const Icon(Icons.logout_rounded),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: OutlinedButton(
+                // style: ButtonStyle(
+                //   shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                //       borderRadius: BorderRadius.circular(15.0))),
+                // ),
+                style: OutlinedButton.styleFrom(
+                  side: const BorderSide(
+                    width: 1.0,
+                    color: Colors.white,
+                  ),
+                  foregroundColor: Colors.white,
+                ),
+                onPressed: () {
+                  UserAPI().logout();
+                  Navigator.push(context, MaterialPageRoute(
+                    builder: (context) {
+                      return const EmailSignIn();
+                    },
+                  ));
+                },
+                child: const Text('Logout'),
+              ),
             ),
           ),
         ],
@@ -427,7 +584,7 @@ class _NewDashboardState extends State<NewDashboard> {
                     Expanded(
                       child: SingleChildScrollView(
                         child: FutureBuilder(
-                          future: DevoteeAPI().fetchAllDevotees(),
+                          future: PaliaAPI().fetchAllPalias(),
                           builder:
                               (BuildContext context, AsyncSnapshot snapshot) {
                             if (snapshot.hasError) {
@@ -464,7 +621,11 @@ class _NewDashboardState extends State<NewDashboard> {
                                             printDashboardIndexNumber = 0;
                                             printSearchIndexNumber = 0;
                                             final doc = pw.Document();
-
+                                            baloobhaina2font =
+                                                await PdfGoogleFonts
+                                                    .balooBhaina2Regular();
+                                            notoSansfont = await PdfGoogleFonts
+                                                .notoSansOriyaRegular();
                                             doc.addPage(
                                               pw.Page(
                                                 orientation:
@@ -473,6 +634,25 @@ class _NewDashboardState extends State<NewDashboard> {
                                                 build: (pw.Context context) {
                                                   // return pw.Text('Hello');
                                                   return pw.Column(children: [
+                                                    pw.Row(
+                                                        mainAxisAlignment: pw
+                                                            .MainAxisAlignment
+                                                            .center,
+                                                        children: [
+                                                          pw.Text('ଜୟଗୁରୁ',
+                                                              style:
+                                                                  pw.TextStyle(
+                                                                font:
+                                                                    baloobhaina2font,
+                                                                fontSize: 20,
+                                                                fontWeight: pw
+                                                                    .FontWeight
+                                                                    .normal,
+                                                              ))
+                                                        ]),
+                                                    pw.SizedBox(
+                                                      height: 30,
+                                                    ),
                                                     pw.Table(
                                                       border:
                                                           const pw.TableBorder(
@@ -485,8 +665,9 @@ class _NewDashboardState extends State<NewDashboard> {
                                                                     .solid),
                                                       ),
                                                       children:
-                                                          devoteesprintTableRows(
-                                                              snapshot.data),
+                                                          PaliasprintTableRows(
+                                                              snapshot.data,
+                                                              baloobhaina2font),
                                                     ),
                                                   ]);
                                                 },
@@ -532,8 +713,8 @@ class _NewDashboardState extends State<NewDashboard> {
                                                   color: Color(0XFF3f51b5),
                                                   style: BorderStyle.solid),
                                             ),
-                                            children: devoteesTableRows(
-                                                snapshot.data),
+                                            children:
+                                                PaliasTableRows(snapshot.data),
                                           ),
                                         ],
                                       ),
@@ -566,6 +747,9 @@ class _NewDashboardState extends State<NewDashboard> {
                         Text(' Total Record - ${searchItem?.length}'),
                         Text(
                             'Search By- $selectedtypesearch on $sdpseacrchfield'),
+                        if (searchItem?.length != null)
+                          Text(
+                              'Total Pranami = ${searchItem?.length} × 1101 = ${(searchItem?.length)! * (1101)} '),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
@@ -573,7 +757,7 @@ class _NewDashboardState extends State<NewDashboard> {
                                 onPressed: () {
                                   Navigator.push(context, MaterialPageRoute(
                                     builder: (context) {
-                                      return const NewDashboard();
+                                      return const HomeScreen();
                                     },
                                   ));
                                 },
@@ -612,6 +796,19 @@ class _NewDashboardState extends State<NewDashboard> {
                                           crossAxisAlignment:
                                               pw.CrossAxisAlignment.start,
                                           children: [
+                                            pw.Row(
+                                                mainAxisAlignment:
+                                                    pw.MainAxisAlignment.center,
+                                                children: [
+                                                  pw.Text('JAYAGURU',
+                                                      style: pw.TextStyle(
+                                                          fontSize: 20,
+                                                          fontWeight: pw
+                                                              .FontWeight.bold))
+                                                ]),
+                                            pw.SizedBox(
+                                              height: 30,
+                                            ),
                                             pw.Text(
                                                 ' Total Record - ${searchItem?.length}'),
                                             pw.Text(

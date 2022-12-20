@@ -3,37 +3,37 @@ import 'package:sdp/Models/vaktaModel.dart';
 
 enum SearchBy { name, company }
 
-class DevoteeAPI {
+class PaliaAPI {
   SearchBy? searchBy;
-  //Add Devotee
+  //Add Palia
   addUser(VaktaModel addvakta) async {
     final CollectionReference userCollection =
-        FirebaseFirestore.instance.collection('devoteeList');
+        FirebaseFirestore.instance.collection('paliaList');
     await userCollection.doc(addvakta.docId).set(addvakta.toMap());
   }
 
 //FetchUser
-  Future<List<VaktaModel>> fetchAllDevotees() async {
+  Future<List<VaktaModel>> fetchAllPalias() async {
     try {
-      return FirebaseFirestore.instance.collection('devoteeList').get().then(
+      return FirebaseFirestore.instance.collection('paliaList').get().then(
         (querysnapshot) {
           //print('********${querysnapshot.docs.length}');
-          List<VaktaModel> lstDevotees = [];
+          List<VaktaModel> lstPalias = [];
           for (var element in querysnapshot.docs) {
-            final devoteeData = element.data() as Map<String, dynamic>;
-            final devoteModel = VaktaModel.fromMap(devoteeData);
+            final PaliaData = element.data() as Map<String, dynamic>;
+            final devoteModel = VaktaModel.fromMap(PaliaData);
             print('Medicine model in API $devoteModel');
-            lstDevotees.add(devoteModel);
+            lstPalias.add(devoteModel);
           }
-          lstDevotees.sort(
+          lstPalias.sort(
             (a, b) {
               return b.createdOn.toString().compareTo(a.createdOn.toString());
             },
           );
-          return lstDevotees;
+          return lstPalias;
         },
       );
-      // return lstdevotee;
+      // return lstPalia;
     } catch (e) {
       print(e);
     }
@@ -43,13 +43,13 @@ class DevoteeAPI {
 // search user
   Future<List<VaktaModel>?> searchSDP(
       String? searchBy, String searchedItem) async {
-    final CollectionReference devoteeCollection =
-        FirebaseFirestore.instance.collection('devoteeList');
-    return devoteeCollection.get().then((querysnapshot) {
+    final CollectionReference PaliaCollection =
+        FirebaseFirestore.instance.collection('paliaList');
+    return PaliaCollection.get().then((querysnapshot) {
       List<VaktaModel> result = [];
       for (var element in querysnapshot.docs) {
-        final devotee = element.data() as Map<String, dynamic>;
-        final vaktaDetails = VaktaModel.fromMap(devotee);
+        final Palia = element.data() as Map<String, dynamic>;
+        final vaktaDetails = VaktaModel.fromMap(Palia);
         if (searchBy == 'Name') {
           if (vaktaDetails.name
                   ?.toLowerCase()
@@ -68,12 +68,30 @@ class DevoteeAPI {
           if (vaktaDetails.paaliDate?.contains(searchedItem) ?? false) {
             result.add(vaktaDetails);
           }
-        } else if (searchBy == 'Sammilani No') {
-          if (vaktaDetails.sammilaniNo?.contains(searchedItem) ?? false) {
+        } else if (searchBy == 'Sammilani Number') {
+          if (vaktaDetails.sammilaniData?.sammilaniNumber
+                  ?.contains(searchedItem) ??
+              false) {
             result.add(vaktaDetails);
           }
-        } else if (searchBy == 'sammilani Year') {
-          if (vaktaDetails.sammilaniYear?.contains(searchedItem) ?? false) {
+        } else if (searchBy == 'Sammilani Year') {
+          if (vaktaDetails.sammilaniData?.sammilaniYear
+                  ?.contains(searchedItem) ??
+              false) {
+            result.add(vaktaDetails);
+          }
+        } else if (searchBy == 'Sammilani Place') {
+          if (vaktaDetails.sammilaniData?.sammilaniPlace
+                  ?.contains(searchedItem) ??
+              false) {
+            result.add(vaktaDetails);
+          }
+        } else if (searchBy == 'Receipt Date') {
+          if (vaktaDetails.receiptDate?.contains(searchedItem) ?? false) {
+            result.add(vaktaDetails);
+          }
+        } else if (searchBy == 'Receipt Number') {
+          if (vaktaDetails.receiptNo?.contains(searchedItem) ?? false) {
             result.add(vaktaDetails);
           }
         }
@@ -82,16 +100,15 @@ class DevoteeAPI {
     });
   }
 
-  Future editDevoteeDetails(VaktaModel devotee) async {
-    var medicineCollection =
-        FirebaseFirestore.instance.collection('devoteeList');
+  Future editPaliaDetails(VaktaModel Palia) async {
+    var medicineCollection = FirebaseFirestore.instance.collection('paliaList');
 
-    medicineCollection.doc(devotee.docId).update(devotee.toMap());
+    medicineCollection.doc(Palia.docId).update(Palia.toMap());
   }
 
-  removeDevotee(String? docId) {
+  removePalia(String? docId) {
     final CollectionReference medicineCollection =
-        FirebaseFirestore.instance.collection('devoteeList');
+        FirebaseFirestore.instance.collection('paliaList');
     medicineCollection.doc(docId).delete();
   }
 }

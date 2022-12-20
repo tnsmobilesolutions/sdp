@@ -23,8 +23,11 @@ class _SearchSDPState extends State<SearchSDP> {
     'Name',
     'Sangha',
     'Pali Date',
-    'Sammilani No',
-    'Sammilani Year'
+    'Sammilani Number',
+    'Sammilani Year',
+    'Sammilani Place',
+    'Receipt Date',
+    'Receipt Number',
   ];
   final TextEditingController sdpSearchController = TextEditingController();
   String _selectedSearchType = 'Name';
@@ -46,7 +49,7 @@ class _SearchSDPState extends State<SearchSDP> {
           Expanded(
             child: TextFormField(
               onFieldSubmitted: (value) async {
-                final result = await DevoteeAPI()
+                final result = await PaliaAPI()
                     .searchSDP(_selectedSearchType, sdpSearchController.text);
                 widget.onSubmitPress(
                     result, _selectedSearchType, sdpSearchController.text);
@@ -153,7 +156,7 @@ class _SearchSDPState extends State<SearchSDP> {
               onPressed: () async {
                 widget.searchDasboardIndexNumber = 0;
                 widget.dashboardindexNumber = 0;
-                final result = await DevoteeAPI()
+                final result = await PaliaAPI()
                     .searchSDP(_selectedSearchType, sdpSearchController.text);
                 widget.onSubmitPress(
                     result, _selectedSearchType, sdpSearchController.text);

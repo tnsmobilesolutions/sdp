@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sdp/Models/vaktaModel.dart';
 
-class ViewDevotee extends StatelessWidget {
-  const ViewDevotee({Key? key, required this.item}) : super(key: key);
+class ViewPalia extends StatelessWidget {
+  const ViewPalia({Key? key, required this.item}) : super(key: key);
   final VaktaModel item;
 
   @override
@@ -39,27 +39,29 @@ class ViewDevotee extends StatelessWidget {
             const Divider(
               thickness: 0.5,
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text(
-                  'Pali Date',
-                  style: TextStyle(color: Colors.grey),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Pali Date',
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                    Text(item.paaliDate.toString())
+                  ],
                 ),
-                Text(item.paaliDate.toString())
-              ],
-            ),
-            const Divider(
-              thickness: 0.5,
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Pranaami',
-                  style: TextStyle(color: Colors.grey),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    const Text(
+                      'Pranaami',
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                    Text('₹${item.pranaami}')
+                  ],
                 ),
-                Text('₹${item.pranaami}')
               ],
             ),
             const Divider(
@@ -75,7 +77,7 @@ class ViewDevotee extends StatelessWidget {
                       'Sammilani No.',
                       style: TextStyle(color: Colors.grey),
                     ),
-                    Text(item.sammilaniNo.toString())
+                    Text('${item.sammilaniData?.sammilaniNumber}')
                   ],
                 ),
                 // const Divider(
@@ -88,7 +90,17 @@ class ViewDevotee extends StatelessWidget {
                       'Sammilani Year',
                       style: TextStyle(color: Colors.grey),
                     ),
-                    Text(item.sammilaniYear.toString())
+                    Text('${item.sammilaniData?.sammilaniYear}')
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    const Text(
+                      'Sammilani Place',
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                    Text('${item.sammilaniData?.sammilaniPlace}')
                   ],
                 ),
               ],

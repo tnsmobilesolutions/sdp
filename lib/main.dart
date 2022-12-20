@@ -7,7 +7,7 @@ import 'package:material_color_generator/material_color_generator.dart';
 import 'package:sdp/Login/EmailSignIn.dart';
 
 import 'package:sdp/firebase_options.dart';
-import 'package:sdp/newDashboard.dart';
+import 'package:sdp/homeScreen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
             if (user == null) {
               return EmailSignIn();
             } else {
-              return NewDashboard();
+              return HomeScreen();
             }
           }
           return Center(child: CircularProgressIndicator());

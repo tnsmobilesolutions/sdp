@@ -2,13 +2,16 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 
+import 'package:sdp/Models/sammilaniModel.dart';
+
 class VaktaModel {
   String? docId;
   String? name;
   String? sangha;
   String? paaliDate;
-  String? sammilaniNo;
-  String? sammilaniYear;
+  String? receiptDate;
+  String? receiptNo;
+  SammilaniModel? sammilaniData;
   double? pranaami;
   String? remark;
   String? createdBy;
@@ -20,8 +23,9 @@ class VaktaModel {
     this.name,
     this.sangha,
     this.paaliDate,
-    this.sammilaniNo,
-    this.sammilaniYear,
+    this.receiptDate,
+    this.receiptNo,
+    required this.sammilaniData,
     this.pranaami,
     this.remark,
     this.createdBy,
@@ -35,8 +39,9 @@ class VaktaModel {
     String? name,
     String? sangha,
     String? paaliDate,
-    String? sammilaniNo,
-    String? sammilaniYear,
+    String? receiptDate,
+    String? receiptNo,
+    SammilaniModel? sammilaniData,
     double? pranaami,
     String? remark,
     String? createdBy,
@@ -49,8 +54,9 @@ class VaktaModel {
       name: name ?? this.name,
       sangha: sangha ?? this.sangha,
       paaliDate: paaliDate ?? this.paaliDate,
-      sammilaniNo: sammilaniNo ?? this.sammilaniNo,
-      sammilaniYear: sammilaniYear ?? this.sammilaniYear,
+      receiptDate: receiptDate ?? this.receiptDate,
+      receiptNo: receiptNo ?? this.receiptNo,
+      sammilaniData: sammilaniData ?? this.sammilaniData,
       pranaami: pranaami ?? this.pranaami,
       remark: remark ?? this.remark,
       createdBy: createdBy ?? this.createdBy,
@@ -75,11 +81,14 @@ class VaktaModel {
     if (paaliDate != null) {
       result.addAll({'paaliDate': paaliDate});
     }
-    if (sammilaniNo != null) {
-      result.addAll({'sammilaniNo': sammilaniNo});
+    if (receiptDate != null) {
+      result.addAll({'receiptDate': receiptDate});
     }
-    if (sammilaniYear != null) {
-      result.addAll({'sammilaniYear': sammilaniYear});
+    if (receiptNo != null) {
+      result.addAll({'receiptNo': receiptNo});
+    }
+    if (sammilaniData != null) {
+      result.addAll({'sammilaniData': sammilaniData!.toMap()});
     }
     if (pranaami != null) {
       result.addAll({'pranaami': pranaami});
@@ -109,8 +118,11 @@ class VaktaModel {
       name: map['name'],
       sangha: map['sangha'],
       paaliDate: map['paaliDate'],
-      sammilaniNo: map['sammilaniNo'],
-      sammilaniYear: map['sammilaniYear'],
+      receiptDate: map['receiptDate'],
+      receiptNo: map['receiptNo'],
+      sammilaniData: map['sammilaniData'] != null
+          ? SammilaniModel.fromMap(map['sammilaniData'])
+          : null,
       pranaami: map['pranaami']?.toDouble(),
       remark: map['remark'],
       createdBy: map['createdBy'],
@@ -127,7 +139,7 @@ class VaktaModel {
 
   @override
   String toString() {
-    return 'VaktaModel(docId: $docId, name: $name, sangha: $sangha, paaliDate: $paaliDate, sammilaniNo: $sammilaniNo, sammilaniYear: $sammilaniYear, pranaami: $pranaami, remark: $remark, createdBy: $createdBy, createdOn: $createdOn, updatedBy: $updatedBy, updatedOn: $updatedOn)';
+    return 'VaktaModel(docId: $docId, name: $name, sangha: $sangha, paaliDate: $paaliDate, receiptDate: $receiptDate, receiptNo: $receiptNo, sammilaniData: $sammilaniData, pranaami: $pranaami, remark: $remark, createdBy: $createdBy, createdOn: $createdOn, updatedBy: $updatedBy, updatedOn: $updatedOn)';
   }
 
   @override
@@ -139,8 +151,9 @@ class VaktaModel {
         other.name == name &&
         other.sangha == sangha &&
         other.paaliDate == paaliDate &&
-        other.sammilaniNo == sammilaniNo &&
-        other.sammilaniYear == sammilaniYear &&
+        other.receiptDate == receiptDate &&
+        other.receiptNo == receiptNo &&
+        other.sammilaniData == sammilaniData &&
         other.pranaami == pranaami &&
         other.remark == remark &&
         other.createdBy == createdBy &&
@@ -155,8 +168,9 @@ class VaktaModel {
         name.hashCode ^
         sangha.hashCode ^
         paaliDate.hashCode ^
-        sammilaniNo.hashCode ^
-        sammilaniYear.hashCode ^
+        receiptDate.hashCode ^
+        receiptNo.hashCode ^
+        sammilaniData.hashCode ^
         pranaami.hashCode ^
         remark.hashCode ^
         createdBy.hashCode ^
