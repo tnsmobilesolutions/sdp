@@ -2,7 +2,7 @@ import 'dart:developer';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:sdp/API/devoteeAPI.dart';
+import 'package:sdp/API/paliaaAPI.dart';
 import 'package:sdp/API/userAPI.dart';
 import 'package:sdp/Login/EmailSignIn.dart';
 import 'package:sdp/Models/sammilaniModel.dart';
@@ -11,8 +11,9 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 import 'package:sdp/add_edit_dilougeBox.dart';
+import 'package:sdp/newSearch.dart';
 import 'package:sdp/print.dart';
-import 'package:sdp/search.dart';
+
 import 'package:sdp/table_header.dart';
 import 'package:sdp/utility.dart';
 import 'package:sdp/viewDevotee.dart';
@@ -51,25 +52,18 @@ class _HomeScreenState extends State<HomeScreen> {
   // }
 
   final _formKey = GlobalKey<FormState>();
-
   final PaliaNameController = TextEditingController();
-
   final paliDateController = TextEditingController();
   final receiptDateController = TextEditingController();
-
   final sanghaNameController = TextEditingController();
-
-  //final medicineTypeController = TextEditingController();
   final sammilaniPlaceController = TextEditingController();
-
   final pranamiController = TextEditingController();
-
   final sammilaniYearController = TextEditingController();
-
   final remarkController = TextEditingController();
-
   final sammilaniNumberController = TextEditingController();
   final receiptNumberController = TextEditingController();
+  // Search
+
   // String? currentAppMode;
 
   // APIType? type;
@@ -301,7 +295,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         return const HomeScreen();
                       },
                     ));
-                    Navigator.pop(context);
                   },
                   child: const Text('OK'),
                 ),
@@ -434,7 +427,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ).toList()
         : [];
     searchRow.insert(0, TableHelper().getTableHeader(showButtons));
-
     return Scaffold(
       appBar: AppBar(
         leading: const SizedBox(
@@ -464,21 +456,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   context: context,
                   builder: (BuildContext context) => AlertDialog(
                     title: const Text('Search Palia'),
-                    content: Column(
-                      children: [
-                        TextFormField(),
-                      ],
+                    content: NewSearch(
+                      onSubmitPress: (result) {
+                        searchDasboardIndexNumber = 0;
+                        dashboardindexNumber = 0;
+
+                        setState(() {
+                          searchItem = result;
+                          print(result);
+                        });
+                      },
                     ),
-                    actions: <Widget>[
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, 'Cancel'),
-                        child: const Text('Cancel'),
-                      ),
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, 'OK'),
-                        child: const Text('OK'),
-                      ),
-                    ],
                   ),
                 );
               },
