@@ -332,8 +332,8 @@ class _DashBoardState extends State<DashBoard> {
                                 Text(
                                   'ସମ୍ମିଳନୀ',
                                   style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold),
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.normal),
                                 ),
                                 Text(
                                   '2022',
@@ -351,21 +351,22 @@ class _DashBoardState extends State<DashBoard> {
                             const Text(
                               'Satsikhya Mandir, Bhubaneswar',
                               style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
+                                  fontSize: 17, fontWeight: FontWeight.normal),
                             ),
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: const [
                                 Text(
                                   '2000',
                                   style: TextStyle(
-                                      fontSize: 25,
+                                      fontSize: 50,
                                       fontWeight: FontWeight.bold),
                                 ),
                                 Text(
-                                  ' ଦିନିକିଆ ପାଳି',
+                                  'ଦିନିକିଆ ପାଳି',
                                   style: TextStyle(
                                       fontSize: 17,
-                                      fontWeight: FontWeight.bold),
+                                      fontWeight: FontWeight.normal),
                                 )
                               ],
                             )

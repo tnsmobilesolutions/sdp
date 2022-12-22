@@ -4,13 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:sdp/Models/vaktaModel.dart';
 
 class TableHelper {
-  TableRow getTableHeader(bool showButtons) {
+  TableRow getTableHeader(
+    bool showButtons,
+    Function(bool?)? onHeaderCheckChanged,
+  ) {
     return TableRow(children: <Widget>[
-      const Padding(
+      Padding(
         padding: EdgeInsets.all(10.0),
-        child: Text(
-          '',
-          style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+        child: Checkbox(
+          value: false,
+          onChanged: onHeaderCheckChanged,
         ),
       ),
       const Padding(
@@ -92,6 +95,7 @@ class TableHelper {
       Padding(
         padding: const EdgeInsets.all(8.0),
         child: Checkbox(
+          key: Key(item.docId ?? "0"),
           value: value,
           onChanged: onCheckedBox,
         ),

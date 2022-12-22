@@ -35,7 +35,6 @@ class _HomeScreenState extends State<HomeScreen> {
   VaktaModel? editedVaktadata;
   List<VaktaModel>? searchItem;
   // List<VaktaModel> devotedetails = [];
-  int dashboardindexNumber = 0;
   int searchDasboardIndexNumber = 0;
   int printDashboardIndexNumber = 0;
   int printSearchIndexNumber = 0;
@@ -90,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   IconButton(
                       onPressed: () {
                         searchDasboardIndexNumber = 0;
-                        dashboardindexNumber = 0;
+                        // dashboardindexNumber = 0;
                         Navigator.pop(context);
                       },
                       icon: const Icon(Icons.close, color: Color(0XFF3f51b5)))
@@ -264,6 +263,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    int dashboardindexNumber = 0;
     //DashboardList
     List<TableRow> PaliasTableRows(List<VaktaModel> devotedetails) {
       List<TableRow> PaliasTableRows = devotedetails.map<TableRow>((item) {
@@ -277,7 +277,7 @@ class _HomeScreenState extends State<HomeScreen> {
         },
             //Edit
             (() {
-          dashboardindexNumber = 0;
+          // dashboardindexNumber = 0;
           setState(() {
             editedVaktadata = item;
             PaliaNameController.text = item.name ?? '';
@@ -311,7 +311,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 TextButton(
                   onPressed: () {
-                    dashboardindexNumber = 0;
+                    // dashboardindexNumber = 0;
                     PaliaAPI().removePalia(item.docId);
                     Navigator.push(context, MaterialPageRoute(
                       builder: (context) {
@@ -337,7 +337,11 @@ class _HomeScreenState extends State<HomeScreen> {
             showButtons);
       }).toList();
 
-      PaliasTableRows.insert(0, TableHelper().getTableHeader(showButtons));
+      PaliasTableRows.insert(
+          0,
+          TableHelper().getTableHeader(showButtons, (value) {
+            print(value);
+          }));
       return PaliasTableRows;
     }
 
@@ -437,7 +441,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 );
               }),
-                      // View
+                      // Checked / Unchecked
                       ((value) {
                 setState(() {
                   isChecked = !isChecked;
@@ -449,7 +453,11 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ).toList()
         : [];
-    searchRow.insert(0, TableHelper().getTableHeader(showButtons));
+    searchRow.insert(
+        0,
+        TableHelper().getTableHeader(showButtons, (value) {
+          print(value);
+        }));
     return Scaffold(
       appBar: AppBar(
         leading: const SizedBox(
@@ -482,12 +490,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     content: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: SearchSDP(
-                        dashboardindexNumber: 0,
+                        // dashboardindexNumber: 0,
                         searchDasboardIndexNumber: 0,
                         onSubmitPress:
                             (result, selectedSearchType, sdpSearchController) {
                           searchDasboardIndexNumber = 0;
-                          dashboardindexNumber = 0;
+                          // dashboardindexNumber = 0;
                           log(selectedSearchType);
                           log(sdpSearchController);
                           setState(() {
@@ -518,7 +526,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   foregroundColor: Colors.white,
                 ),
                 onPressed: (() {
-                  dashboardindexNumber = 0;
+                  // dashboardindexNumber = 0;
                   searchDasboardIndexNumber = 0;
                   printDashboardIndexNumber = 0;
                   printSearchIndexNumber = 0;
@@ -611,7 +619,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                       children: [
                                         IconButton(
                                           onPressed: () {
-                                            dashboardindexNumber = 0;
+                                            // dashboardindexNumber = 0;
                                             searchDasboardIndexNumber = 0;
                                             printDashboardIndexNumber = 0;
                                             printSearchIndexNumber = 0;
@@ -792,7 +800,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 final doc = pw.Document();
                                 printSearchIndexNumber = 0;
                                 printDashboardIndexNumber = 0;
-                                dashboardindexNumber = 0;
+                                // dashboardindexNumber = 0;
                                 searchDasboardIndexNumber = 0;
 
                                 doc.addPage(
