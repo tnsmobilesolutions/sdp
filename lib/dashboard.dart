@@ -197,22 +197,25 @@ class _DashBoardState extends State<DashBoard> {
                     title: const Text('Search Palia'),
                     content: Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: SearchSDP(
-                        dashboardindexNumber: 0,
-                        searchDasboardIndexNumber: 0,
-                        onSubmitPress:
-                            (result, selectedSearchType, sdpSearchController) {
-                          searchDasboardIndexNumber = 0;
-                          dashboardindexNumber = 0;
-                          log(selectedSearchType);
-                          log(sdpSearchController);
-                          setState(() {
-                            selectedtypesearch = selectedSearchType;
-                            sdpseacrchfield = sdpSearchController;
-                            searchItem = result;
-                            print(result);
-                          });
-                        },
+                      child: SizedBox(
+                        width: 400,
+                        child: SearchSDP(
+                          dashboardindexNumber: 0,
+                          searchDasboardIndexNumber: 0,
+                          onSubmitPress: (result, selectedSearchType,
+                              sdpSearchController) {
+                            searchDasboardIndexNumber = 0;
+                            dashboardindexNumber = 0;
+                            log(selectedSearchType);
+                            log(sdpSearchController);
+                            setState(() {
+                              selectedtypesearch = selectedSearchType;
+                              sdpseacrchfield = sdpSearchController;
+                              searchItem = result;
+                              print(result);
+                            });
+                          },
+                        ),
                       ),
                     ),
                   ),

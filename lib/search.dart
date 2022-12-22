@@ -22,7 +22,7 @@ class SearchSDP extends StatefulWidget {
 
 class _SearchSDPState extends State<SearchSDP> {
   List<String?> searchSangha = [];
-  bool sshowAllNames = false;
+  bool showAllNames = false;
   TextEditingController searchSanghaController = TextEditingController();
   List<String> searchBy = [
     'Name',
@@ -51,13 +51,6 @@ class _SearchSDPState extends State<SearchSDP> {
                     padding: const EdgeInsets.only(left: 5),
                     child: Row(
                       children: [
-                        const Icon(
-                          Icons.search,
-                          color: Color(0XFF3f51b5),
-                        ),
-                        SizedBox(
-                          width: 5,
-                        ),
                         DropdownButton(
                           style: const TextStyle(
                               color: Color(0XFF3f51b5), //Font color
@@ -69,6 +62,13 @@ class _SearchSDPState extends State<SearchSDP> {
                           borderRadius: BorderRadius.circular(20),
                           value: _selectedSearchType,
                           onChanged: (value) {
+                            if (value != "Sammilani Number" &&
+                                value != "Sammilani Year" &&
+                                value != "Sammilani Place") {
+                              setState(() {
+                                showAllNames = false;
+                              });
+                            }
                             setState(() {
                               _selectedSearchType = value.toString();
                             });
@@ -94,10 +94,9 @@ class _SearchSDPState extends State<SearchSDP> {
                       ],
                     ),
                   ),
-                  // const VerticalDivider(
-                  //   color: Color(0XFF3f51b5),
-                  //   thickness: 0.5,
-                  // ),
+                  const SizedBox(
+                    width: 10,
+                  ),
                   Expanded(
                     child: TextFormField(
                       onFieldSubmitted: (value) async {
@@ -171,42 +170,38 @@ class _SearchSDPState extends State<SearchSDP> {
                   ),
                 ],
               ),
-              if (_selectedSearchType == 'Sammilani Number')
-                SizedBox(
-                  width: MediaQuery.of(context).size.width / 5,
-                  child: Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
-                        onChanged: (value) {
-                          final sanghaaList = SanghaUtility.getAllSanghaName();
-                          if (sanghaaList.any((element) => value
-                              .toLowerCase()
-                              .contains((element?.toLowerCase()).toString()))) {
-                            print(sanghaaList);
-                            print('true');
+              if (_selectedSearchType == 'Sammilani Number' ||
+                  _selectedSearchType == 'Sammilani Year' ||
+                  _selectedSearchType == 'Sammilani Place')
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: TextFormField(
+                    onChanged: (value) {
+                      final sanghaaList = SanghaUtility.getAllSanghaName();
+                      if (sanghaaList.any((element) => value
+                          .toLowerCase()
+                          .contains((element?.toLowerCase()).toString()))) {
+                        print(sanghaaList);
+                        print('true');
 
-                            searchSangha.add(value);
-                          }
-                          print(sanghaaList);
+                        searchSangha.add(value);
+                      }
+                      print(sanghaaList);
 
-                          setState(() {
-                            sshowAllNames = true;
-                          });
-                        },
-                        controller: searchSanghaController,
-                        decoration: const InputDecoration(
-                            border: OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20.0)),
-                              borderSide: BorderSide(color: Colors.white),
-                            ),
-                            labelText: 'Please enter Sangha Name'),
-                      ),
-                    ),
+                      setState(() {
+                        showAllNames = true;
+                      });
+                    },
+                    controller: searchSanghaController,
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                          borderSide: BorderSide(color: Colors.white),
+                        ),
+                        labelText: 'Please enter Sangha Name'),
                   ),
                 ),
-              if (sshowAllNames == true)
+              if (showAllNames == true)
                 SizedBox(
                   height: 300,
                   width: 300,
