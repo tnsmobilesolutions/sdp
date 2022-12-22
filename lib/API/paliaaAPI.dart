@@ -41,8 +41,8 @@ class PaliaAPI {
   }
 
 // search user
-  Future<List<VaktaModel>?> searchSDP(
-      String? searchBy, String searchedItem) async {
+  Future<List<VaktaModel>?> searchSDP(String? searchBy, String searchedItem,
+      String? sanghaSammilaniNumber) async {
     final CollectionReference PaliaCollection =
         FirebaseFirestore.instance.collection('paliaList');
     return PaliaCollection.get().then((querysnapshot) {
@@ -72,7 +72,17 @@ class PaliaAPI {
           if (vaktaDetails.sammilaniData?.sammilaniNumber
                   ?.contains(searchedItem) ??
               false) {
-            result.add(vaktaDetails);
+            if (sanghaSammilaniNumber != null && sanghaSammilaniNumber != '') {
+              if ((vaktaDetails.sammilaniData?.sammilaniNumber
+                          ?.contains(searchedItem) ??
+                      false) &&
+                  (vaktaDetails.sangha?.contains(sanghaSammilaniNumber) ??
+                      false)) {
+                result.add(vaktaDetails);
+              }
+            } else {
+              result.add(vaktaDetails);
+            }
           }
         } else if (searchBy == 'Sammilani Year') {
           if (vaktaDetails.sammilaniData?.sammilaniYear
@@ -114,244 +124,27 @@ class PaliaAPI {
 
   //Multiple Search
   // search user
-  Future<List<VaktaModel>?>? multipleSearchSDP(
-      String? name,
-      String? sangha,
-      String? paliDate,
-      String? sammilaninumber,
-      String? sammilaniyear,
-      String? sammilaniplace,
-      String? receiptDate,
-      String? receitNumber) async {
-    //firebase fetch
-    final CollectionReference PaliaCollection =
-        FirebaseFirestore.instance.collection('paliaList');
-    final searchResult = await PaliaCollection.get().then((querysnapshot) {
-      List<VaktaModel> result = [];
-      for (var element in querysnapshot.docs) {
-        final Palia = element.data() as Map<String, dynamic>;
-        //Getting all Palia in list
-        final vaktaDetails = VaktaModel.fromMap(Palia);
-//condition
-//Name
-        if (name != "" && name != null) {
-          if (vaktaDetails.name?.toLowerCase().contains(name.toLowerCase()) ??
-              false) {
-            // Name & Sangha
-            if (sangha != null && sangha != "") {
-              if ((vaktaDetails.sangha
-                          ?.toLowerCase()
-                          .contains(sangha.toLowerCase()) ??
-                      false) &&
-                  (vaktaDetails.name
-                          ?.toLowerCase()
-                          .contains(name.toLowerCase()) ??
-                      false)) {
-                // Name & Sangha & Palia Date
-                if (paliDate != null && paliDate != "") {
-                  if ((vaktaDetails.name
-                              ?.toLowerCase()
-                              .contains(name.toLowerCase()) ??
-                          false) &&
-                      (vaktaDetails.sangha
-                              ?.toLowerCase()
-                              .contains(sangha.toLowerCase()) ??
-                          false) &&
-                      (vaktaDetails.paaliDate
-                              ?.toLowerCase()
-                              .contains(paliDate.toLowerCase()) ??
-                          false)) {
-                    // Name & Sangha & Palia Date & sammilani number
-                    if (sammilaninumber != null && sammilaninumber != "") {
-                      if ((vaktaDetails.name
-                                  ?.toLowerCase()
-                                  .contains(name.toLowerCase()) ??
-                              false) &&
-                          (vaktaDetails.sangha
-                                  ?.toLowerCase()
-                                  .contains(sangha.toLowerCase()) ??
-                              false) &&
-                          (vaktaDetails.paaliDate
-                                  ?.toLowerCase()
-                                  .contains(paliDate.toLowerCase()) ??
-                              false) &&
-                          (vaktaDetails.sammilaniData?.sammilaniNumber
-                                  ?.toLowerCase()
-                                  .contains(sammilaninumber.toLowerCase()) ??
-                              false)) {
-                        // Name & Sangha & Palia Date & sammilani number & Sammilani year
-                        if (sammilaniyear != null && sammilaniyear != "") {
-                          if ((vaktaDetails.name
-                                      ?.toLowerCase()
-                                      .contains(name.toLowerCase()) ??
-                                  false) &&
-                              (vaktaDetails.sangha
-                                      ?.toLowerCase()
-                                      .contains(sangha.toLowerCase()) ??
-                                  false) &&
-                              (vaktaDetails.paaliDate
-                                      ?.toLowerCase()
-                                      .contains(paliDate.toLowerCase()) ??
-                                  false) &&
-                              (vaktaDetails.sammilaniData?.sammilaniNumber
-                                      ?.toLowerCase()
-                                      .contains(
-                                          sammilaninumber.toLowerCase()) ??
-                                  false) &&
-                              (vaktaDetails.sammilaniData?.sammilaniYear
-                                      ?.toLowerCase()
-                                      .contains(sammilaniyear.toLowerCase()) ??
-                                  false)) {
-                            if (sammilaniplace != null &&
-                                sammilaniplace != "") {
-                              if ((vaktaDetails.name
-                                          ?.toLowerCase()
-                                          .contains(name.toLowerCase()) ??
-                                      false) &&
-                                  (vaktaDetails.sangha
-                                          ?.toLowerCase()
-                                          .contains(sangha.toLowerCase()) ??
-                                      false) &&
-                                  (vaktaDetails.paaliDate
-                                          ?.toLowerCase()
-                                          .contains(paliDate.toLowerCase()) ??
-                                      false) &&
-                                  (vaktaDetails.sammilaniData?.sammilaniNumber
-                                          ?.toLowerCase()
-                                          .contains(
-                                              sammilaninumber.toLowerCase()) ??
-                                      false) &&
-                                  (vaktaDetails.sammilaniData?.sammilaniYear
-                                          ?.toLowerCase()
-                                          .contains(
-                                              sammilaniyear.toLowerCase()) ??
-                                      false) &&
-                                  (vaktaDetails.sammilaniData?.sammilaniPlace
-                                          ?.toLowerCase()
-                                          .contains(
-                                              sammilaniplace.toLowerCase()) ??
-                                      false)) {
-                                if (receiptDate != null && receiptDate != "") {
-                                  if ((vaktaDetails.name
-                                              ?.toLowerCase()
-                                              .contains(name.toLowerCase()) ??
-                                          false) &&
-                                      (vaktaDetails.sangha
-                                              ?.toLowerCase()
-                                              .contains(sangha.toLowerCase()) ??
-                                          false) &&
-                                      (vaktaDetails.paaliDate?.toLowerCase().contains(
-                                              paliDate.toLowerCase()) ??
-                                          false) &&
-                                      (vaktaDetails.sammilaniData?.sammilaniNumber?.toLowerCase().contains(
-                                              sammilaninumber.toLowerCase()) ??
-                                          false) &&
-                                      (vaktaDetails.sammilaniData?.sammilaniYear
-                                              ?.toLowerCase()
-                                              .contains(sammilaniyear
-                                                  .toLowerCase()) ??
-                                          false) &&
-                                      (vaktaDetails.sammilaniData?.sammilaniPlace
-                                              ?.toLowerCase()
-                                              .contains(sammilaniplace.toLowerCase()) ??
-                                          false) &&
-                                      (vaktaDetails.receiptDate?.toLowerCase().contains(receiptDate.toLowerCase()) ?? false)) {
-                                    if (receitNumber != null &&
-                                        receitNumber != "") {
-                                      if ((vaktaDetails.name?.toLowerCase().contains(name.toLowerCase()) ?? false) &&
-                                          (vaktaDetails.sangha?.toLowerCase().contains(sangha.toLowerCase()) ??
-                                              false) &&
-                                          (vaktaDetails.paaliDate
-                                                  ?.toLowerCase()
-                                                  .contains(
-                                                      paliDate.toLowerCase()) ??
-                                              false) &&
-                                          (vaktaDetails.sammilaniData
-                                                  ?.sammilaniNumber
-                                                  ?.toLowerCase()
-                                                  .contains(sammilaninumber
-                                                      .toLowerCase()) ??
-                                              false) &&
-                                          (vaktaDetails.sammilaniData?.sammilaniYear
-                                                  ?.toLowerCase()
-                                                  .contains(sammilaniyear
-                                                      .toLowerCase()) ??
-                                              false) &&
-                                          (vaktaDetails.sammilaniData?.sammilaniPlace
-                                                  ?.toLowerCase()
-                                                  .contains(sammilaniplace.toLowerCase()) ??
-                                              false) &&
-                                          (vaktaDetails.receiptDate?.toLowerCase().contains(receiptDate.toLowerCase()) ?? false) &&
-                                          (vaktaDetails.receiptNo?.toLowerCase().contains(receitNumber.toLowerCase()) ?? false)) {
-                                        return result.add(vaktaDetails);
-                                      }
-                                    }
+//   Future<List<VaktaModel>?>? multipleSearchSDP(
+//       String? name,
+//       String? sangha,
+//       String? paliDate,
+//       String? sammilaninumber,
+//       String? sammilaniyear,
+//       String? sammilaniplace,
+//       String? receiptDate,
+//       String? receitNumber) async {
+//     //firebase fetch
+//     final CollectionReference PaliaCollection =
+//         FirebaseFirestore.instance.collection('paliaList');
+//     final searchResult = await PaliaCollection.get().then((querysnapshot) {
+//       List<VaktaModel> result = [];
+//       for (var element in querysnapshot.docs) {
+//         final Palia = element.data() as Map<String, dynamic>;
+//         //Getting all Palia in list
+//         final vaktaDetails = VaktaModel.fromMap(Palia);
+// //condition
 
-                                    return result.add(vaktaDetails);
-                                  }
-                                }
-
-                                return result.add(vaktaDetails);
-                              }
-                            }
-
-                            return result.add(vaktaDetails);
-                          }
-                        }
-
-                        return result.add(vaktaDetails);
-                      }
-                    }
-
-                    return result.add(vaktaDetails);
-                  }
-                }
-
-                return result.add(vaktaDetails);
-              }
-            }
-
-            // return result.add(vaktaDetails);
-          }
-        } else if (sangha != null) {
-          if (vaktaDetails.sangha
-                  ?.toLowerCase()
-                  .contains(sangha.toLowerCase()) ??
-              false) {
-            result.add(vaktaDetails);
-          }
-        } else if (paliDate != null) {
-          if (vaktaDetails.paaliDate?.contains(paliDate) ?? false) {
-            result.add(vaktaDetails);
-          }
-        } else if (sammilaninumber != null) {
-          if (vaktaDetails.sammilaniData?.sammilaniNumber
-                  ?.contains(sammilaninumber) ??
-              false) {
-            result.add(vaktaDetails);
-          }
-        } else if (sammilaniyear != null) {
-          if (vaktaDetails.sammilaniData?.sammilaniYear
-                  ?.contains(sammilaniyear) ??
-              false) {
-            result.add(vaktaDetails);
-          }
-        } else if (sammilaniplace != null) {
-          if (vaktaDetails.sammilaniData?.sammilaniPlace
-                  ?.contains(sammilaniplace) ??
-              false) {
-            result.add(vaktaDetails);
-          }
-        } else if (receiptDate != null) {
-          if (vaktaDetails.receiptDate?.contains(receiptDate) ?? false) {
-            result.add(vaktaDetails);
-          }
-        } else if (receitNumber != null) {
-          if (vaktaDetails.receiptNo?.contains(receitNumber) ?? false) {
-            result.add(vaktaDetails);
-          }
-        }
-      }
-    });
-  }
+//       }
+//     });
+//   }
 }

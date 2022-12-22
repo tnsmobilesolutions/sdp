@@ -13,6 +13,7 @@ import 'package:printing/printing.dart';
 import 'package:sdp/add_edit_dilougeBox.dart';
 import 'package:sdp/newSearch.dart';
 import 'package:sdp/print.dart';
+import 'package:sdp/search.dart';
 
 import 'package:sdp/table_header.dart';
 import 'package:sdp/utility.dart';
@@ -62,6 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final remarkController = TextEditingController();
   final sammilaniNumberController = TextEditingController();
   final receiptNumberController = TextEditingController();
+  final searchSanghaController = TextEditingController();
   // Search
 
   // String? currentAppMode;
@@ -211,15 +213,36 @@ class _HomeScreenState extends State<HomeScreen> {
                           receiptNo: receiptNumberController.text,
                           //
                         );
-                        await PaliaAPI().editPaliaDetails(editUser);
-                        Navigator.popUntil(context, (route) => route.isFirst);
-                        Navigator.push(context, MaterialPageRoute(
-                          builder: (context) {
-                            return const HomeScreen();
-                          },
-                        ));
-                        // Navigator.pop(context);
-                        // setState(() {});
+                        showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            title: const Text('Edit Palia Details'),
+                            content: const Text(
+                                'Do You Want to Update Palia Details'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () =>
+                                    Navigator.pop(context, 'Cancel'),
+                                child: const Text('Cancel'),
+                              ),
+                              TextButton(
+                                onPressed: () async {
+                                  await PaliaAPI().editPaliaDetails(editUser);
+
+                                  Navigator.popUntil(
+                                      context, (route) => route.isFirst);
+
+                                  Navigator.push(context, MaterialPageRoute(
+                                    builder: (context) {
+                                      return const HomeScreen();
+                                    },
+                                  ));
+                                },
+                                child: const Text('Update'),
+                              ),
+                            ],
+                          ),
+                        );
                       }
                     }
                   }
@@ -456,39 +479,34 @@ class _HomeScreenState extends State<HomeScreen> {
                   context: context,
                   builder: (BuildContext context) => AlertDialog(
                     title: const Text('Search Palia'),
-                    content: NewSearch(
-                      onSubmitPress: (result) {
-                        searchDasboardIndexNumber = 0;
-                        dashboardindexNumber = 0;
-
-                        setState(() {
-                          searchItem = result;
-                          print(result);
-                        });
-                      },
+                    content: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SearchSDP(
+                        dashboardindexNumber: 0,
+                        searchDasboardIndexNumber: 0,
+                        onSubmitPress:
+                            (result, selectedSearchType, sdpSearchController) {
+                          searchDasboardIndexNumber = 0;
+                          dashboardindexNumber = 0;
+                          log(selectedSearchType);
+                          log(sdpSearchController);
+                          setState(() {
+                            selectedtypesearch = selectedSearchType;
+                            sdpseacrchfield = sdpSearchController;
+                            searchItem = result;
+                            print(result);
+                          });
+                        },
+                      ),
                     ),
+                    actions: [],
                   ),
                 );
               },
               child: const Text('Search'),
             ),
-            // SearchSDP(
-            //   dashboardindexNumber: 0,
-            //   searchDasboardIndexNumber: 0,
-            //   onSubmitPress: (result, selectedSearchType, sdpSearchController) {
-            //     searchDasboardIndexNumber = 0;
-            //     dashboardindexNumber = 0;
-            //     log(selectedSearchType);
-            //     log(sdpSearchController);
-            //     setState(() {
-            //       selectedtypesearch = selectedSearchType;
-            //       sdpseacrchfield = sdpSearchController;
-            //       searchItem = result;
-            //       print(result);
-            //     });
-            //   },
-            // ),
           ),
+
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: OutlinedButton(
@@ -512,13 +530,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
                   sanghaNameController.text = '';
 
-                  pranamiController.text = '';
-                  paliDateController.text = '';
-                  sammilaniNumberController.text = '';
-                  sammilaniYearController.text = '';
-                  sammilaniPlaceController.text = '';
+                  pranamiController.text = '1101';
+                  paliDateController.text =
+                      DateFormat('dd-MMM-yyyy').format(DateTime.now());
+                  sammilaniNumberController.text = '71';
+                  sammilaniYearController.text = '2022';
+                  sammilaniPlaceController.text =
+                      'Satsikhya Mandir,Bhubaneswar';
                   remarkController.text = '';
-                  receiptDateController.text = '';
+                  receiptDateController.text =
+                      DateFormat('dd-MMM-yyyy').format(DateTime.now());
                   receiptNumberController.text = '';
 
                   // Navigator.push(
@@ -532,7 +553,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   style: TextStyle(color: Colors.white),
                 )),
           ),
-          const SizedBox(width: 20),
+          // const SizedBox(width: 20),
           Padding(
             padding: const EdgeInsets.only(right: 20),
             child: Padding(
@@ -798,9 +819,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                               height: 30,
                                             ),
                                             pw.Text(
-                                                ' Total Record - ${searchItem?.length}'),
-                                            pw.Text(
                                                 'Search By- $selectedtypesearch on $sdpseacrchfield'),
+                                            pw.Row(
+                                              mainAxisAlignment: pw
+                                                  .MainAxisAlignment
+                                                  .spaceBetween,
+                                              children: [
+                                                pw.Text(
+                                                    ' Total Record - ${searchItem?.length}'),
+                                                if (searchItem?.length != null)
+                                                  pw.Text(
+                                                      'Total Pranami = ${searchItem?.length} × 1101 = ${(searchItem?.length)! * (1101)} '),
+                                              ],
+                                            ),
                                             pw.Table(
                                               border: const pw.TableBorder(
                                                 horizontalInside: pw.BorderSide(

@@ -1,9 +1,14 @@
+class SanghaUtility {
+  static List<String?> getAllSanghaName() {
+    var f = allSangha.map((s) => s.name);
+    return f.toList();
+  }
+}
+
 class Sangha {
-  var district;
-
-  var state;
-
   Sangha({this.name, this.district, this.state});
+  String? district;
+  String? state;
   String? name;
 }
 

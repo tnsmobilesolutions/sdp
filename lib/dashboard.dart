@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -9,6 +11,7 @@ import 'package:sdp/Models/vaktaModel.dart';
 import 'package:sdp/add_edit_dilougeBox.dart';
 import 'package:sdp/homeScreen.dart';
 import 'package:sdp/newSearch.dart';
+import 'package:sdp/search.dart';
 import 'package:uuid/uuid.dart';
 
 class DashBoard extends StatefulWidget {
@@ -192,39 +195,33 @@ class _DashBoardState extends State<DashBoard> {
                   context: context,
                   builder: (BuildContext context) => AlertDialog(
                     title: const Text('Search Palia'),
-                    content: NewSearch(
-                      onSubmitPress: (result) {
-                        searchDasboardIndexNumber = 0;
-                        dashboardindexNumber = 0;
-
-                        setState(() {
-                          searchItem = result;
-                          print(result);
-                        });
-                      },
+                    content: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SearchSDP(
+                        dashboardindexNumber: 0,
+                        searchDasboardIndexNumber: 0,
+                        onSubmitPress:
+                            (result, selectedSearchType, sdpSearchController) {
+                          searchDasboardIndexNumber = 0;
+                          dashboardindexNumber = 0;
+                          log(selectedSearchType);
+                          log(sdpSearchController);
+                          setState(() {
+                            selectedtypesearch = selectedSearchType;
+                            sdpseacrchfield = sdpSearchController;
+                            searchItem = result;
+                            print(result);
+                          });
+                        },
+                      ),
                     ),
                   ),
                 );
               },
               child: const Text('Search'),
             ),
-            // SearchSDP(
-            //   dashboardindexNumber: 0,
-            //   searchDasboardIndexNumber: 0,
-            //   onSubmitPress: (result, selectedSearchType, sdpSearchController) {
-            //     searchDasboardIndexNumber = 0;
-            //     dashboardindexNumber = 0;
-            //     log(selectedSearchType);
-            //     log(sdpSearchController);
-            //     setState(() {
-            //       selectedtypesearch = selectedSearchType;
-            //       sdpseacrchfield = sdpSearchController;
-            //       searchItem = result;
-            //       print(result);
-            //     });
-            //   },
-            // ),
           ),
+
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: OutlinedButton(
@@ -312,22 +309,98 @@ class _DashBoardState extends State<DashBoard> {
                   SizedBox(
                     height: MediaQuery.of(context).size.height / 3,
                     width: MediaQuery.of(context).size.width / 4,
-                    child: const Card(
-                      child: Text(''),
+                    child: Card(
+                      elevation: 20,
+                      shadowColor: const Color(0XFF3f51b5),
+                      child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: const [
+                                Text(
+                                  '71',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  'ସମ୍ମିଳନୀ',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  '2022',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                //  Text(
+                                //       '71 ସମ୍ମିଳନୀ\n2000 ଦିନିକିଆ ପାଳି\nSatsikhya Mandir, Bhubaneswar',
+                                //       style: TextStyle(
+                                //           fontSize: 20, fontWeight: FontWeight.bold),
+                                // ),
+                              ],
+                            ),
+                            const Text(
+                              'Satsikhya Mandir, Bhubaneswar',
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold),
+                            ),
+                            Row(
+                              children: const [
+                                Text(
+                                  '2000',
+                                  style: TextStyle(
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  ' ଦିନିକିଆ ପାଳି',
+                                  style: TextStyle(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.bold),
+                                )
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
                     ),
                   ),
                   SizedBox(
                     height: MediaQuery.of(context).size.height / 3,
                     width: MediaQuery.of(context).size.width / 4,
                     child: const Card(
-                      child: Text(''),
+                      elevation: 20,
+                      shadowColor: Color(0XFF3f51b5),
+                      child: Padding(
+                        padding: EdgeInsets.all(25.0),
+                        child: Text(
+                          '70th ସମ୍ମିଳନୀ\n1500 ଦିନିକିଆ ପାଳି\nSatsikhya Mandir, Bhubaneswar',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                      ),
                     ),
                   ),
                   SizedBox(
                     height: MediaQuery.of(context).size.height / 3,
                     width: MediaQuery.of(context).size.width / 4,
                     child: const Card(
-                      child: Text(''),
+                      elevation: 20,
+                      shadowColor: Color(0XFF3f51b5),
+                      child: Padding(
+                        padding: EdgeInsets.all(25.0),
+                        child: Text(
+                          '69th ସମ୍ମିଳନୀ\n1000 ଦିନିକିଆ ପାଳି\nSatsikhya Mandir, Bhubaneswar',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -339,21 +412,48 @@ class _DashBoardState extends State<DashBoard> {
                     height: MediaQuery.of(context).size.height / 3,
                     width: MediaQuery.of(context).size.width / 4,
                     child: const Card(
-                      child: Text(''),
+                      elevation: 20,
+                      shadowColor: Color(0XFF3f51b5),
+                      child: Padding(
+                        padding: EdgeInsets.all(25.0),
+                        child: Text(
+                          '68th ସମ୍ମିଳନୀ\n500 ଦିନିକିଆ ପାଳି\nSatsikhya Mandir, Bhubaneswar',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                      ),
                     ),
                   ),
                   SizedBox(
                     height: MediaQuery.of(context).size.height / 3,
                     width: MediaQuery.of(context).size.width / 4,
                     child: const Card(
-                      child: Text(''),
+                      elevation: 20,
+                      shadowColor: Color(0XFF3f51b5),
+                      child: Padding(
+                        padding: EdgeInsets.all(25.0),
+                        child: Text(
+                          '67th ସମ୍ମିଳନୀ\n200 ଦିନିକିଆ ପାଳି\nSatsikhya Mandir, Bhubaneswar',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                      ),
                     ),
                   ),
                   SizedBox(
                     height: MediaQuery.of(context).size.height / 3,
                     width: MediaQuery.of(context).size.width / 4,
                     child: const Card(
-                      child: Text(''),
+                      elevation: 20,
+                      shadowColor: Color(0XFF3f51b5),
+                      child: Padding(
+                        padding: EdgeInsets.all(25.0),
+                        child: Text(
+                          '66th ସମ୍ମିଳନୀ\n100 ଦିନିକିଆ ପାଳି\nSatsikhya Mandir, Bhubaneswar',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                      ),
                     ),
                   ),
                 ],
