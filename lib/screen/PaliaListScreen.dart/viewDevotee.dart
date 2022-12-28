@@ -80,9 +80,6 @@ class ViewPalia extends StatelessWidget {
                     Text('${item.sammilaniData?.sammilaniNumber}')
                   ],
                 ),
-                // const Divider(
-                //   thickness: 0.5,
-                // ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
@@ -134,9 +131,6 @@ class ViewPalia extends StatelessWidget {
                     Text(item.createdBy.toString())
                   ],
                 ),
-                // const Divider(
-                //   thickness: 0.5,
-                // ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [

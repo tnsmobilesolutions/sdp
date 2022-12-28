@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:intl/intl.dart';
 import 'package:sdp/API/paliaaAPI.dart';
 import 'package:sdp/sanghalist.dart';
@@ -51,6 +52,13 @@ class _SearchSDPState extends State<SearchSDP> {
                     padding: const EdgeInsets.only(left: 5),
                     child: Row(
                       children: [
+                        const Icon(
+                          Icons.search,
+                          color: Color(0XFF3f51b5),
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
                         DropdownButton(
                           style: const TextStyle(
                               color: Color(0XFF3f51b5), //Font color
@@ -175,31 +183,64 @@ class _SearchSDPState extends State<SearchSDP> {
                   _selectedSearchType == 'Sammilani Place')
                 Padding(
                   padding: const EdgeInsets.all(10.0),
-                  child: TextFormField(
-                    onChanged: (value) {
-                      final sanghaaList = SanghaUtility.getAllSanghaName();
-                      if (sanghaaList.any((element) => value
+                  child: TypeAheadField(
+                    textFieldConfiguration: TextFieldConfiguration(
+                        controller: searchSanghaController,
+                        decoration: InputDecoration(
+                          labelText: 'Search Sangha Names',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                        )),
+                    suggestionsCallback: (pattern) async {
+                      final sanghaList = SanghaUtility.getAllSanghaName();
+                      return sanghaList.where((element) => element!
                           .toLowerCase()
-                          .contains((element?.toLowerCase()).toString()))) {
-                        print(sanghaaList);
-                        print('true');
+                          .contains(pattern.toLowerCase()));
 
-                        searchSangha.add(value);
-                      }
-                      print(sanghaaList);
-
-                      setState(() {
-                        showAllNames = true;
-                      });
+                      // return await BackendService.getSuggestions(pattern);
                     },
-                    controller: searchSanghaController,
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                          borderSide: BorderSide(color: Colors.white),
-                        ),
-                        labelText: 'Please enter Sangha Name'),
+                    itemBuilder: (context, suggestion) {
+                      return ListTile(
+                        title: Text(suggestion.toString()),
+                      );
+                    },
+                    getImmediateSuggestions: true,
+                    hideOnEmpty: false,
+                    noItemsFoundBuilder: (context) => const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text('No Sangha Name Found'),
+                    ),
+                    onSuggestionSelected: (suggestion) {
+                      searchSanghaController.text = suggestion.toString();
+                      print(suggestion);
+                    },
                   ),
+                  // child: TextFormField(
+                  //   onChanged: (value) {
+                  //     final sanghaaList = SanghaUtility.getAllSanghaName();
+                  //     if (sanghaaList.any((element) => value
+                  //         .toLowerCase()
+                  //         .contains((element?.toLowerCase()).toString()))) {
+                  //       print(sanghaaList);
+                  //       print('true');
+
+                  //       searchSangha.add(value);
+                  //     }
+                  //     print(sanghaaList);
+
+                  //     setState(() {
+                  //       showAllNames = true;
+                  //     });
+                  //   },
+                  //   controller: searchSanghaController,
+                  //   decoration: const InputDecoration(
+                  //       border: OutlineInputBorder(
+                  //         borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                  //         borderSide: BorderSide(color: Colors.white),
+                  //       ),
+                  //       labelText: 'Please enter Sangha Name'),
+                  // ),
                 ),
               if (showAllNames == true)
                 SizedBox(
@@ -217,21 +258,20 @@ class _SearchSDPState extends State<SearchSDP> {
                                         .toString();
                               });
                             },
-                            child:
-                                //  Text(
-                                //   (searchSangha[index]).toString(),
-                                // ),
-                                Text(
-                              SanghaUtility.getAllSanghaName()[index]
-                                  .toString(),
+                            child: Text(
+                              (searchSangha[index]).toString(),
                             ),
+                            //  Text(
+                            //   SanghaUtility.getAllSanghaName()[index]
+                            //       .toString(),
+                            // ),
                           ),
                         );
                       }),
                 )
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Padding(
@@ -245,7 +285,9 @@ class _SearchSDPState extends State<SearchSDP> {
                 widget.onSubmitPress(
                     result, _selectedSearchType, sdpSearchController.text);
                 // ignore: use_build_context_synchronously
-                Navigator.pop(context);
+                Navigator.pop(
+                  context,
+                );
                 // setState(() {
                 //   widget.searchItem = result;
                 // });

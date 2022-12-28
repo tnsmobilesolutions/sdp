@@ -110,10 +110,10 @@ class PaliaAPI {
     });
   }
 
-  Future editPaliaDetails(VaktaModel Palia) async {
+  Future editPaliaDetails(VaktaModel paliaDetails) async {
     var medicineCollection = FirebaseFirestore.instance.collection('paliaList');
 
-    medicineCollection.doc(Palia.docId).update(Palia.toMap());
+    medicineCollection.doc(paliaDetails.docId).update(paliaDetails.toMap());
   }
 
   removePalia(String? docId) {

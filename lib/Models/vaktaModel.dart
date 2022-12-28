@@ -25,7 +25,7 @@ class VaktaModel {
     this.paaliDate,
     this.receiptDate,
     this.receiptNo,
-    required this.sammilaniData,
+    this.sammilaniData,
     this.pranaami,
     this.remark,
     this.createdBy,

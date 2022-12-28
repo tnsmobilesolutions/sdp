@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:sdp/search.dart';
+import 'package:sdp/screen/appBar/search.dart';
 
 class NewSearch extends StatefulWidget {
   const NewSearch({super.key});

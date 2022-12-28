@@ -5,7 +5,8 @@ import 'dart:developer';
 import 'package:authentication/EmailLogin/authenticationWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:sdp/API/userAPI.dart';
-import 'package:sdp/homeScreen.dart';
+import 'package:sdp/unUsedCodes/homeScreen.dart';
+import 'package:sdp/screen/dashboard/dashboard.dart';
 
 class EmailSignIn extends StatefulWidget {
   const EmailSignIn({super.key});
@@ -36,7 +37,7 @@ class _EmailSignInState extends State<EmailSignIn> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => HomeScreen(),
+                          builder: (context) => DashboardPage(),
                         ));
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
