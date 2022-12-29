@@ -107,6 +107,7 @@ class _searchresultBodyPageState extends State<searchresultBodyPage> {
                                     pw.Text(
                                       'ଜୟଗୁରୁ',
                                       style: pw.TextStyle(
+                                        decoration: pw.TextDecoration.underline,
                                         font: _baloobhaina2font,
                                         fontSize: 20,
                                         fontWeight: pw.FontWeight.normal,
@@ -138,9 +139,10 @@ class _searchresultBodyPageState extends State<searchresultBodyPage> {
                                 printSearchheadingText('Sangha'),
                                 printSearchheadingText('pali Date'),
                               ]),
-                              pw.SizedBox(
-                                height: 12,
-                              ),
+                              pw.Divider(thickness: 0.5),
+                              // pw.SizedBox(
+                              //   height: 12,
+                              // ),
                               pw.Expanded(
                                 child: pw.ListView.builder(
                                   itemCount: widget.searchModel.length,
