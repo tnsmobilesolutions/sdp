@@ -1,9 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:sdp/Models/vaktaModel.dart';
 
-class ViewPalia extends StatelessWidget {
+class ViewPalia extends StatefulWidget {
   const ViewPalia({Key? key, required this.item}) : super(key: key);
   final VaktaModel item;
+
+  @override
+  State<ViewPalia> createState() => _ViewPaliaState();
+}
+
+class _ViewPaliaState extends State<ViewPalia> {
+  // viewDetails(String heading, String value) {
+  //   Column(
+  //     crossAxisAlignment: CrossAxisAlignment.start,
+  //     children: [
+  //       Text(
+  //         heading,
+  //         style: TextStyle(color: Colors.grey),
+  //       ),
+  //       Text(value)
+  //     ],
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +30,8 @@ class ViewPalia extends StatelessWidget {
       width: 500,
       child: SingleChildScrollView(
         child: ListBody(
-          children: <Widget>[
+          children: [
+            // viewDetails('Name', widget.item.name.toString()),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -20,12 +39,14 @@ class ViewPalia extends StatelessWidget {
                   'Name',
                   style: TextStyle(color: Colors.grey),
                 ),
-                Text(item.name.toString())
+                Text(widget.item.name.toString())
               ],
             ),
             const Divider(
               thickness: 0.5,
             ),
+            // viewDetails('Sangha', widget.item.sangha.toString()),
+
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -33,7 +54,7 @@ class ViewPalia extends StatelessWidget {
                   'Sangha',
                   style: TextStyle(color: Colors.grey),
                 ),
-                Text(item.sangha.toString())
+                Text(widget.item.sangha.toString())
               ],
             ),
             const Divider(
@@ -49,7 +70,7 @@ class ViewPalia extends StatelessWidget {
                       'Pali Date',
                       style: TextStyle(color: Colors.grey),
                     ),
-                    Text(item.paaliDate.toString())
+                    Text(widget.item.paaliDate.toString())
                   ],
                 ),
                 Column(
@@ -59,7 +80,7 @@ class ViewPalia extends StatelessWidget {
                       'Pranaami',
                       style: TextStyle(color: Colors.grey),
                     ),
-                    Text('₹${item.pranaami}')
+                    Text('₹${widget.item.pranaami}')
                   ],
                 ),
               ],
@@ -77,7 +98,7 @@ class ViewPalia extends StatelessWidget {
                       'Sammilani No.',
                       style: TextStyle(color: Colors.grey),
                     ),
-                    Text('${item.sammilaniData?.sammilaniNumber}')
+                    Text('${widget.item.sammilaniData?.sammilaniNumber}')
                   ],
                 ),
                 Column(
@@ -87,7 +108,7 @@ class ViewPalia extends StatelessWidget {
                       'Sammilani Year',
                       style: TextStyle(color: Colors.grey),
                     ),
-                    Text('${item.sammilaniData?.sammilaniYear}')
+                    Text('${widget.item.sammilaniData?.sammilaniYear}')
                   ],
                 ),
                 Column(
@@ -97,7 +118,7 @@ class ViewPalia extends StatelessWidget {
                       'Sammilani Place',
                       style: TextStyle(color: Colors.grey),
                     ),
-                    Text('${item.sammilaniData?.sammilaniPlace}')
+                    Text('${widget.item.sammilaniData?.sammilaniPlace}')
                   ],
                 ),
               ],
@@ -112,7 +133,7 @@ class ViewPalia extends StatelessWidget {
                   'Remark',
                   style: TextStyle(color: Colors.grey),
                 ),
-                Text(item.remark.toString())
+                Text(widget.item.remark.toString())
               ],
             ),
             const Divider(
@@ -128,7 +149,7 @@ class ViewPalia extends StatelessWidget {
                       'Created By',
                       style: TextStyle(color: Colors.grey),
                     ),
-                    Text(item.createdBy.toString())
+                    Text(widget.item.createdBy.toString())
                   ],
                 ),
                 Column(
@@ -138,7 +159,7 @@ class ViewPalia extends StatelessWidget {
                       'Created On',
                       style: TextStyle(color: Colors.grey),
                     ),
-                    Text(item.createdOn.toString())
+                    Text(widget.item.createdOn.toString())
                   ],
                 ),
               ],
@@ -146,7 +167,7 @@ class ViewPalia extends StatelessWidget {
             const Divider(
               thickness: 0.5,
             ),
-            if (item.updatedBy != null)
+            if (widget.item.updatedBy != null)
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -157,7 +178,7 @@ class ViewPalia extends StatelessWidget {
                         'Updated By',
                         style: TextStyle(color: Colors.grey),
                       ),
-                      Text(item.updatedBy.toString())
+                      Text(widget.item.updatedBy.toString())
                     ],
                   ),
                   Column(
@@ -167,7 +188,7 @@ class ViewPalia extends StatelessWidget {
                         'Updated On',
                         style: TextStyle(color: Colors.grey),
                       ),
-                      Text(item.updatedOn.toString())
+                      Text(widget.item.updatedOn.toString())
                     ],
                   ),
                 ],

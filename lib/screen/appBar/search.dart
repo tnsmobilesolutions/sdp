@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -5,6 +7,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:intl/intl.dart';
 import 'package:sdp/API/paliaaAPI.dart';
 import 'package:sdp/sanghalist.dart';
+import 'package:sdp/screen/searchResult/searchResultScreen.dart';
 
 class SearchSDP extends StatefulWidget {
   SearchSDP(
@@ -216,31 +219,6 @@ class _SearchSDPState extends State<SearchSDP> {
                       print(suggestion);
                     },
                   ),
-                  // child: TextFormField(
-                  //   onChanged: (value) {
-                  //     final sanghaaList = SanghaUtility.getAllSanghaName();
-                  //     if (sanghaaList.any((element) => value
-                  //         .toLowerCase()
-                  //         .contains((element?.toLowerCase()).toString()))) {
-                  //       print(sanghaaList);
-                  //       print('true');
-
-                  //       searchSangha.add(value);
-                  //     }
-                  //     print(sanghaaList);
-
-                  //     setState(() {
-                  //       showAllNames = true;
-                  //     });
-                  //   },
-                  //   controller: searchSanghaController,
-                  //   decoration: const InputDecoration(
-                  //       border: OutlineInputBorder(
-                  //         borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                  //         borderSide: BorderSide(color: Colors.white),
-                  //       ),
-                  //       labelText: 'Please enter Sangha Name'),
-                  // ),
                 ),
               if (showAllNames == true)
                 SizedBox(
@@ -261,10 +239,6 @@ class _SearchSDPState extends State<SearchSDP> {
                             child: Text(
                               (searchSangha[index]).toString(),
                             ),
-                            //  Text(
-                            //   SanghaUtility.getAllSanghaName()[index]
-                            //       .toString(),
-                            // ),
                           ),
                         );
                       }),
@@ -284,10 +258,29 @@ class _SearchSDPState extends State<SearchSDP> {
                     sdpSearchController.text, searchSanghaController.text);
                 widget.onSubmitPress(
                     result, _selectedSearchType, sdpSearchController.text);
-                // ignore: use_build_context_synchronously
-                Navigator.pop(
-                  context,
-                );
+
+                if (result != null) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            SearchResultPage(searchReslt: result),
+                      ));
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: const Text('Please put some Data to Search'),
+                      action: SnackBarAction(
+                        label: 'Exit',
+                        onPressed: () {
+                          // Code to execute.
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ),
+                  );
+                }
+
                 // setState(() {
                 //   widget.searchItem = result;
                 // });

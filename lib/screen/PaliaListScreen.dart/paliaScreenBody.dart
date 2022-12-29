@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sdp/API/paliaaAPI.dart';
-import 'package:sdp/Models/vaktaModel.dart';
+
 import 'package:sdp/screen/PaliaListScreen.dart/paliaTableData.dart';
 
 class PaliaListBodyPage extends StatefulWidget {
@@ -38,14 +38,17 @@ class _PaliaListBodyPageState extends State<PaliaListBodyPage> {
                       showMenu = !showMenu;
                     });
                   },
+                  color: Color(0XFF3f51b5),
                   icon: const Icon(Icons.menu_open)),
               SizedBox(
                 width: 10,
               ),
               Padding(
                 padding: const EdgeInsets.only(right: 15),
-                child:
-                    IconButton(onPressed: () {}, icon: const Icon(Icons.print)),
+                child: IconButton(
+                    color: Color(0XFF3f51b5),
+                    onPressed: () {},
+                    icon: const Icon(Icons.print)),
               )
             ],
           ),

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:intl/intl.dart';
 import 'package:sdp/API/paliaaAPI.dart';
 import 'package:sdp/API/userAPI.dart';
 import 'package:sdp/Models/sammilaniModel.dart';
 import 'package:sdp/Models/userDetailsModel.dart';
 import 'package:sdp/Models/vaktaModel.dart';
+import 'package:sdp/sanghalist.dart';
 import 'package:sdp/screen/PaliaListScreen.dart/paliaList.dart';
 import 'package:sdp/unUsedCodes/homeScreen.dart';
 
@@ -92,21 +94,37 @@ class _EditPaliadilougePageState extends State<EditPaliadilougePage> {
 
               const SizedBox(height: 5),
               //Sangha Name
-              TextFormField(
-                focusNode: FocusNode(
-                  descendantsAreFocusable: false,
-                ),
-                controller: sanghaNameController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Sangha Name',
-                ),
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Please Enter Sangha Name';
-                  }
+              TypeAheadField(
+                textFieldConfiguration: TextFieldConfiguration(
+                    controller: sanghaNameController,
+                    decoration: const InputDecoration(
+                        labelText: 'Search Sangha Names',
+                        border: OutlineInputBorder()
+                        // OutlineInputBorder(
+                        //   borderRadius: BorderRadius.circular(15.0),
+                        // ),
+                        )),
+                suggestionsCallback: (pattern) async {
+                  final sanghaList = SanghaUtility.getAllSanghaName();
+                  return sanghaList.where((element) =>
+                      element!.toLowerCase().contains(pattern.toLowerCase()));
 
-                  return null;
+                  // return await BackendService.getSuggestions(pattern);
+                },
+                itemBuilder: (context, suggestion) {
+                  return ListTile(
+                    title: Text(suggestion.toString()),
+                  );
+                },
+                getImmediateSuggestions: true,
+                hideOnEmpty: false,
+                noItemsFoundBuilder: (context) => const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text('No Sangha Name Found'),
+                ),
+                onSuggestionSelected: (String? value) {
+                  sanghaNameController.text = value.toString();
+                  print(value);
                 },
               ),
               const SizedBox(height: 5),
@@ -153,7 +171,7 @@ class _EditPaliadilougePageState extends State<EditPaliadilougePage> {
                 ),
               ),
               const SizedBox(height: 5),
-              // C
+              // receipt Date
               TextFormField(
                 focusNode: FocusNode(
                   descendantsAreFocusable: false,

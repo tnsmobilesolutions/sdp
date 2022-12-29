@@ -4,15 +4,16 @@ import 'package:sdp/Models/vaktaModel.dart';
 import 'package:sdp/screen/PaliaListScreen.dart/editPalia.dart';
 import 'package:sdp/screen/PaliaListScreen.dart/paliaList.dart';
 import 'package:sdp/screen/PaliaListScreen.dart/viewDevotee.dart';
+import 'package:sdp/screen/searchResult/searchResultScreen.dart';
 
-class PaliaTableData extends StatelessWidget {
-  PaliaTableData(
+class SearchTableData extends StatelessWidget {
+  SearchTableData(
       {Key? key,
-      required this.paliaDetails,
+      required this.searchpaliaDetails,
       required this.slNo,
       required this.showMenu})
       : super(key: key);
-  final VaktaModel paliaDetails;
+  final VaktaModel searchpaliaDetails;
   final int slNo;
   bool showMenu;
 
@@ -28,44 +29,42 @@ class PaliaTableData extends StatelessWidget {
                       child: Checkbox(value: false, onChanged: (value) {}))),
               Expanded(
                 child: Text(
-                  (slNo).toString(),
+                  (slNo + 1).toString(),
                   textAlign: TextAlign.center,
                 ),
               ),
               Expanded(
                 child: Text(
-                  '${paliaDetails.name}',
+                  '${searchpaliaDetails.name}',
                   textAlign: TextAlign.center,
                 ),
               ),
               Expanded(
                 child: Text(
-                  '${paliaDetails.sangha}',
+                  '${searchpaliaDetails.sangha}',
                   textAlign: TextAlign.center,
                 ),
               ),
               Expanded(
                 child: Text(
-                  '${paliaDetails.paaliDate}',
+                  '${searchpaliaDetails.paaliDate}',
                   textAlign: TextAlign.center,
                 ),
               ),
               if (showMenu == true)
                 Expanded(
                     child: IconButton(
+                        color: Color(0XFF3f51b5),
                         onPressed: () {
                           showDialog<String>(
                             context: context,
                             builder: (BuildContext context) => AlertDialog(
                               title: const Text('View Palia Details'),
-                              content: ViewPalia(item: paliaDetails),
+                              content: ViewPalia(item: searchpaliaDetails),
                             ),
                           );
                         },
-                        icon: Icon(
-                          Icons.visibility,
-                          color: Color(0XFF3f51b5),
-                        ))),
+                        icon: Icon(Icons.visibility))),
               if (showMenu == true)
                 Expanded(
                     child: IconButton(
@@ -77,14 +76,12 @@ class PaliaTableData extends StatelessWidget {
                               return AlertDialog(
                                 title: Text('Edit Palia Details'),
                                 content: EditPaliadilougePage(
-                                    paliaDetails: paliaDetails),
+                                    paliaDetails: searchpaliaDetails),
                               );
                             },
                           );
                         },
-                        icon: Icon(
-                          Icons.edit,
-                        ))),
+                        icon: Icon(Icons.edit))),
               if (showMenu == true)
                 Expanded(
                     child: IconButton(
@@ -105,10 +102,11 @@ class PaliaTableData extends StatelessWidget {
                                 TextButton(
                                   onPressed: () {
                                     // dashboardindexNumber = 0;
-                                    PaliaAPI().removePalia(paliaDetails.docId);
+                                    PaliaAPI()
+                                        .removePalia(searchpaliaDetails.docId);
                                     Navigator.push(context, MaterialPageRoute(
                                       builder: (context) {
-                                        return const PaliaListPage();
+                                        return PaliaListPage();
                                       },
                                     ));
                                   },

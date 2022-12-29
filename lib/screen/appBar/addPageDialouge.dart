@@ -7,6 +7,7 @@ import 'package:sdp/Models/sammilaniModel.dart';
 import 'package:sdp/Models/userDetailsModel.dart';
 import 'package:sdp/Models/vaktaModel.dart';
 import 'package:sdp/sanghalist.dart';
+import 'package:sdp/screen/dashboard/dashboard.dart';
 import 'package:sdp/unUsedCodes/homeScreen.dart';
 import 'package:uuid/uuid.dart';
 
@@ -120,23 +121,7 @@ class _AddPageDilougeState extends State<AddPageDilouge> {
                   print(value);
                 },
               ),
-              // TextFormField(
-              //   focusNode: FocusNode(
-              //     descendantsAreFocusable: false,
-              //   ),
-              //   controller: sanghaNameController,
-              //   decoration: const InputDecoration(
-              //     border: OutlineInputBorder(),
-              //     labelText: 'Sangha Name',
-              //   ),
-              //   validator: (value) {
-              //     if (value!.isEmpty) {
-              //       return 'Please Enter Sangha Name';
-              //     }
 
-              //     return null;
-              //   },
-              // ),
               const SizedBox(height: 5),
               // Pranami
               TextFormField(
@@ -315,7 +300,7 @@ class _AddPageDilougeState extends State<AddPageDilouge> {
                         // ignore: use_build_context_synchronously
                         Navigator.push(context, MaterialPageRoute(
                           builder: (context) {
-                            return const HomeScreen();
+                            return const DashboardPage();
                           },
                         ));
                       }

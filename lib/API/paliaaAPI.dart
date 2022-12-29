@@ -41,8 +41,8 @@ class PaliaAPI {
   }
 
 // search user
-  Future<List<VaktaModel>?> searchSDP(String? searchBy, String searchedItem,
-      String? sanghaSammilaniNumber) async {
+  Future<List<VaktaModel>?> searchSDP(
+      String? searchBy, String searchedItem, String? searchsanghaname) async {
     final CollectionReference PaliaCollection =
         FirebaseFirestore.instance.collection('paliaList');
     return PaliaCollection.get().then((querysnapshot) {
@@ -72,13 +72,13 @@ class PaliaAPI {
           if (vaktaDetails.sammilaniData?.sammilaniNumber
                   ?.contains(searchedItem) ??
               false) {
-            if (sanghaSammilaniNumber != null && sanghaSammilaniNumber != '') {
+            if (searchsanghaname != null && searchsanghaname != '') {
               if ((vaktaDetails.sammilaniData?.sammilaniNumber
                           ?.contains(searchedItem) ??
                       false) &&
-                  (vaktaDetails.sangha?.contains(sanghaSammilaniNumber) ??
-                      false)) {
+                  (vaktaDetails.sangha?.contains(searchsanghaname) ?? false)) {
                 result.add(vaktaDetails);
+                print('*******$result');
               }
             } else {
               result.add(vaktaDetails);
