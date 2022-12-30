@@ -15,7 +15,7 @@ class PaliaListBodyPage extends StatefulWidget {
 
 class _PaliaListBodyPageState extends State<PaliaListBodyPage> {
   List<VaktaModel>? allPaliaList;
-  int? slno;
+
   bool showMenu = false;
   Expanded headingText(String text) {
     return Expanded(

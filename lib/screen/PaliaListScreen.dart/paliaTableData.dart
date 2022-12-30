@@ -5,7 +5,7 @@ import 'package:sdp/screen/PaliaListScreen.dart/editPalia.dart';
 import 'package:sdp/screen/PaliaListScreen.dart/paliaList.dart';
 import 'package:sdp/screen/PaliaListScreen.dart/viewDevotee.dart';
 
-class PaliaTableData extends StatelessWidget {
+class PaliaTableData extends StatefulWidget {
   PaliaTableData(
       {Key? key,
       required this.paliaDetails,
@@ -17,6 +17,13 @@ class PaliaTableData extends StatelessWidget {
   bool showMenu;
 
   @override
+  State<PaliaTableData> createState() => _PaliaTableDataState();
+}
+
+class _PaliaTableDataState extends State<PaliaTableData> {
+  bool isChecked = false;
+
+  @override
   Widget build(BuildContext context) {
     return Expanded(
       child: Column(
@@ -25,32 +32,38 @@ class PaliaTableData extends StatelessWidget {
             children: [
               Expanded(
                   child: Center(
-                      child: Checkbox(value: false, onChanged: (value) {}))),
+                      child: Checkbox(
+                          value: isChecked,
+                          onChanged: (value) {
+                            setState(() {
+                              isChecked = !isChecked;
+                            });
+                          }))),
               Expanded(
                 child: Text(
-                  (slNo).toString(),
+                  (widget.slNo).toString(),
                   textAlign: TextAlign.center,
                 ),
               ),
               Expanded(
                 child: Text(
-                  '${paliaDetails.name}',
+                  '${widget.paliaDetails.name}',
                   textAlign: TextAlign.center,
                 ),
               ),
               Expanded(
                 child: Text(
-                  '${paliaDetails.sangha}',
+                  '${widget.paliaDetails.sangha}',
                   textAlign: TextAlign.center,
                 ),
               ),
               Expanded(
                 child: Text(
-                  '${paliaDetails.paaliDate}',
+                  '${widget.paliaDetails.paaliDate}',
                   textAlign: TextAlign.center,
                 ),
               ),
-              if (showMenu == true)
+              if (widget.showMenu == true)
                 Expanded(
                     child: IconButton(
                         onPressed: () {
@@ -58,7 +71,7 @@ class PaliaTableData extends StatelessWidget {
                             context: context,
                             builder: (BuildContext context) => AlertDialog(
                               title: const Text('View Palia Details'),
-                              content: ViewPalia(item: paliaDetails),
+                              content: ViewPalia(item: widget.paliaDetails),
                             ),
                           );
                         },
@@ -66,7 +79,7 @@ class PaliaTableData extends StatelessWidget {
                           Icons.visibility,
                           color: Color(0XFF3f51b5),
                         ))),
-              if (showMenu == true)
+              if (widget.showMenu == true)
                 Expanded(
                     child: IconButton(
                         color: Color(0XFF3f51b5),
@@ -77,7 +90,7 @@ class PaliaTableData extends StatelessWidget {
                               return AlertDialog(
                                 title: Text('Edit Palia Details'),
                                 content: EditPaliadilougePage(
-                                    paliaDetails: paliaDetails),
+                                    paliaDetails: widget.paliaDetails),
                               );
                             },
                           );
@@ -85,7 +98,7 @@ class PaliaTableData extends StatelessWidget {
                         icon: Icon(
                           Icons.edit,
                         ))),
-              if (showMenu == true)
+              if (widget.showMenu == true)
                 Expanded(
                     child: IconButton(
                         color: Color(0XFF3f51b5),
@@ -105,7 +118,8 @@ class PaliaTableData extends StatelessWidget {
                                 TextButton(
                                   onPressed: () {
                                     // dashboardindexNumber = 0;
-                                    PaliaAPI().removePalia(paliaDetails.docId);
+                                    PaliaAPI()
+                                        .removePalia(widget.paliaDetails.docId);
                                     Navigator.push(context, MaterialPageRoute(
                                       builder: (context) {
                                         return const PaliaListPage();
