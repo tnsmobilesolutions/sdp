@@ -7,7 +7,8 @@ import 'package:sdp/Models/vaktaModel.dart';
 import 'package:sdp/screen/PaliaListScreen.dart/paliaTableData.dart';
 
 class PaliaListBodyPage extends StatefulWidget {
-  const PaliaListBodyPage({super.key});
+  PaliaListBodyPage({Key? key, required this.year}) : super(key: key);
+  String year;
 
   @override
   State<PaliaListBodyPage> createState() => _PaliaListBodyPageState();
@@ -195,7 +196,7 @@ class _PaliaListBodyPageState extends State<PaliaListBodyPage> {
             height: 12,
           ),
           FutureBuilder(
-            future: PaliaAPI().fetchAllPalias(),
+            future: PaliaAPI().fetchAllByYearPalias(widget.year),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
               allPaliaList = snapshot.data;
               if (snapshot.hasError) {

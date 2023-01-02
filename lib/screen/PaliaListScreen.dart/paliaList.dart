@@ -4,7 +4,8 @@ import 'package:sdp/screen/appBar/leadingImage.dart';
 import 'package:sdp/screen/PaliaListScreen.dart/paliaScreenBody.dart';
 
 class PaliaListPage extends StatefulWidget {
-  const PaliaListPage({super.key});
+  PaliaListPage({Key? key, required this.year}) : super(key: key);
+  String year;
 
   @override
   State<PaliaListPage> createState() => _PaliaListPageState();
@@ -24,7 +25,12 @@ class _PaliaListPageState extends State<PaliaListPage> {
       ),
       body: SafeArea(
           child: Column(
-        children: const [Expanded(child: PaliaListBodyPage())],
+        children: [
+          Expanded(
+              child: PaliaListBodyPage(
+            year: widget.year,
+          ))
+        ],
       )),
     );
   }

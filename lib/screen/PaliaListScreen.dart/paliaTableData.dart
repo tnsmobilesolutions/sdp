@@ -122,7 +122,10 @@ class _PaliaTableDataState extends State<PaliaTableData> {
                                         .removePalia(widget.paliaDetails.docId);
                                     Navigator.push(context, MaterialPageRoute(
                                       builder: (context) {
-                                        return const PaliaListPage();
+                                        return PaliaListPage(
+                                          year:
+                                              '${widget.paliaDetails.sammilaniData?.sammilaniYear}',
+                                        );
                                       },
                                     ));
                                   },

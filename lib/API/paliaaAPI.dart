@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:sdp/Models/sammilaniModel.dart';
 import 'package:sdp/Models/vaktaModel.dart';
+import 'package:sdp/sammilani_list.dart';
 
 enum SearchBy { name, company }
 
@@ -13,7 +15,7 @@ class PaliaAPI {
   }
 
 //FetchUser
-  Future<List<VaktaModel>> fetchAllPalias() async {
+  Future<List<VaktaModel>> fetchAllByYearPalias(String year) async {
     try {
       return FirebaseFirestore.instance.collection('paliaList').get().then(
         (querysnapshot) {
@@ -22,8 +24,13 @@ class PaliaAPI {
           for (var element in querysnapshot.docs) {
             final PaliaData = element.data() as Map<String, dynamic>;
             final devoteModel = VaktaModel.fromMap(PaliaData);
-            print('Medicine model in API $devoteModel');
-            lstPalias.add(devoteModel);
+
+            if (devoteModel.paaliDate != null
+                ? devoteModel.paaliDate!.contains(year)
+                : false) {
+              print('Medicine model of year $year in API $devoteModel');
+              lstPalias.add(devoteModel);
+            }
           }
           lstPalias.sort(
             (a, b) {
@@ -88,12 +95,35 @@ class PaliaAPI {
           if (vaktaDetails.sammilaniData?.sammilaniYear
                   ?.contains(searchedItem) ??
               false) {
+            if (searchsanghaname != null && searchsanghaname != '') {
+              if ((vaktaDetails.sammilaniData?.sammilaniYear
+                          ?.contains(searchedItem) ??
+                      false) &&
+                  (vaktaDetails.sangha?.contains(searchsanghaname) ?? false)) {
+                result.add(vaktaDetails);
+                print('*******$result');
+              }
+            } else {
+              result.add(vaktaDetails);
+            }
             result.add(vaktaDetails);
           }
         } else if (searchBy == 'Sammilani Place') {
           if (vaktaDetails.sammilaniData?.sammilaniPlace
                   ?.contains(searchedItem) ??
               false) {
+            if (searchsanghaname != null && searchsanghaname != '') {
+              if ((vaktaDetails.sammilaniData?.sammilaniPlace
+                          ?.toLowerCase()
+                          .contains(searchedItem) ??
+                      false) &&
+                  (vaktaDetails.sangha?.contains(searchsanghaname) ?? false)) {
+                result.add(vaktaDetails);
+                print('*******$result');
+              }
+            } else {
+              result.add(vaktaDetails);
+            }
             result.add(vaktaDetails);
           }
         } else if (searchBy == 'Receipt Date') {

@@ -316,7 +316,9 @@ class _EditPaliadilougePageState extends State<EditPaliadilougePage> {
                                   context, (route) => route.isFirst);
                               Navigator.push(context, MaterialPageRoute(
                                 builder: (context) {
-                                  return const PaliaListPage();
+                                  return PaliaListPage(
+                                      year:
+                                          '${widget.paliaDetails.sammilaniData?.sammilaniYear}');
                                 },
                               ));
                             },

@@ -106,7 +106,10 @@ class SearchTableData extends StatelessWidget {
                                         .removePalia(searchpaliaDetails.docId);
                                     Navigator.push(context, MaterialPageRoute(
                                       builder: (context) {
-                                        return PaliaListPage();
+                                        return PaliaListPage(
+                                          year:
+                                              '${searchpaliaDetails.sammilaniData?.sammilaniYear}',
+                                        );
                                       },
                                     ));
                                   },

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:sdp/API/paliaaAPI.dart';
+import 'package:sdp/sammilani_list.dart';
 import 'package:sdp/screen/PaliaListScreen.dart/paliaList.dart';
 import 'package:sdp/screen/dashboard/hardCodeListDashboard.dart';
 
@@ -10,6 +12,8 @@ class DashboardBody extends StatefulWidget {
 }
 
 class _DashboardBodyState extends State<DashboardBody> {
+  final sammilaniDetails = SammilaniUtility.getAllSammilaniName();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -28,7 +32,8 @@ class _DashboardBodyState extends State<DashboardBody> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => PaliaListPage(),
+                        builder: (context) => PaliaListPage(
+                            year: cardDetailsList[index].sammilaniYear),
                       ));
                 },
                 child: Card(
@@ -43,7 +48,9 @@ class _DashboardBodyState extends State<DashboardBody> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              cardDetailsList[index].sammilaniNumb,
+                              sammilaniDetails[index]
+                                  .sammilaniNumber
+                                  .toString(),
                               style: const TextStyle(
                                   fontSize: 20, fontWeight: FontWeight.bold),
                             ),
@@ -100,39 +107,39 @@ class _DashboardBodyState extends State<DashboardBody> {
         paliaNumber: '2000',
         dinikiaPali: 'ଦିନିକିଆ ପାଳି'),
     SammilaniList(
-        sammilaniNumb: '71',
+        sammilaniNumb: '70',
         sammilani: 'ସମ୍ମିଳନୀ',
-        sammilaniYear: '2022',
+        sammilaniYear: '2021',
         sammilaniPlace: 'Satsikhya Mandir, Bhubaneswar',
-        paliaNumber: '2000',
+        paliaNumber: '0',
         dinikiaPali: 'ଦିନିକିଆ ପାଳି'),
     SammilaniList(
-        sammilaniNumb: '71',
+        sammilaniNumb: '69',
         sammilani: 'ସମ୍ମିଳନୀ',
-        sammilaniYear: '2022',
-        sammilaniPlace: 'Satsikhya Mandir, Bhubaneswar',
-        paliaNumber: '2000',
+        sammilaniYear: '2020',
+        sammilaniPlace: 'Damanjodi, Koraput',
+        paliaNumber: '0',
         dinikiaPali: 'ଦିନିକିଆ ପାଳି'),
     SammilaniList(
-        sammilaniNumb: '71',
+        sammilaniNumb: '68',
         sammilani: 'ସମ୍ମିଳନୀ',
-        sammilaniYear: '2022',
-        sammilaniPlace: 'Satsikhya Mandir, Bhubaneswar',
-        paliaNumber: '2000',
+        sammilaniYear: '2019',
+        sammilaniPlace: 'Dhenkanal Town, Dhenkanal',
+        paliaNumber: '0',
         dinikiaPali: 'ଦିନିକିଆ ପାଳି'),
     SammilaniList(
-        sammilaniNumb: '71',
+        sammilaniNumb: '67',
         sammilani: 'ସମ୍ମିଳନୀ',
-        sammilaniYear: '2022',
-        sammilaniPlace: 'Satsikhya Mandir, Bhubaneswar',
-        paliaNumber: '2000',
+        sammilaniYear: '2018',
+        sammilaniPlace: 'Byasanagar, Jajpur',
+        paliaNumber: '0',
         dinikiaPali: 'ଦିନିକିଆ ପାଳି'),
     SammilaniList(
-        sammilaniNumb: '71',
+        sammilaniNumb: '66',
         sammilani: 'ସମ୍ମିଳନୀ',
-        sammilaniYear: '2022',
-        sammilaniPlace: 'Satsikhya Mandir, Bhubaneswar',
-        paliaNumber: '2000',
+        sammilaniYear: '2017',
+        sammilaniPlace: 'Mandapada, Kendrapara',
+        paliaNumber: '0',
         dinikiaPali: 'ଦିନିକିଆ ପାଳି'),
   ];
 }
