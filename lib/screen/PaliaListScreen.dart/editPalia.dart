@@ -6,6 +6,7 @@ import 'package:sdp/API/userAPI.dart';
 import 'package:sdp/Models/sammilaniModel.dart';
 import 'package:sdp/Models/userDetailsModel.dart';
 import 'package:sdp/Models/vaktaModel.dart';
+import 'package:sdp/sammilani_list.dart';
 import 'package:sdp/sanghalist.dart';
 import 'package:sdp/screen/PaliaListScreen.dart/paliaList.dart';
 import 'package:sdp/unUsedCodes/homeScreen.dart';
@@ -124,7 +125,6 @@ class _EditPaliadilougePageState extends State<EditPaliadilougePage> {
                 ),
                 onSuggestionSelected: (String? value) {
                   sanghaNameController.text = value.toString();
-                  print(value);
                 },
               ),
               const SizedBox(height: 5),
@@ -217,42 +217,156 @@ class _EditPaliadilougePageState extends State<EditPaliadilougePage> {
               ),
               const SizedBox(height: 5),
               // Sammilani Number
-              TextFormField(
-                focusNode: FocusNode(
-                  descendantsAreFocusable: false,
+              TypeAheadField(
+                textFieldConfiguration: TextFieldConfiguration(
+                    controller: sammilaniNumberController,
+                    decoration: const InputDecoration(
+                        labelText: 'Add Sammilani Number',
+                        border: OutlineInputBorder()
+                        // OutlineInputBorder(
+                        //   borderRadius: BorderRadius.circular(15.0),
+                        // ),
+                        )),
+                suggestionsCallback: (pattern) async {
+                  final sammilaniNumber =
+                      SammilaniUtility.getAllSammilaniName();
+                  return sammilaniNumber.where((element) =>
+                      element.sammilaniNumber!.contains(pattern.toLowerCase()));
+
+                  // return await BackendService.getSuggestions(pattern);
+                },
+                itemBuilder: (context, suggestion) {
+                  return ListTile(
+                    title: Text(suggestion.sammilaniNumber.toString()),
+                  );
+                },
+                getImmediateSuggestions: true,
+                hideOnEmpty: false,
+                noItemsFoundBuilder: (context) => const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text('No Sammilani Number Found'),
                 ),
-                controller: sammilaniNumberController,
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Sammilani Number',
-                ),
+                onSuggestionSelected: (value) {
+                  sammilaniNumberController.text =
+                      value.sammilaniNumber.toString();
+                  sammilaniPlaceController.text =
+                      value.sammilaniPlace.toString();
+                  sammilaniYearController.text = value.sammilaniYear.toString();
+                },
               ),
+              // TextFormField(
+              //   focusNode: FocusNode(
+              //     descendantsAreFocusable: false,
+              //   ),
+              //   controller: sammilaniNumberController,
+              //   keyboardType: TextInputType.number,
+              //   decoration: const InputDecoration(
+              //     border: OutlineInputBorder(),
+              //     labelText: 'Sammilani Number',
+              //   ),
+              // ),
               const SizedBox(height: 5),
               // Sammilani Year
-              TextFormField(
-                focusNode: FocusNode(
-                  descendantsAreFocusable: false,
+              TypeAheadField(
+                textFieldConfiguration: TextFieldConfiguration(
+                    controller: sammilaniYearController,
+                    decoration: const InputDecoration(
+                        labelText: 'Add Sammilani Year',
+                        border: OutlineInputBorder()
+                        // OutlineInputBorder(
+                        //   borderRadius: BorderRadius.circular(15.0),
+                        // ),
+                        )),
+                suggestionsCallback: (pattern) async {
+                  final sammilanimodelist =
+                      SammilaniUtility.getAllSammilaniName();
+                  return sammilanimodelist.where((element) =>
+                      element.sammilaniYear!.contains(pattern.toLowerCase()));
+
+                  // return await BackendService.getSuggestions(pattern);
+                },
+                itemBuilder: (context, suggestion) {
+                  return ListTile(
+                    title: Text(suggestion.sammilaniYear.toString()),
+                  );
+                },
+                getImmediateSuggestions: true,
+                hideOnEmpty: false,
+                noItemsFoundBuilder: (context) => const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text('No Sammilani Year Found'),
                 ),
-                controller: sammilaniYearController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'sammilani Year',
-                ),
+                onSuggestionSelected: (value) {
+                  sammilaniNumberController.text =
+                      value.sammilaniNumber.toString();
+                  sammilaniPlaceController.text =
+                      value.sammilaniPlace.toString();
+                  sammilaniYearController.text = value.sammilaniYear.toString();
+                },
               ),
+              // TextFormField(
+              //   focusNode: FocusNode(
+              //     descendantsAreFocusable: false,
+              //   ),
+              //   controller: sammilaniYearController,
+              //   decoration: const InputDecoration(
+              //     border: OutlineInputBorder(),
+              //     labelText: 'sammilani Year',
+              //   ),
+              // ),
 
               const SizedBox(height: 5),
               // Sammilani Place
-              TextFormField(
-                focusNode: FocusNode(
-                  descendantsAreFocusable: false,
+              TypeAheadField(
+                textFieldConfiguration: TextFieldConfiguration(
+                    controller: sammilaniPlaceController,
+                    decoration: const InputDecoration(
+                        labelText: 'Add Sammilani Place',
+                        border: OutlineInputBorder()
+                        // OutlineInputBorder(
+                        //   borderRadius: BorderRadius.circular(15.0),
+                        // ),
+                        )),
+                suggestionsCallback: (pattern) async {
+                  final sammilaniNumber =
+                      SammilaniUtility.getAllSammilaniName();
+                  return sammilaniNumber.where((element) => element
+                      .sammilaniPlace!
+                      .toLowerCase()
+                      .contains(pattern.toLowerCase()));
+
+                  // return await BackendService.getSuggestions(pattern);
+                },
+                itemBuilder: (context, suggestion) {
+                  return ListTile(
+                    title: Text(suggestion.sammilaniPlace.toString()),
+                  );
+                },
+                getImmediateSuggestions: true,
+                hideOnEmpty: false,
+                noItemsFoundBuilder: (context) => const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Text('No Sangha Name Found'),
                 ),
-                controller: sammilaniPlaceController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'sammilani Place',
-                ),
+                onSuggestionSelected: (value) {
+                  sammilaniNumberController.text =
+                      value.sammilaniNumber.toString();
+                  sammilaniPlaceController.text =
+                      value.sammilaniPlace.toString();
+                  sammilaniYearController.text = value.sammilaniYear.toString();
+                },
               ),
+
+              // TextFormField(
+              //   focusNode: FocusNode(
+              //     descendantsAreFocusable: false,
+              //   ),
+              //   controller: sammilaniPlaceController,
+              //   decoration: const InputDecoration(
+              //     border: OutlineInputBorder(),
+              //     labelText: 'sammilani Place',
+              //   ),
+              // ),
 
               const SizedBox(height: 5),
               // Remark

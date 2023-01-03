@@ -19,7 +19,6 @@ class PaliaAPI {
     try {
       return FirebaseFirestore.instance.collection('paliaList').get().then(
         (querysnapshot) {
-          //print('********${querysnapshot.docs.length}');
           List<VaktaModel> lstPalias = [];
           for (var element in querysnapshot.docs) {
             final PaliaData = element.data() as Map<String, dynamic>;
@@ -28,7 +27,6 @@ class PaliaAPI {
             if (devoteModel.paaliDate != null
                 ? devoteModel.paaliDate!.contains(year)
                 : false) {
-              print('Medicine model of year $year in API $devoteModel');
               lstPalias.add(devoteModel);
             }
           }
@@ -85,7 +83,6 @@ class PaliaAPI {
                       false) &&
                   (vaktaDetails.sangha?.contains(searchsanghaname) ?? false)) {
                 result.add(vaktaDetails);
-                print('*******$result');
               }
             } else {
               result.add(vaktaDetails);
@@ -101,12 +98,11 @@ class PaliaAPI {
                       false) &&
                   (vaktaDetails.sangha?.contains(searchsanghaname) ?? false)) {
                 result.add(vaktaDetails);
-                print('*******$result');
               }
             } else {
               result.add(vaktaDetails);
             }
-            result.add(vaktaDetails);
+            // result.add(vaktaDetails);
           }
         } else if (searchBy == 'Sammilani Place') {
           if (vaktaDetails.sammilaniData?.sammilaniPlace
@@ -119,12 +115,11 @@ class PaliaAPI {
                       false) &&
                   (vaktaDetails.sangha?.contains(searchsanghaname) ?? false)) {
                 result.add(vaktaDetails);
-                print('*******$result');
               }
             } else {
               result.add(vaktaDetails);
             }
-            result.add(vaktaDetails);
+            // result.add(vaktaDetails);
           }
         } else if (searchBy == 'Receipt Date') {
           if (vaktaDetails.receiptDate?.contains(searchedItem) ?? false) {
@@ -141,40 +136,24 @@ class PaliaAPI {
   }
 
   Future editPaliaDetails(VaktaModel paliaDetails) async {
-    var medicineCollection = FirebaseFirestore.instance.collection('paliaList');
+    var paliaCollection = FirebaseFirestore.instance.collection('paliaList');
 
-    medicineCollection.doc(paliaDetails.docId).update(paliaDetails.toMap());
+    paliaCollection.doc(paliaDetails.docId).update(paliaDetails.toMap());
   }
 
   removePalia(String? docId) {
-    final CollectionReference medicineCollection =
+    final CollectionReference paliaCollection =
         FirebaseFirestore.instance.collection('paliaList');
-    medicineCollection.doc(docId).delete();
+    paliaCollection.doc(docId).delete();
   }
 
-  //Multiple Search
-  // search user
-//   Future<List<VaktaModel>?>? multipleSearchSDP(
-//       String? name,
-//       String? sangha,
-//       String? paliDate,
-//       String? sammilaninumber,
-//       String? sammilaniyear,
-//       String? sammilaniplace,
-//       String? receiptDate,
-//       String? receitNumber) async {
-//     //firebase fetch
-//     final CollectionReference PaliaCollection =
-//         FirebaseFirestore.instance.collection('paliaList');
-//     final searchResult = await PaliaCollection.get().then((querysnapshot) {
-//       List<VaktaModel> result = [];
-//       for (var element in querysnapshot.docs) {
-//         final Palia = element.data() as Map<String, dynamic>;
-//         //Getting all Palia in list
-//         final vaktaDetails = VaktaModel.fromMap(Palia);
-// //condition
-
-//       }
-//     });
-//   }
+  editPaliDateMultiple(List<String> docId, VaktaModel palidate) async {
+    // docId.map((e) => );
+    docId.forEach((element) {
+      FirebaseFirestore.instance
+          .collection('paliaList')
+          .doc(element)
+          .update(palidate.toMap());
+    });
+  }
 }

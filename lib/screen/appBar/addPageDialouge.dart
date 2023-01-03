@@ -119,7 +119,6 @@ class _AddPageDilougeState extends State<AddPageDilouge> {
                 ),
                 onSuggestionSelected: (String? value) {
                   sanghaNameController.text = value.toString();
-                  print(value);
                 },
               ),
 
@@ -248,7 +247,6 @@ class _AddPageDilougeState extends State<AddPageDilouge> {
                   sammilaniPlaceController.text =
                       value.sammilaniPlace.toString();
                   sammilaniYearController.text = value.sammilaniYear.toString();
-                  print(value);
                 },
               ),
               // TextFormField(
@@ -299,7 +297,6 @@ class _AddPageDilougeState extends State<AddPageDilouge> {
                   sammilaniPlaceController.text =
                       value.sammilaniPlace.toString();
                   sammilaniYearController.text = value.sammilaniYear.toString();
-                  print(value);
                 },
               ),
               // TextFormField(
@@ -352,19 +349,8 @@ class _AddPageDilougeState extends State<AddPageDilouge> {
                   sammilaniPlaceController.text =
                       value.sammilaniPlace.toString();
                   sammilaniYearController.text = value.sammilaniYear.toString();
-                  print(value);
                 },
               ),
-              // TextFormField(
-              //   focusNode: FocusNode(
-              //     descendantsAreFocusable: false,
-              //   ),
-              //   controller: sammilaniPlaceController,
-              //   decoration: const InputDecoration(
-              //     border: OutlineInputBorder(),
-              //     labelText: 'sammilani Place',
-              //   ),
-              // ),
 
               const SizedBox(height: 5),
               // Remark
@@ -417,7 +403,7 @@ class _AddPageDilougeState extends State<AddPageDilouge> {
                         // ignore: use_build_context_synchronously
                         Navigator.push(context, MaterialPageRoute(
                           builder: (context) {
-                            return const DashboardPage();
+                            return DashboardPage();
                           },
                         ));
                       }

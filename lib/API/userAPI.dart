@@ -14,7 +14,7 @@ class UserAPI {
       UserCredential? userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password)
           .then((uid) => uid);
-      print('***********uid: ${userCredential?.user?.uid}*********');
+
       final currentUserId = userCredential?.user?.uid;
       final userDetails = await usersCollection
           .where("uid", isEqualTo: currentUserId)
@@ -32,10 +32,8 @@ class UserAPI {
       //return uid.user?.uid;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        //print('No user found for that email.');
         return null;
       } else if (e.code == 'wrong-password') {
-        //print('Wrong password provided for that user.');
         return null;
       }
     } on Exception catch (e) {
@@ -75,7 +73,7 @@ class UserAPI {
         FirebaseFirestore.instance.collection('users');
     QuerySnapshot _myDoc = await usercollection.get();
     List<DocumentSnapshot> _myDocCount = _myDoc.docs;
-    print(_myDocCount.length);
+
     return _myDocCount.length; // Count of Documents in Collection
   }
 }

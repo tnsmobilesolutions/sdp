@@ -4,7 +4,8 @@ import 'package:sdp/screen/appBar/leadingImage.dart';
 import 'package:sdp/screen/dashboard/dashboardBody.dart';
 
 class DashboardPage extends StatelessWidget {
-  const DashboardPage({super.key});
+  DashboardPage({super.key});
+  List<String>? selectedPalia;
 
   @override
   Widget build(BuildContext context) {

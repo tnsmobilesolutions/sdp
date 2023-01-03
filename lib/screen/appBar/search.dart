@@ -216,7 +216,6 @@ class _SearchSDPState extends State<SearchSDP> {
                     ),
                     onSuggestionSelected: (suggestion) {
                       searchSanghaController.text = suggestion.toString();
-                      print(suggestion);
                     },
                   ),
                 ),

@@ -31,12 +31,6 @@ class SearchButton extends StatelessWidget {
                   // dashboardindexNumber = 0;
                   log(selectedSearchType);
                   log(sdpSearchController);
-                  // setState(() {
-                  //   selectedtypesearch = selectedSearchType;
-                  //   sdpseacrchfield = sdpSearchController;
-                  //   searchItem = result;
-                  //   print(result);
-                  // });
                 },
               ),
             ),

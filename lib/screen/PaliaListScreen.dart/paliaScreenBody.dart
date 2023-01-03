@@ -4,7 +4,8 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 import 'package:sdp/Models/vaktaModel.dart';
-import 'package:sdp/screen/PaliaListScreen.dart/paliaTableData.dart';
+import 'package:sdp/screen/PaliaListScreen.dart/paliaTableRow.dart';
+import 'package:sdp/screen/PaliaListScreen.dart/editPaliMultiple.dart';
 
 class PaliaListBodyPage extends StatefulWidget {
   PaliaListBodyPage({Key? key, required this.year}) : super(key: key);
@@ -16,6 +17,8 @@ class PaliaListBodyPage extends StatefulWidget {
 
 class _PaliaListBodyPageState extends State<PaliaListBodyPage> {
   List<VaktaModel>? allPaliaList;
+  List<String> selectedPalia = [];
+  bool checkedValue = false;
 
   bool showMenu = false;
   Expanded headingText(String text) {
@@ -52,21 +55,40 @@ class _PaliaListBodyPageState extends State<PaliaListBodyPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              IconButton(
-                  onPressed: () {
-                    setState(() {
-                      showMenu = !showMenu;
-                    });
-                  },
-                  color: Color(0XFF3f51b5),
-                  icon: const Icon(Icons.menu_open)),
+              // if (selectedPalia.isNotEmpty)
+              Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: multipleEditPali(
+                    docIds: selectedPalia,
+                  )),
+              OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  side: const BorderSide(
+                    width: 1.0,
+                    color: Color(0XFF3f51b5),
+                  ),
+                  foregroundColor: Color(0XFF3f51b5),
+                ),
+                onPressed: () {
+                  setState(() {
+                    showMenu = !showMenu;
+                  });
+                },
+                child: Text('Show Menu'),
+              ),
               SizedBox(
                 width: 10,
               ),
               Padding(
                 padding: const EdgeInsets.only(right: 15),
-                child: IconButton(
-                    color: Color(0XFF3f51b5),
+                child: OutlinedButton(
+                    style: OutlinedButton.styleFrom(
+                      side: const BorderSide(
+                        width: 1.0,
+                        color: Color(0XFF3f51b5),
+                      ),
+                      foregroundColor: Color(0XFF3f51b5),
+                    ),
                     onPressed: () async {
                       final _baloobhaina2font =
                           await PdfGoogleFonts.balooBhaina2Regular();
@@ -114,9 +136,6 @@ class _PaliaListBodyPageState extends State<PaliaListBodyPage> {
                                 printSearchheadingText('pali Date'),
                               ]),
                               pw.Divider(thickness: 0.5),
-                              // pw.SizedBox(
-                              //   height: 12,
-                              // ),
                               pw.Expanded(
                                 child: pw.ListView.builder(
                                   itemCount: allPaliaList != null
@@ -171,7 +190,7 @@ class _PaliaListBodyPageState extends State<PaliaListBodyPage> {
                       await Printing.layoutPdf(
                           onLayout: (PdfPageFormat format) async => doc.save());
                     },
-                    icon: const Icon(Icons.print)),
+                    child: const Text('Print')),
               )
             ],
           ),
@@ -180,8 +199,14 @@ class _PaliaListBodyPageState extends State<PaliaListBodyPage> {
             child: Row(
               children: [
                 Expanded(
-                    child: Center(
-                        child: Checkbox(value: false, onChanged: (value) {}))),
+                    child: Padding(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: Checkbox(
+                      value: checkedValue,
+                      onChanged: (value) {
+                        checkedValue = value!;
+                      }),
+                )),
                 headingText('କ୍ରମିକ ନଂ'),
                 headingText('ପାଳିଆ ନାମ'),
                 headingText('ସଂଘ'),
@@ -208,10 +233,27 @@ class _PaliaListBodyPageState extends State<PaliaListBodyPage> {
                     itemCount: snapshot.data.length,
                     itemBuilder: (BuildContext context, int index) {
                       //Table firebase Data
-                      return PaliaTableData(
+                      return PaliaTableRow(
                         showMenu: showMenu,
                         slNo: index + 1,
                         paliaDetails: snapshot.data[index],
+                        isCheckedBoolValue: (isCheckedValuee) {
+                          checkedValue = isCheckedValuee;
+                          if (isCheckedValuee == true) {
+                            if (!selectedPalia
+                                .contains(snapshot.data[index].docId)) {
+                              selectedPalia.add(snapshot.data[index].docId);
+
+                              print('***TRUE***$selectedPalia');
+                            }
+                          } else {
+                            selectedPalia.remove(snapshot.data[index].docId);
+                            print('***FALSE***$selectedPalia');
+                            if (selectedPalia == []) {
+                              setState(() {});
+                            }
+                          }
+                        },
                       );
                     },
                   ),

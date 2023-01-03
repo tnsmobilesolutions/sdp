@@ -44,32 +44,3 @@ class AddPaliaButton extends StatelessWidget {
     );
   }
 }
-
-
-
-  // dashboardindexNumber = 0;
-
-        // showdilouge(
-        //   'Add Palia',
-        //   'Add',
-        // );
-        // PaliaNameController.text = '';
-
-        // sanghaNameController.text = '';
-
-        // pranamiController.text = '1101';
-        // paliDateController.text =
-        //     DateFormat('dd-MMM-yyyy').format(DateTime.now());
-        // sammilaniNumberController.text = '71';
-        // sammilaniYearController.text = '2022';
-        // sammilaniPlaceController.text = 'Satsikhya Mandir,Bhubaneswar';
-        // remarkController.text = '';
-        // receiptDateController.text =
-        //     DateFormat('dd-MMM-yyyy').format(DateTime.now());
-        // receiptNumberController.text = '';
-
-        // Navigator.push(
-        //     context,
-        //     MaterialPageRoute(
-        //         builder: (context) => Add_Edit_DetailsScreen(
-        //             title: 'Add Member', buttonText: 'Add')));

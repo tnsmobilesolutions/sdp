@@ -1,9 +1,24 @@
+import 'package:sdp/API/paliaaAPI.dart';
 import 'package:sdp/Models/sammilaniModel.dart';
 
 class SammilaniUtility {
   static List<SammilaniModel> getAllSammilaniName() {
     var f = allSammilaniList.map((s) => s);
     return f.toList();
+  }
+
+  static List<SammilaniModel> lastnSammilani(int n) {
+    // var f = allSammilaniList.map((s) => s);
+
+    var f = allSammilaniList
+        .getRange(allSammilaniList.length - n, allSammilaniList.length)
+        .map((e) => e);
+    return f.toList();
+  }
+
+  static Future<int> paliaNumber(year) async {
+    var f = await PaliaAPI().fetchAllByYearPalias(year);
+    return f.toList().length;
   }
 }
 
@@ -267,7 +282,7 @@ final allSammilaniList = [
   SammilaniModel(
       sammilaniNumber: '65',
       sammilaniYear: '2016',
-      sammilaniPlace: 'Paradeep,Jagatsinghpur'),
+      sammilaniPlace: 'Paradeep, Jagatsinghpur'),
   SammilaniModel(
       sammilaniNumber: '66',
       sammilaniYear: '2017',
@@ -297,5 +312,8 @@ final allSammilaniList = [
       sammilaniYear: '2023',
       sammilaniPlace: 'Jobra, Cuttack'),
   SammilaniModel(
-      sammilaniNumber: '73', sammilaniYear: '2024', sammilaniPlace: 'Pune'),
+    sammilaniNumber: '73',
+    sammilaniYear: '2024',
+    sammilaniPlace: 'Pune',
+  ),
 ];

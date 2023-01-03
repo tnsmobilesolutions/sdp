@@ -341,7 +341,7 @@
 //       PaliasTableRows.insert(
 //           0,
 //           TableHelper().getTableHeader(showButtons, (value) {
-//             print(value);
+//           
 //           }));
 //       return PaliasTableRows;
 //     }
@@ -457,7 +457,7 @@
 //     searchRow.insert(
 //         0,
 //         TableHelper().getTableHeader(showButtons, (value) {
-//           print(value);
+//         
 //         }));
 //     return Scaffold(
 //       appBar: AppBar(
