@@ -19,6 +19,7 @@ class _PaliaListBodyPageState extends State<PaliaListBodyPage> {
   List<VaktaModel>? allPaliaList;
   List<String> selectedPalia = [];
   bool checkedValue = false;
+  bool? allCheck;
 
   bool showMenu = false;
   Expanded headingText(String text) {
@@ -116,10 +117,12 @@ class _PaliaListBodyPageState extends State<PaliaListBodyPage> {
                                 children: [
                                   pw.Row(
                                     mainAxisAlignment:
-                                        pw.MainAxisAlignment.start,
+                                        pw.MainAxisAlignment.spaceBetween,
                                     children: [
                                       pw.Text(
                                           'Total Record - ${allPaliaList?.length}'),
+                                      pw.Text(
+                                          'Total Pranami - ${allPaliaList?.length} × 1101 = ${(allPaliaList?.length != 0 ? (allPaliaList?.length)! : 0) * (1101)}'),
                                     ],
                                   )
                                 ],
@@ -148,7 +151,7 @@ class _PaliaListBodyPageState extends State<PaliaListBodyPage> {
                                           children: [
                                             pw.Expanded(
                                               child: pw.Text(
-                                                (index).toString(),
+                                                (index + 1).toString(),
                                                 textAlign: pw.TextAlign.center,
                                               ),
                                             ),
@@ -202,9 +205,30 @@ class _PaliaListBodyPageState extends State<PaliaListBodyPage> {
                     child: Padding(
                   padding: const EdgeInsets.only(right: 10),
                   child: Checkbox(
-                      value: checkedValue,
-                      onChanged: (value) {
-                        checkedValue = value!;
+                      value: allCheck ?? false,
+                      onChanged: (value) async {
+                        var alldata =
+                            await PaliaAPI().fetchAllByYearPalias(widget.year);
+                        print('**Allcheck Value $value');
+
+                        setState(() {
+                          allCheck = value!;
+
+                          alldata.forEach((e) {
+                            if (allCheck == true) {
+                              if (!selectedPalia.contains(e)) {
+                                selectedPalia.add(e.docId.toString());
+                                print('***ALLTRUE***$selectedPalia');
+                              }
+                            } else {
+                              selectedPalia.remove(e.docId);
+                              print('***ALLFALSE***$selectedPalia');
+                              if (selectedPalia == []) {
+                                setState(() {});
+                              }
+                            }
+                          });
+                        });
                       }),
                 )),
                 headingText('କ୍ରମିକ ନଂ'),
@@ -236,6 +260,7 @@ class _PaliaListBodyPageState extends State<PaliaListBodyPage> {
                       return PaliaTableRow(
                         showMenu: showMenu,
                         slNo: index + 1,
+                        allCheck: allCheck,
                         paliaDetails: snapshot.data[index],
                         isCheckedBoolValue: (isCheckedValuee) {
                           checkedValue = isCheckedValuee;
@@ -244,16 +269,34 @@ class _PaliaListBodyPageState extends State<PaliaListBodyPage> {
                                 .contains(snapshot.data[index].docId)) {
                               selectedPalia.add(snapshot.data[index].docId);
 
-                              print('***TRUE***$selectedPalia');
+                              print('***SELECTEDTRUE***$selectedPalia');
                             }
                           } else {
                             selectedPalia.remove(snapshot.data[index].docId);
-                            print('***FALSE***$selectedPalia');
+                            print('***SELECTED FALSE***$selectedPalia');
                             if (selectedPalia == []) {
                               setState(() {});
                             }
                           }
                         },
+                        // allCheck
+                        // isallCheckedBoolValue: (isallCheckedValuee) {
+                        //   checkedValue = isallCheckedValuee;
+                        //   if (isallCheckedValuee == true) {
+                        //     if (!selectedPalia
+                        //         .contains(snapshot.data[index].docId)) {
+                        //       selectedPalia.add(snapshot.data[index].docId);
+
+                        //       print('***ALLTRUE***$selectedPalia');
+                        //     }
+                        //   } else {
+                        //     selectedPalia.remove(snapshot.data[index].docId);
+                        //     print('***ALLFALSE***$selectedPalia');
+                        //     if (selectedPalia == []) {
+                        //       setState(() {});
+                        //     }
+                        //   }
+                        // },
                       );
                     },
                   ),

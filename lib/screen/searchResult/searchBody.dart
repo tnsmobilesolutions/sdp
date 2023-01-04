@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:sdp/API/paliaaAPI.dart';
 import 'package:sdp/Models/vaktaModel.dart';
+import 'package:sdp/screen/PaliaListScreen.dart/editPaliMultiple.dart';
 import 'package:sdp/screen/dashboard/dashboard.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
-import 'package:sdp/screen/print/printSearchResult.dart';
 
-import 'package:sdp/screen/searchResult/searchtable.dart';
+import 'package:sdp/screen/searchResult/searchtableRow.dart';
 
 class searchresultBodyPage extends StatefulWidget {
   searchresultBodyPage({Key? key, required this.searchModel}) : super(key: key);
@@ -30,6 +31,9 @@ class _searchresultBodyPageState extends State<searchresultBodyPage> {
   //   super.initState();
   //   font();
   // }
+  List<String> selectedPalia = [];
+  bool checkedValue = false;
+  bool? allCheck;
 
   bool showMenu = false;
   Expanded headingText(String text) {
@@ -66,27 +70,11 @@ class _searchresultBodyPageState extends State<searchresultBodyPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              TextButton(
-                  onPressed: () {
-                    showDialog<String>(
-                      context: context,
-                      builder: (BuildContext context) => AlertDialog(
-                        title: const Text('AlertDialog Title'),
-                        content: const Text('AlertDialog description'),
-                        actions: <Widget>[
-                          TextButton(
-                            onPressed: () => Navigator.pop(context, 'Cancel'),
-                            child: const Text('Cancel'),
-                          ),
-                          TextButton(
-                            onPressed: () => Navigator.pop(context, 'OK'),
-                            child: const Text('OK'),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                  child: Text('Edit Pali Date')),
+              Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: multipleEditPali(
+                    docIds: selectedPalia,
+                  )),
               TextButton(
                   onPressed: () {
                     Navigator.push(
@@ -96,129 +84,140 @@ class _searchresultBodyPageState extends State<searchresultBodyPage> {
                         ));
                   },
                   child: Text('Reset')),
-              IconButton(
-                  color: Color(0XFF3f51b5),
-                  onPressed: () {
-                    setState(() {
-                      showMenu = !showMenu;
-                    });
-                  },
-                  icon: const Icon(Icons.menu_open)),
+              OutlinedButton(
+                style: OutlinedButton.styleFrom(
+                  side: const BorderSide(
+                    width: 1.0,
+                    color: Color(0XFF3f51b5),
+                  ),
+                  foregroundColor: Color(0XFF3f51b5),
+                ),
+                onPressed: () {
+                  setState(() {
+                    showMenu = !showMenu;
+                  });
+                },
+                child: Text('Show Menu'),
+              ),
               SizedBox(
                 width: 10,
               ),
               //Print
               Padding(
                 padding: const EdgeInsets.only(right: 15),
-                child: IconButton(
-                    color: Color(0XFF3f51b5),
-                    onPressed: () async {
-                      final _baloobhaina2font =
-                          await PdfGoogleFonts.balooBhaina2Regular();
-                      final doc = pw.Document();
-                      doc.addPage(
-                        pw.Page(
-                          pageFormat: PdfPageFormat.a4,
-                          build: (pw.Context context) {
-                            return pw.Column(children: [
-                              pw.Row(
+                child: OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    side: const BorderSide(
+                      width: 1.0,
+                      color: Color(0XFF3f51b5),
+                    ),
+                    foregroundColor: Color(0XFF3f51b5),
+                  ),
+                  onPressed: () async {
+                    final _baloobhaina2font =
+                        await PdfGoogleFonts.balooBhaina2Regular();
+                    final doc = pw.Document();
+                    doc.addPage(
+                      pw.Page(
+                        pageFormat: PdfPageFormat.a4,
+                        build: (pw.Context context) {
+                          return pw.Column(children: [
+                            pw.Row(
+                                mainAxisAlignment: pw.MainAxisAlignment.center,
+                                children: [
+                                  pw.Text(
+                                    'ଜୟଗୁରୁ',
+                                    style: pw.TextStyle(
+                                      decoration: pw.TextDecoration.underline,
+                                      font: _baloobhaina2font,
+                                      fontSize: 20,
+                                      fontWeight: pw.FontWeight.normal,
+                                    ),
+                                  ),
+                                ]),
+                            pw.Column(
+                              children: [
+                                pw.Row(
                                   mainAxisAlignment:
-                                      pw.MainAxisAlignment.center,
+                                      pw.MainAxisAlignment.spaceBetween,
                                   children: [
                                     pw.Text(
-                                      'ଜୟଗୁରୁ',
-                                      style: pw.TextStyle(
-                                        decoration: pw.TextDecoration.underline,
-                                        font: _baloobhaina2font,
-                                        fontSize: 20,
-                                        fontWeight: pw.FontWeight.normal,
-                                      ),
-                                    ),
-                                  ]),
-                              pw.Column(
-                                children: [
-                                  pw.Row(
-                                    mainAxisAlignment:
-                                        pw.MainAxisAlignment.spaceBetween,
+                                        'Total Record - ${widget.searchModel.length}'),
+                                    pw.Text(
+                                        'Total Pranami = ${widget.searchModel.length} × 1101 = ${(widget.searchModel.length) * (1101)} ')
+                                  ],
+                                )
+                              ],
+                            ),
+                            pw.Divider(),
+                            pw.Row(
+                                mainAxisAlignment: pw.MainAxisAlignment.start,
+                                children: []),
+                            pw.SizedBox(height: 20),
+                            pw.Row(children: [
+                              printSearchheadingText('Sl no.'),
+                              printSearchheadingText('Palia Name'),
+                              printSearchheadingText('Sangha'),
+                              printSearchheadingText('pali Date'),
+                            ]),
+                            pw.Divider(thickness: 0.5),
+                            // pw.SizedBox(
+                            //   height: 12,
+                            // ),
+                            pw.Expanded(
+                              child: pw.ListView.builder(
+                                itemCount: widget.searchModel.length,
+                                itemBuilder: (pw.Context context, int index) {
+                                  return pw.Column(
                                     children: [
-                                      pw.Text(
-                                          'Total Record - ${widget.searchModel.length}'),
-                                      pw.Text(
-                                          'Total Pranami = ${widget.searchModel.length} × 1101 = ${(widget.searchModel.length) * (1101)} ')
+                                      pw.Row(
+                                        children: [
+                                          pw.Expanded(
+                                            child: pw.Text(
+                                              (index).toString(),
+                                              textAlign: pw.TextAlign.center,
+                                            ),
+                                          ),
+                                          pw.Expanded(
+                                            child: pw.Text(
+                                              '${widget.searchModel[index].name}',
+                                              textAlign: pw.TextAlign.center,
+                                            ),
+                                          ),
+                                          pw.Expanded(
+                                            child: pw.Text(
+                                              '${widget.searchModel[index].sangha}',
+                                              textAlign: pw.TextAlign.center,
+                                            ),
+                                          ),
+                                          pw.Expanded(
+                                            child: pw.Text(
+                                              '${widget.searchModel[index].paaliDate}',
+                                              textAlign: pw.TextAlign.center,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      pw.Divider(
+                                        thickness: 0.5,
+                                      )
                                     ],
-                                  )
-                                ],
+                                  );
+                                },
                               ),
-                              pw.Divider(),
-                              pw.Row(
-                                  mainAxisAlignment: pw.MainAxisAlignment.start,
-                                  children: []),
-                              pw.SizedBox(height: 20),
-                              pw.Row(children: [
-                                printSearchheadingText('Sl no.'),
-                                printSearchheadingText('Palia Name'),
-                                printSearchheadingText('Sangha'),
-                                printSearchheadingText('pali Date'),
-                              ]),
-                              pw.Divider(thickness: 0.5),
-                              // pw.SizedBox(
-                              //   height: 12,
-                              // ),
-                              pw.Expanded(
-                                child: pw.ListView.builder(
-                                  itemCount: widget.searchModel.length,
-                                  itemBuilder: (pw.Context context, int index) {
-                                    return pw.Column(
-                                      children: [
-                                        pw.Row(
-                                          children: [
-                                            pw.Expanded(
-                                              child: pw.Text(
-                                                (index).toString(),
-                                                textAlign: pw.TextAlign.center,
-                                              ),
-                                            ),
-                                            pw.Expanded(
-                                              child: pw.Text(
-                                                '${widget.searchModel[index].name}',
-                                                textAlign: pw.TextAlign.center,
-                                              ),
-                                            ),
-                                            pw.Expanded(
-                                              child: pw.Text(
-                                                '${widget.searchModel[index].sangha}',
-                                                textAlign: pw.TextAlign.center,
-                                              ),
-                                            ),
-                                            pw.Expanded(
-                                              child: pw.Text(
-                                                '${widget.searchModel[index].paaliDate}',
-                                                textAlign: pw.TextAlign.center,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        pw.Divider(
-                                          thickness: 0.5,
-                                        )
-                                      ],
-                                    );
-                                  },
-                                ),
-                              ),
-                            ]);
-                          },
-                        ),
-                      ); //
-                      PdfPreview(
-                        build: (format) => doc.save(),
-                      );
-                      await Printing.layoutPdf(
-                          onLayout: (PdfPageFormat format) async => doc.save());
-                    },
-                    icon: const Icon(
-                      Icons.print,
-                    )),
+                            ),
+                          ]);
+                        },
+                      ),
+                    ); //
+                    PdfPreview(
+                      build: (format) => doc.save(),
+                    );
+                    await Printing.layoutPdf(
+                        onLayout: (PdfPageFormat format) async => doc.save());
+                  },
+                  child: Text('Print'),
+                ),
               )
             ],
           ),
@@ -227,8 +226,33 @@ class _searchresultBodyPageState extends State<searchresultBodyPage> {
             child: Row(
               children: [
                 Expanded(
-                    child: Center(
-                        child: Checkbox(value: false, onChanged: (value) {}))),
+                    child: Padding(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: Checkbox(
+                      value: allCheck ?? false,
+                      onChanged: (value) async {
+                        print('**Allcheck Value $value');
+
+                        setState(() {
+                          allCheck = value!;
+
+                          widget.searchModel.forEach((e) {
+                            if (allCheck == true) {
+                              if (!selectedPalia.contains(e)) {
+                                selectedPalia.add(e.docId.toString());
+                                print('***ALLTRUE***$selectedPalia');
+                              }
+                            } else {
+                              selectedPalia.remove(e.docId);
+                              print('***ALLFALSE***$selectedPalia');
+                              if (selectedPalia == []) {
+                                setState(() {});
+                              }
+                            }
+                          });
+                        });
+                      }),
+                )),
                 headingText('କ୍ରମିକ ନଂ'),
                 headingText('ପାଳିଆ ନାମ'),
                 headingText('ସଂଘ'),
@@ -247,7 +271,25 @@ class _searchresultBodyPageState extends State<searchresultBodyPage> {
               itemCount: widget.searchModel.length,
               itemBuilder: (BuildContext context, int index) {
                 //Table firebase Data
-                return SearchTableData(
+                return searchTableRow(
+                  isCheckedBoolValue: (isCheckedValuee) {
+                    checkedValue = isCheckedValuee;
+                    if (isCheckedValuee == true) {
+                      if (!selectedPalia
+                          .contains(widget.searchModel[index].docId)) {
+                        selectedPalia
+                            .add(widget.searchModel[index].docId.toString());
+
+                        print('***SELECTEDTRUE***$selectedPalia');
+                      }
+                    } else {
+                      selectedPalia.remove(widget.searchModel[index].docId);
+                      print('***SELECTED FALSE***$selectedPalia');
+                      if (selectedPalia == []) {
+                        setState(() {});
+                      }
+                    }
+                  },
                   showMenu: showMenu,
                   slNo: index,
                   searchpaliaDetails: widget.searchModel[index],

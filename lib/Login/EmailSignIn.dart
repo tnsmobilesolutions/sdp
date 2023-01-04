@@ -21,6 +21,7 @@ class _EmailSignInState extends State<EmailSignIn> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: Colors.white,
         body: Center(
           child: Padding(

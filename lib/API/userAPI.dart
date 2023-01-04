@@ -7,24 +7,22 @@ class UserAPI {
   //SignIn
 
   Future<UserDetailsModel?> signIn(String email, String password) async {
-    final CollectionReference usersCollection =
-        FirebaseFirestore.instance.collection('users');
-
     try {
       UserCredential? userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password)
           .then((uid) => uid);
 
-      final currentUserId = userCredential?.user?.uid;
-      final userDetails = await usersCollection
-          .where("uid", isEqualTo: currentUserId)
+      final userDetails = FirebaseFirestore.instance
+          .collection('users')
+          .where("uid", isEqualTo: userCredential?.user?.uid)
           .get()
           .then(
         (querySnapshot) {
-          final userData =
-              querySnapshot.docs.first.data() as Map<String, dynamic>;
-          final user = UserDetailsModel.fromMap(userData);
-          return user;
+          for (var element in querySnapshot.docs) {
+            final userData = element.data();
+            final user = UserDetailsModel.fromMap(userData);
+            return user;
+          }
         },
       );
       return userDetails;

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sdp/screen/appBar/actionWidget.dart';
 import 'package:sdp/screen/appBar/leadingImage.dart';
 import 'package:sdp/screen/PaliaListScreen.dart/paliaScreenBody.dart';
+import 'package:sdp/screen/dashboard/dashboard.dart';
 
 class PaliaListPage extends StatefulWidget {
   PaliaListPage({Key? key, required this.year}) : super(key: key);
@@ -15,11 +16,22 @@ class _PaliaListPageState extends State<PaliaListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         leading: const LeadingImage(),
         automaticallyImplyLeading: false,
-        title: const Text(
-          'ସମ୍ମିଳନୀ ଦିନିକିଆ ପାଳି',
+        title: TextButton(
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(
+              builder: (context) {
+                return DashboardPage();
+              },
+            ));
+          },
+          child: Text(
+            'ସମ୍ମିଳନୀ ଦିନିକିଆ ପାଳି',
+            style: TextStyle(color: Colors.white, fontSize: 20),
+          ),
         ),
         actions: const [ActionWidget()],
       ),

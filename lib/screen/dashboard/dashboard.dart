@@ -10,6 +10,7 @@ class DashboardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         leading: const LeadingImage(),
         automaticallyImplyLeading: false,
@@ -18,7 +19,7 @@ class DashboardPage extends StatelessWidget {
         ),
         actions: const [ActionWidget()],
       ),
-      body: SafeArea(
+      body: const SafeArea(
         child: DashboardBody(),
       ),
     );

@@ -48,13 +48,13 @@ class PaliaAPI {
 // search user
   Future<List<VaktaModel>?> searchSDP(
       String? searchBy, String searchedItem, String? searchsanghaname) async {
-    final CollectionReference PaliaCollection =
+    final CollectionReference paliaCollection =
         FirebaseFirestore.instance.collection('paliaList');
-    return PaliaCollection.get().then((querysnapshot) {
+    return paliaCollection.get().then((querysnapshot) {
       List<VaktaModel> result = [];
       for (var element in querysnapshot.docs) {
-        final Palia = element.data() as Map<String, dynamic>;
-        final vaktaDetails = VaktaModel.fromMap(Palia);
+        final palia = element.data() as Map<String, dynamic>;
+        final vaktaDetails = VaktaModel.fromMap(palia);
         if (searchBy == 'Name') {
           if (vaktaDetails.name
                   ?.toLowerCase()

@@ -42,7 +42,7 @@ class _multipleEditPaliState extends State<multipleEditPali> {
                   DateTime? selectedDate = await showDatePicker(
                       context: context,
                       initialDate: DateTime.now(),
-                      firstDate: DateTime(2022),
+                      firstDate: DateTime(1947),
                       lastDate: DateTime(2050));
                   if (selectedDate != null) {
                     setState(() {

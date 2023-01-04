@@ -6,17 +6,21 @@ import 'package:sdp/screen/PaliaListScreen.dart/paliaList.dart';
 import 'package:sdp/screen/PaliaListScreen.dart/viewDevotee.dart';
 
 class PaliaTableRow extends StatefulWidget {
-  PaliaTableRow(
-      {Key? key,
-      required this.paliaDetails,
-      required this.slNo,
-      required this.showMenu,
-      required this.isCheckedBoolValue})
-      : super(key: key);
+  PaliaTableRow({
+    Key? key,
+    required this.paliaDetails,
+    required this.slNo,
+    required this.showMenu,
+    required this.isCheckedBoolValue,
+    // required this.isallCheckedBoolValue,
+    this.allCheck,
+  }) : super(key: key);
   final VaktaModel paliaDetails;
   final int slNo;
   Function isCheckedBoolValue;
+  // Function isallCheckedBoolValue;
   bool showMenu;
+  bool? allCheck;
 
   @override
   State<PaliaTableRow> createState() => _PaliaTableRowState();
@@ -34,12 +38,13 @@ class _PaliaTableRowState extends State<PaliaTableRow> {
           children: [
             Expanded(
               child: Checkbox(
-                value: isCheck,
+                value: widget.allCheck ?? isCheck,
                 onChanged: (value) {
                   setState(() {
                     isCheck = value!;
                     print('***Value****$value');
                     widget.isCheckedBoolValue(value);
+                    // widget.isallCheckedBoolValue(value);
                   });
 
                   // print('*************$selectedPalia**************');

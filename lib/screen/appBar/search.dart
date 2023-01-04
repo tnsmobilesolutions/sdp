@@ -142,7 +142,7 @@ class _SearchSDPState extends State<SearchSDP> {
                                         await showDatePicker(
                                             context: context,
                                             initialDate: DateTime.now(),
-                                            firstDate: DateTime(2022),
+                                            firstDate: DateTime(1947),
                                             lastDate: DateTime(2050));
                                     if (selectedDate != null) {
                                       setState(() {
@@ -164,7 +164,7 @@ class _SearchSDPState extends State<SearchSDP> {
                               DateTime? selectedDate = await showDatePicker(
                                   context: context,
                                   initialDate: DateTime.now(),
-                                  firstDate: DateTime(2022),
+                                  firstDate: DateTime(1947),
                                   lastDate: DateTime(2050));
                               if (selectedDate != null) {
                                 setState(() {
