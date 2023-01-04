@@ -240,14 +240,14 @@ class _searchresultBodyPageState extends State<searchresultBodyPage> {
                             if (allCheck == true) {
                               if (!selectedPalia.contains(e)) {
                                 selectedPalia.add(e.docId.toString());
-                                print('***ALLTRUE***$selectedPalia');
+                                print('***ALLSearchTRUE***$selectedPalia');
                               }
                             } else {
                               selectedPalia.remove(e.docId);
-                              print('***ALLFALSE***$selectedPalia');
-                              if (selectedPalia == []) {
-                                setState(() {});
-                              }
+                              print('***ALLSearchFALSE***$selectedPalia');
+                              // if (selectedPalia.isEmpty) {
+                              //   setState(() {});
+                              // }
                             }
                           });
                         });
@@ -285,13 +285,13 @@ class _searchresultBodyPageState extends State<searchresultBodyPage> {
                     } else {
                       selectedPalia.remove(widget.searchModel[index].docId);
                       print('***SELECTED FALSE***$selectedPalia');
-                      if (selectedPalia == []) {
+                      if (selectedPalia.isEmpty) {
                         setState(() {});
                       }
                     }
                   },
                   showMenu: showMenu,
-                  slNo: index,
+                  slNo: index + 1,
                   searchpaliaDetails: widget.searchModel[index],
                 );
               },

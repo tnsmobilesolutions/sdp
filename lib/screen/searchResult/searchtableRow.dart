@@ -50,7 +50,7 @@ class _searchTableRowState extends State<searchTableRow> {
                           }))),
               Expanded(
                 child: Text(
-                  (widget.slNo + 1).toString(),
+                  (widget.slNo).toString(),
                   textAlign: TextAlign.center,
                 ),
               ),

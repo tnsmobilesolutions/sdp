@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sdp/API/paliaaAPI.dart';
 import 'package:sdp/sammilani_list.dart';
 import 'package:sdp/screen/PaliaListScreen.dart/paliaList.dart';
+import 'package:sdp/screen/dashboard/dummyDashBoard.dart';
 import 'package:sdp/screen/dashboard/hardCodeListDashboard.dart';
 
 class DashboardBody extends StatefulWidget {
@@ -45,7 +46,7 @@ class _DashboardBodyState extends State<DashboardBody> {
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: InkWell(
-                    highlightColor: Color.fromARGB(255, 32, 32, 30),
+                    highlightColor: Color.fromARGB(255, 0, 0, 0),
                     onTap: () {
                       Navigator.push(
                           context,
@@ -115,9 +116,7 @@ class _DashboardBodyState extends State<DashboardBody> {
                 ),
               );
             } else {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
+              return Expanded(child: DUmmyDashBoard());
             }
           },
         );

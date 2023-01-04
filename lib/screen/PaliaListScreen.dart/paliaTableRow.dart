@@ -12,7 +12,6 @@ class PaliaTableRow extends StatefulWidget {
     required this.slNo,
     required this.showMenu,
     required this.isCheckedBoolValue,
-    // required this.isallCheckedBoolValue,
     this.allCheck,
   }) : super(key: key);
   final VaktaModel paliaDetails;
@@ -42,6 +41,7 @@ class _PaliaTableRowState extends State<PaliaTableRow> {
                 onChanged: (value) {
                   setState(() {
                     isCheck = value!;
+
                     print('***Value****$value');
                     widget.isCheckedBoolValue(value);
                     // widget.isallCheckedBoolValue(value);

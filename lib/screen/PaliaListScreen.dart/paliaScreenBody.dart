@@ -20,6 +20,7 @@ class _PaliaListBodyPageState extends State<PaliaListBodyPage> {
   List<String> selectedPalia = [];
   bool checkedValue = false;
   bool? allCheck;
+  bool editpaliDate = false;
 
   bool showMenu = false;
   Expanded headingText(String text) {
@@ -57,11 +58,14 @@ class _PaliaListBodyPageState extends State<PaliaListBodyPage> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               // if (selectedPalia.isNotEmpty)
-              Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: multipleEditPali(
-                    docIds: selectedPalia,
-                  )),
+              Visibility(
+                visible: selectedPalia != [],
+                child: Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: multipleEditPali(
+                      docIds: selectedPalia,
+                    )),
+              ),
               OutlinedButton(
                 style: OutlinedButton.styleFrom(
                   side: const BorderSide(
@@ -216,15 +220,19 @@ class _PaliaListBodyPageState extends State<PaliaListBodyPage> {
 
                           alldata.forEach((e) {
                             if (allCheck == true) {
+                              // editpaliDate = true;
                               if (!selectedPalia.contains(e)) {
                                 selectedPalia.add(e.docId.toString());
                                 print('***ALLTRUE***$selectedPalia');
                               }
-                            } else {
+                            } else if (allCheck == false) {
+                              editpaliDate = false;
                               selectedPalia.remove(e.docId);
                               print('***ALLFALSE***$selectedPalia');
                               if (selectedPalia == []) {
-                                setState(() {});
+                                setState(() {
+                                  // editpaliDate = false;
+                                });
                               }
                             }
                           });
@@ -265,6 +273,7 @@ class _PaliaListBodyPageState extends State<PaliaListBodyPage> {
                         isCheckedBoolValue: (isCheckedValuee) {
                           checkedValue = isCheckedValuee;
                           if (isCheckedValuee == true) {
+                            editpaliDate = true;
                             if (!selectedPalia
                                 .contains(snapshot.data[index].docId)) {
                               selectedPalia.add(snapshot.data[index].docId);
@@ -273,30 +282,12 @@ class _PaliaListBodyPageState extends State<PaliaListBodyPage> {
                             }
                           } else {
                             selectedPalia.remove(snapshot.data[index].docId);
+                            // if (selectedPalia.isEmpty) {
+                            //   setState(() {});
+                            // }
                             print('***SELECTED FALSE***$selectedPalia');
-                            if (selectedPalia == []) {
-                              setState(() {});
-                            }
                           }
                         },
-                        // allCheck
-                        // isallCheckedBoolValue: (isallCheckedValuee) {
-                        //   checkedValue = isallCheckedValuee;
-                        //   if (isallCheckedValuee == true) {
-                        //     if (!selectedPalia
-                        //         .contains(snapshot.data[index].docId)) {
-                        //       selectedPalia.add(snapshot.data[index].docId);
-
-                        //       print('***ALLTRUE***$selectedPalia');
-                        //     }
-                        //   } else {
-                        //     selectedPalia.remove(snapshot.data[index].docId);
-                        //     print('***ALLFALSE***$selectedPalia');
-                        //     if (selectedPalia == []) {
-                        //       setState(() {});
-                        //     }
-                        //   }
-                        // },
                       );
                     },
                   ),
