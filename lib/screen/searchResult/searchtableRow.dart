@@ -40,128 +40,125 @@ class _SearchTableRowState extends State<SearchTableRow> {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Expanded(
-                  child: Center(
-                      child: Checkbox(
-                          value: widget.allCheck ?? isCheck,
-                          onChanged: (value) {
-                            setState(() {
-                              isCheck = value!;
+    return Column(
+      children: [
+        Row(
+          children: [
+            Expanded(
+                child: Center(
+                    child: Checkbox(
+                        value: widget.allCheck ?? isCheck,
+                        onChanged: (value) {
+                          setState(() {
+                            isCheck = value!;
 
-                              widget.isCheckedBoolValue(value);
-                              // widget.isallCheckedBoolValue(value);
-                            });
+                            widget.isCheckedBoolValue(value);
+                            // widget.isallCheckedBoolValue(value);
+                          });
 
-                            // print('*************$selectedPalia**************');
-                          }))),
-              Expanded(
-                child: Text(
-                  (widget.slNo).toString(),
-                  textAlign: TextAlign.center,
-                ),
+                          // print('*************$selectedPalia**************');
+                        }))),
+            Expanded(
+              child: Text(
+                (widget.slNo).toString(),
+                textAlign: TextAlign.center,
               ),
-              Expanded(
-                child: Text(
-                  '${widget.searchpaliaDetails.name}',
-                  textAlign: TextAlign.center,
-                ),
+            ),
+            Expanded(
+              child: Text(
+                '${widget.searchpaliaDetails.name}',
+                textAlign: TextAlign.center,
               ),
-              Expanded(
-                child: Text(
-                  '${widget.searchpaliaDetails.sangha}',
-                  textAlign: TextAlign.center,
-                ),
+            ),
+            Expanded(
+              child: Text(
+                '${widget.searchpaliaDetails.sangha}',
+                textAlign: TextAlign.center,
               ),
-              Expanded(
-                child: Text(
-                  '${widget.searchpaliaDetails.paaliDate}',
-                  textAlign: TextAlign.center,
-                ),
+            ),
+            Expanded(
+              child: Text(
+                '${widget.searchpaliaDetails.paaliDate}',
+                textAlign: TextAlign.center,
               ),
-              if (widget.showMenu == true)
-                Expanded(
-                    child: IconButton(
-                        color: const Color(0XFF3f51b5),
-                        onPressed: () {
-                          showDialog<String>(
-                            context: context,
-                            builder: (BuildContext context) => AlertDialog(
-                              title: const Text('View Palia Details'),
-                              content:
-                                  ViewPalia(item: widget.searchpaliaDetails),
-                            ),
-                          );
-                        },
-                        icon: const Icon(Icons.info))),
-              if (widget.showMenu == true)
-                Expanded(
-                    child: IconButton(
-                        color: const Color(0XFF3f51b5),
-                        onPressed: () {
-                          showDialog<void>(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: const Text('Edit Palia Details'),
-                                content: EditPaliadilougePage(
-                                    paliaDetails: widget.searchpaliaDetails),
-                              );
-                            },
-                          );
-                        },
-                        icon: const Icon(Icons.edit))),
-              if (widget.showMenu == true)
-                Expanded(
-                    child: IconButton(
-                        color: const Color(0XFF3f51b5),
-                        onPressed: () {
-                          showDialog<String>(
-                            context: context,
-                            builder: (BuildContext context) => AlertDialog(
-                              title: const Text('Delete User'),
-                              content: const Text(
-                                  'Do You Want to delete the user permanently?'),
-                              actions: <Widget>[
-                                TextButton(
-                                  onPressed: () =>
-                                      Navigator.pop(context, 'Cancel'),
-                                  child: const Text('Cancel'),
-                                ),
-                                TextButton(
-                                  onPressed: () {
-                                    // dashboardindexNumber = 0;
-                                    PaliaAPI().removePalia(
-                                        widget.searchpaliaDetails.docId);
-                                    Navigator.push(context, MaterialPageRoute(
-                                      builder: (context) {
-                                        return PaliaListPage(
-                                          year:
-                                              '${widget.searchpaliaDetails.sammilaniData?.sammilaniYear}',
-                                        );
-                                      },
-                                    ));
-                                  },
-                                  child: const Text('OK'),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                        icon: const Icon(
-                          Icons.delete,
-                        ))),
-            ],
-          ),
-          const Divider(
-            thickness: 0.5,
-          )
-        ],
-      ),
+            ),
+            if (widget.showMenu == true)
+              Expanded(
+                  child: IconButton(
+                      color: const Color(0XFF3f51b5),
+                      onPressed: () {
+                        showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            title: const Text('View Palia Details'),
+                            content: ViewPalia(item: widget.searchpaliaDetails),
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.info))),
+            if (widget.showMenu == true)
+              Expanded(
+                  child: IconButton(
+                      color: const Color(0XFF3f51b5),
+                      onPressed: () {
+                        showDialog<void>(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text('Edit Palia Details'),
+                              content: EditPaliadilougePage(
+                                  paliaDetails: widget.searchpaliaDetails),
+                            );
+                          },
+                        );
+                      },
+                      icon: const Icon(Icons.edit))),
+            if (widget.showMenu == true)
+              Expanded(
+                  child: IconButton(
+                      color: const Color(0XFF3f51b5),
+                      onPressed: () {
+                        showDialog<String>(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            title: const Text('Delete User'),
+                            content: const Text(
+                                'Do You Want to delete the user permanently?'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () =>
+                                    Navigator.pop(context, 'Cancel'),
+                                child: const Text('Cancel'),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  // dashboardindexNumber = 0;
+                                  PaliaAPI().removePalia(
+                                      widget.searchpaliaDetails.docId);
+                                  Navigator.push(context, MaterialPageRoute(
+                                    builder: (context) {
+                                      return PaliaListPage(
+                                        year:
+                                            '${widget.searchpaliaDetails.sammilaniData?.sammilaniYear}',
+                                      );
+                                    },
+                                  ));
+                                },
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                      icon: const Icon(
+                        Icons.delete,
+                      ))),
+          ],
+        ),
+        const Divider(
+          thickness: 0.5,
+        )
+      ],
     );
   }
 }

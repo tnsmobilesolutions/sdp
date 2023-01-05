@@ -25,6 +25,8 @@ class _DashboardBodyState extends State<DashboardBody> {
           crossAxisCount: 3, childAspectRatio: 1.5),
       itemCount: 6,
       shrinkWrap: true,
+      // ignore: prefer_const_constructors
+      physics: NeverScrollableScrollPhysics(),
       itemBuilder: (BuildContext context, int index) {
         return FutureBuilder(
           future: PaliaAPI()
@@ -32,7 +34,7 @@ class _DashboardBodyState extends State<DashboardBody> {
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               return Padding(
-                padding: const EdgeInsets.all(10.0),
+                padding: const EdgeInsets.all(17.0),
                 child: InkWell(
                   highlightColor: const Color.fromARGB(255, 0, 0, 0),
                   onTap: () {
