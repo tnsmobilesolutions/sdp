@@ -258,25 +258,23 @@ class _PaliaListBodyPageState extends State<PaliaListBodyPage> {
                     itemCount: snapshot.data.length,
                     itemBuilder: (BuildContext context, int index) {
                       //Table firebase Data
-                      return Expanded(
-                        child: PaliaTableRow(
-                          showMenu: showMenu,
-                          slNo: index + 1,
-                          allCheck: allCheck,
-                          paliaDetails: snapshot.data[index],
-                          isCheckedBoolValue: (isCheckedValue) {
-                            // checkedValue = isCheckedValuee;
-                            if (isCheckedValue == true) {
-                              editpaliDate = true;
-                              if (!selectedPalia
-                                  .contains(snapshot.data[index].docId)) {
-                                selectedPalia.add(snapshot.data[index].docId);
-                              }
-                            } else {
-                              selectedPalia.remove(snapshot.data[index].docId);
+                      return PaliaTableRow(
+                        showMenu: showMenu,
+                        slNo: index + 1,
+                        allCheck: allCheck,
+                        paliaDetails: snapshot.data[index],
+                        isCheckedBoolValue: (isCheckedValue) {
+                          // checkedValue = isCheckedValuee;
+                          if (isCheckedValue == true) {
+                            editpaliDate = true;
+                            if (!selectedPalia
+                                .contains(snapshot.data[index].docId)) {
+                              selectedPalia.add(snapshot.data[index].docId);
                             }
-                          },
-                        ),
+                          } else {
+                            selectedPalia.remove(snapshot.data[index].docId);
+                          }
+                        },
                       );
                     },
                   ),
