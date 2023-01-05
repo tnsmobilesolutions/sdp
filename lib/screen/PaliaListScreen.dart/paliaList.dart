@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:sdp/screen/appBar/actionWidget.dart';
 import 'package:sdp/screen/appBar/leadingImage.dart';
@@ -28,7 +30,7 @@ class _PaliaListPageState extends State<PaliaListPage> {
               },
             ));
           },
-          child: Text(
+          child: const Text(
             'ସମ୍ମିଳନୀ ଦିନିକିଆ ପାଳି',
             style: TextStyle(color: Colors.white, fontSize: 20),
           ),

@@ -1,4 +1,5 @@
-import 'dart:developer';
+// ignore_for_file: file_names
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sdp/Models/userDetailsModel.dart';
@@ -7,43 +8,32 @@ class UserAPI {
   //SignIn
 
   Future<UserDetailsModel?> signIn(String email, String password) async {
-    try {
-      UserCredential? userCredential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password)
-          .then((uid) => uid);
+    UserCredential? userCredential = await FirebaseAuth.instance
+        .signInWithEmailAndPassword(email: email, password: password)
+        .then((uid) => uid);
 
-      final userDetails = FirebaseFirestore.instance
-          .collection('users')
-          .where("uid", isEqualTo: userCredential?.user?.uid)
-          .get()
-          .then(
-        (querySnapshot) {
-          for (var element in querySnapshot.docs) {
-            final userData = element.data();
-            final user = UserDetailsModel.fromMap(userData);
-            return user;
-          }
-        },
-      );
-      return userDetails;
+    final userDetails = FirebaseFirestore.instance
+        .collection('users')
+        .where("uid", isEqualTo: userCredential?.user?.uid)
+        .get()
+        .then(
+      (querySnapshot) {
+        for (var element in querySnapshot.docs) {
+          final userData = element.data();
+          final user = UserDetailsModel.fromMap(userData);
+          return user;
+        }
+      },
+    );
+    return userDetails;
 
-      //return uid.user?.uid;
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        return null;
-      } else if (e.code == 'wrong-password') {
-        return null;
-      }
-    } on Exception catch (e) {
-      print(e.toString());
-    }
-    return null;
+    //return uid.user?.uid;
   }
 
   Future<UserDetailsModel?> getCurrentUserData() async {
     final CollectionReference usersCollection =
         FirebaseFirestore.instance.collection('users');
-    final currentuid = await FirebaseAuth.instance.currentUser?.uid;
+    final currentuid = FirebaseAuth.instance.currentUser?.uid;
     final data =
         await usersCollection.where('uid', isEqualTo: currentuid).get().then(
       (querySnapshot) {
@@ -58,20 +48,15 @@ class UserAPI {
 
 //Logout
   logout() async {
-    try {
-      await FirebaseAuth.instance.signOut();
-    } catch (e) {
-      print(e); //
-    }
+    await FirebaseAuth.instance.signOut();
   }
 
   // creat docID
   Future<int> countUsers() async {
     CollectionReference usercollection =
         FirebaseFirestore.instance.collection('users');
-    QuerySnapshot _myDoc = await usercollection.get();
-    List<DocumentSnapshot> _myDocCount = _myDoc.docs;
-
-    return _myDocCount.length; // Count of Documents in Collection
+    QuerySnapshot myDoc = await usercollection.get();
+    List<DocumentSnapshot> myDocCount = myDoc.docs;
+    return myDocCount.length; // Count of Documents in Collection
   }
 }

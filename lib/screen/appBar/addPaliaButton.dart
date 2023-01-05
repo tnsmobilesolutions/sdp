@@ -1,11 +1,12 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:sdp/screen/appBar/addPageDialouge.dart';
 
 class AddPaliaButton extends StatelessWidget {
   AddPaliaButton({super.key});
-  final _formKey = GlobalKey<FormState>();
-  final PaliaNameController = TextEditingController();
+  // final _formKey = GlobalKey<FormState>();
+  final paliaNameController = TextEditingController();
   final paliDateController = TextEditingController();
   final receiptDateController = TextEditingController();
   final sanghaNameController = TextEditingController();

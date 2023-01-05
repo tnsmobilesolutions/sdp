@@ -1,7 +1,8 @@
+// ignore_for_file: file_names
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:sdp/Models/sammilaniModel.dart';
+
 import 'package:sdp/Models/vaktaModel.dart';
-import 'package:sdp/sammilani_list.dart';
 
 enum SearchBy { name, company }
 
@@ -21,8 +22,8 @@ class PaliaAPI {
         (querysnapshot) {
           List<VaktaModel> lstPalias = [];
           for (var element in querysnapshot.docs) {
-            final PaliaData = element.data() as Map<String, dynamic>;
-            final devoteModel = VaktaModel.fromMap(PaliaData);
+            final paliaData = element.data();
+            final devoteModel = VaktaModel.fromMap(paliaData);
 
             if (devoteModel.paaliDate != null
                 ? devoteModel.paaliDate!.contains(year)
@@ -40,7 +41,7 @@ class PaliaAPI {
       );
       // return lstPalia;
     } catch (e) {
-      print(e);
+      null;
     }
     return [];
   }
@@ -149,11 +150,11 @@ class PaliaAPI {
 
   editPaliDateMultiple(List<String> docId, VaktaModel palidate) async {
     // docId.map((e) => );
-    docId.forEach((element) {
+    for (var element in docId) {
       FirebaseFirestore.instance
           .collection('paliaList')
           .doc(element)
           .update(palidate.toMap());
-    });
+    }
   }
 }

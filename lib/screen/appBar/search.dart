@@ -1,21 +1,20 @@
-// ignore_for_file: use_build_context_synchronously
-
-import 'dart:developer';
-
+// ignore_for_file: use_build_context_synchronously, must_be_immutable
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:intl/intl.dart';
+
 import 'package:sdp/API/paliaaAPI.dart';
 import 'package:sdp/sanghalist.dart';
 import 'package:sdp/screen/searchResult/searchResultScreen.dart';
 
 class SearchSDP extends StatefulWidget {
-  SearchSDP(
-      {Key? key,
-      required this.onSubmitPress,
-      this.dashboardindexNumber,
-      this.searchDasboardIndexNumber})
-      : super(key: key);
+  SearchSDP({
+    Key? key,
+    this.dashboardindexNumber,
+    this.searchDasboardIndexNumber,
+    required this.onSubmitPress,
+  }) : super(key: key);
+
   int? searchDasboardIndexNumber = 0;
   int? dashboardindexNumber = 0;
   final Function onSubmitPress;
@@ -279,12 +278,7 @@ class _SearchSDPState extends State<SearchSDP> {
                     ),
                   );
                 }
-
-                // setState(() {
-                //   widget.searchItem = result;
-                // });
               },
-              child: const Text('Search'),
               style: ButtonStyle(
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
@@ -292,6 +286,7 @@ class _SearchSDPState extends State<SearchSDP> {
                   ),
                 ),
               ),
+              child: const Text('Search'),
             ),
           )
         ],

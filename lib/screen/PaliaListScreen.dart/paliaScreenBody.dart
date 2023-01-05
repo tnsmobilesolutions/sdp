@@ -1,11 +1,13 @@
+// ignore_for_file: file_names, depend_on_referenced_packages, must_be_immutable, iterable_contains_unrelated_type
+
 import 'package:flutter/material.dart';
-import 'package:sdp/API/paliaaAPI.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
+import 'package:sdp/API/paliaaAPI.dart';
 import 'package:sdp/Models/vaktaModel.dart';
-import 'package:sdp/screen/PaliaListScreen.dart/paliaTableRow.dart';
 import 'package:sdp/screen/PaliaListScreen.dart/editPaliMultiple.dart';
+import 'package:sdp/screen/PaliaListScreen.dart/paliaTableRow.dart';
 
 class PaliaListBodyPage extends StatefulWidget {
   PaliaListBodyPage({Key? key, required this.year}) : super(key: key);
@@ -59,8 +61,8 @@ class _PaliaListBodyPageState extends State<PaliaListBodyPage> {
             children: [
               // if (selectedPalia.isNotEmpty)
               Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: multipleEditPali(
+                  padding: const EdgeInsets.all(8.0),
+                  child: MultipleEditPali(
                     docIds: selectedPalia,
                   )),
               OutlinedButton(
@@ -69,16 +71,16 @@ class _PaliaListBodyPageState extends State<PaliaListBodyPage> {
                     width: 1.0,
                     color: Color(0XFF3f51b5),
                   ),
-                  foregroundColor: Color(0XFF3f51b5),
+                  foregroundColor: const Color(0XFF3f51b5),
                 ),
                 onPressed: () {
                   setState(() {
                     showMenu = !showMenu;
                   });
                 },
-                child: Text('Show Menu'),
+                child: const Text('Show Menu'),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
               Padding(
@@ -89,10 +91,10 @@ class _PaliaListBodyPageState extends State<PaliaListBodyPage> {
                         width: 1.0,
                         color: Color(0XFF3f51b5),
                       ),
-                      foregroundColor: Color(0XFF3f51b5),
+                      foregroundColor: const Color(0XFF3f51b5),
                     ),
                     onPressed: () async {
-                      final _baloobhaina2font =
+                      final baloobhaina2font =
                           await PdfGoogleFonts.balooBhaina2Regular();
                       final doc = pw.Document();
                       doc.addPage(
@@ -108,7 +110,7 @@ class _PaliaListBodyPageState extends State<PaliaListBodyPage> {
                                       'ଜୟଗୁରୁ',
                                       style: pw.TextStyle(
                                         decoration: pw.TextDecoration.underline,
-                                        font: _baloobhaina2font,
+                                        font: baloobhaina2font,
                                         fontSize: 20,
                                         fontWeight: pw.FontWeight.normal,
                                       ),
@@ -123,7 +125,7 @@ class _PaliaListBodyPageState extends State<PaliaListBodyPage> {
                                       pw.Text(
                                           'Total Record - ${allPaliaList?.length}'),
                                       pw.Text(
-                                          'Total Pranami - ${allPaliaList?.length} × 1101 = ${(allPaliaList?.length != 0 ? (allPaliaList?.length)! : 0) * (1101)}'),
+                                          'Total Pranami - ${allPaliaList?.length} × 1101 = ${(allPaliaList != null ? (allPaliaList?.length)! : 0) * (1101)}'),
                                     ],
                                   )
                                 ],
@@ -210,27 +212,25 @@ class _PaliaListBodyPageState extends State<PaliaListBodyPage> {
                       onChanged: (value) async {
                         var alldata =
                             await PaliaAPI().fetchAllByYearPalias(widget.year);
-                        print('**Allcheck Value $value');
 
                         setState(() {
                           allCheck = value!;
 
-                          alldata.forEach((e) {
+                          for (var e in alldata) {
                             if (allCheck == true) {
                               // editpaliDate = true;
                               if (!selectedPalia.contains(e)) {
                                 selectedPalia.add(e.docId.toString());
-                                print('***ALLTRUE***$selectedPalia');
                               }
                             } else if (allCheck == false) {
                               editpaliDate = false;
                               selectedPalia.remove(e.docId);
-                              print('***ALLFALSE***$selectedPalia');
+
                               if (selectedPalia == []) {
                                 setState(() {});
                               }
                             }
-                          });
+                          }
                         });
                       }),
                 )),
@@ -272,13 +272,9 @@ class _PaliaListBodyPageState extends State<PaliaListBodyPage> {
                             if (!selectedPalia
                                 .contains(snapshot.data[index].docId)) {
                               selectedPalia.add(snapshot.data[index].docId);
-
-                              print('***SELECTEDTRUE***$selectedPalia');
                             }
                           } else {
                             selectedPalia.remove(snapshot.data[index].docId);
-
-                            print('***SELECTED FALSE***$selectedPalia');
                           }
                         },
                       );

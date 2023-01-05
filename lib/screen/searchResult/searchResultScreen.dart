@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:sdp/Models/vaktaModel.dart';
 import 'package:sdp/screen/appBar/actionWidget.dart';
@@ -29,7 +31,7 @@ class _SearchResultPageState extends State<SearchResultPage> {
           child: Column(
         children: [
           Expanded(
-              child: searchresultBodyPage(
+              child: SearchresultBodyPage(
             searchModel: widget.searchReslt,
           ))
         ],

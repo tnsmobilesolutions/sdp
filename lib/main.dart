@@ -5,10 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:material_color_generator/material_color_generator.dart';
 import 'package:sdp/Login/EmailSignIn.dart';
-import 'package:sdp/unUsedCodes/dashboard.dart';
-
 import 'package:sdp/firebase_options.dart';
-import 'package:sdp/unUsedCodes/homeScreen.dart';
 import 'package:sdp/screen/dashboard/dashboard.dart';
 
 Future<void> main() async {

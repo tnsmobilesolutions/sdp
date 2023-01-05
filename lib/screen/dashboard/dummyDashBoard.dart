@@ -1,6 +1,6 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
-import 'package:sdp/screen/appBar/actionWidget.dart';
-import 'package:sdp/screen/appBar/leadingImage.dart';
 
 class DUmmyDashBoard extends StatelessWidget {
   const DUmmyDashBoard({super.key});

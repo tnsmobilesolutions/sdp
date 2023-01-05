@@ -1,9 +1,10 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:sdp/API/paliaaAPI.dart';
 import 'package:sdp/sammilani_list.dart';
 import 'package:sdp/screen/PaliaListScreen.dart/paliaList.dart';
 import 'package:sdp/screen/dashboard/dummyDashBoard.dart';
-import 'package:sdp/screen/dashboard/hardCodeListDashboard.dart';
 
 class DashboardBody extends StatefulWidget {
   const DashboardBody({super.key});
@@ -46,7 +47,7 @@ class _DashboardBodyState extends State<DashboardBody> {
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: InkWell(
-                    highlightColor: Color.fromARGB(255, 0, 0, 0),
+                    highlightColor: const Color.fromARGB(255, 0, 0, 0),
                     onTap: () {
                       Navigator.push(
                           context,
@@ -116,7 +117,7 @@ class _DashboardBodyState extends State<DashboardBody> {
                 ),
               );
             } else {
-              return Expanded(child: DUmmyDashBoard());
+              return const Expanded(child: DUmmyDashBoard());
             }
           },
         );

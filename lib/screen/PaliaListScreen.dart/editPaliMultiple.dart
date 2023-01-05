@@ -1,18 +1,20 @@
+// ignore_for_file: file_names, must_be_immutable, use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sdp/API/paliaaAPI.dart';
 import 'package:sdp/Models/vaktaModel.dart';
 import 'package:sdp/screen/dashboard/dashboard.dart';
 
-class multipleEditPali extends StatefulWidget {
-  multipleEditPali({Key? key, required this.docIds}) : super(key: key);
+class MultipleEditPali extends StatefulWidget {
+  MultipleEditPali({Key? key, required this.docIds}) : super(key: key);
   List<String> docIds;
 
   @override
-  State<multipleEditPali> createState() => _multipleEditPaliState();
+  State<MultipleEditPali> createState() => _MultipleEditPaliState();
 }
 
-class _multipleEditPaliState extends State<multipleEditPali> {
+class _MultipleEditPaliState extends State<MultipleEditPali> {
   TextEditingController editPaliDatecontroller = TextEditingController();
 
   @override
@@ -73,14 +75,13 @@ class _multipleEditPaliState extends State<multipleEditPali> {
                       ));
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: const Text(
-                          'Plese select any Palia you want to update!'),
+                    const SnackBar(
+                      content:
+                          Text('Plese select any Palia you want to update!'),
                     ),
                   );
                 }
               },
-              child: const Text('Update'),
               style: ButtonStyle(
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
@@ -88,6 +89,7 @@ class _multipleEditPaliState extends State<multipleEditPali> {
                   ),
                 ),
               ),
+              child: const Text('Update'),
             ),
           ],
         ),

@@ -1,23 +1,24 @@
+// ignore_for_file: file_names, depend_on_referenced_packages, iterable_contains_unrelated_type
+
 import 'package:flutter/material.dart';
-import 'package:sdp/API/paliaaAPI.dart';
-import 'package:sdp/Models/vaktaModel.dart';
-import 'package:sdp/screen/PaliaListScreen.dart/editPaliMultiple.dart';
-import 'package:sdp/screen/dashboard/dashboard.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
-
+import 'package:sdp/Models/vaktaModel.dart';
+import 'package:sdp/screen/PaliaListScreen.dart/editPaliMultiple.dart';
+import 'package:sdp/screen/dashboard/dashboard.dart';
 import 'package:sdp/screen/searchResult/searchtableRow.dart';
 
-class searchresultBodyPage extends StatefulWidget {
-  searchresultBodyPage({Key? key, required this.searchModel}) : super(key: key);
+// ignore: must_be_immutable
+class SearchresultBodyPage extends StatefulWidget {
+  SearchresultBodyPage({Key? key, required this.searchModel}) : super(key: key);
   List<VaktaModel> searchModel;
 
   @override
-  State<searchresultBodyPage> createState() => _searchresultBodyPageState();
+  State<SearchresultBodyPage> createState() => _SearchresultBodyPageState();
 }
 
-class _searchresultBodyPageState extends State<searchresultBodyPage> {
+class _SearchresultBodyPageState extends State<SearchresultBodyPage> {
   List<String> selectedPalia = [];
   bool checkedValue = false;
   bool? allCheck;
@@ -58,8 +59,8 @@ class _searchresultBodyPageState extends State<searchresultBodyPage> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: multipleEditPali(
+                  padding: const EdgeInsets.all(8.0),
+                  child: MultipleEditPali(
                     docIds: selectedPalia,
                   )),
               TextButton(
@@ -70,23 +71,23 @@ class _searchresultBodyPageState extends State<searchresultBodyPage> {
                           builder: (context) => DashboardPage(),
                         ));
                   },
-                  child: Text('Reset')),
+                  child: const Text('Reset')),
               OutlinedButton(
                 style: OutlinedButton.styleFrom(
                   side: const BorderSide(
                     width: 1.0,
                     color: Color(0XFF3f51b5),
                   ),
-                  foregroundColor: Color(0XFF3f51b5),
+                  foregroundColor: const Color(0XFF3f51b5),
                 ),
                 onPressed: () {
                   setState(() {
                     showMenu = !showMenu;
                   });
                 },
-                child: Text('Show Menu'),
+                child: const Text('Show Menu'),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
               //Print
@@ -98,10 +99,10 @@ class _searchresultBodyPageState extends State<searchresultBodyPage> {
                       width: 1.0,
                       color: Color(0XFF3f51b5),
                     ),
-                    foregroundColor: Color(0XFF3f51b5),
+                    foregroundColor: const Color(0XFF3f51b5),
                   ),
                   onPressed: () async {
-                    final _baloobhaina2font =
+                    final baloobhaina2font =
                         await PdfGoogleFonts.balooBhaina2Regular();
                     final doc = pw.Document();
                     doc.addPage(
@@ -116,7 +117,7 @@ class _searchresultBodyPageState extends State<searchresultBodyPage> {
                                     'ଜୟଗୁରୁ',
                                     style: pw.TextStyle(
                                       decoration: pw.TextDecoration.underline,
-                                      font: _baloobhaina2font,
+                                      font: baloobhaina2font,
                                       fontSize: 20,
                                       fontWeight: pw.FontWeight.normal,
                                     ),
@@ -203,7 +204,7 @@ class _searchresultBodyPageState extends State<searchresultBodyPage> {
                     await Printing.layoutPdf(
                         onLayout: (PdfPageFormat format) async => doc.save());
                   },
-                  child: Text('Print'),
+                  child: const Text('Print'),
                 ),
               )
             ],
@@ -218,22 +219,18 @@ class _searchresultBodyPageState extends State<searchresultBodyPage> {
                   child: Checkbox(
                       value: allCheck ?? false,
                       onChanged: (value) async {
-                        print('**Allcheck Value $value');
-
                         setState(() {
                           allCheck = value!;
 
-                          widget.searchModel.forEach((e) {
+                          for (var e in widget.searchModel) {
                             if (allCheck == true) {
                               if (!selectedPalia.contains(e)) {
                                 selectedPalia.add(e.docId.toString());
-                                print('***ALLSearchTRUE***$selectedPalia');
                               }
                             } else if (allCheck == false) {
                               selectedPalia.remove(e.docId);
-                              print('***ALLSearchFALSE***$selectedPalia');
                             }
-                          });
+                          }
                         });
                       }),
                 )),
@@ -255,7 +252,7 @@ class _searchresultBodyPageState extends State<searchresultBodyPage> {
               itemCount: widget.searchModel.length,
               itemBuilder: (BuildContext context, int index) {
                 //Table firebase Data
-                return searchTableRow(
+                return SearchTableRow(
                   allCheck: allCheck,
                   showMenu: showMenu,
                   slNo: index + 1,
@@ -267,12 +264,9 @@ class _searchresultBodyPageState extends State<searchresultBodyPage> {
                           .contains(widget.searchModel[index].docId)) {
                         selectedPalia
                             .add(widget.searchModel[index].docId.toString());
-
-                        print('***SELECTEDTRUE***$selectedPalia');
                       }
                     } else {
                       selectedPalia.remove(widget.searchModel[index].docId);
-                      print('***SELECTED FALSE***$selectedPalia');
                     }
                   },
                 );

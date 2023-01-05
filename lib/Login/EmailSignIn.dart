@@ -1,11 +1,9 @@
-// ignore_for_file: prefer_const_constructors, use_build_context_synchronously, non_constant_identifier_names
-
-import 'dart:developer';
+// ignore_for_file: file_names, use_build_context_synchronously
 
 import 'package:authentication/EmailLogin/authenticationWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:sdp/API/userAPI.dart';
-import 'package:sdp/unUsedCodes/homeScreen.dart';
+
 import 'package:sdp/screen/dashboard/dashboard.dart';
 
 class EmailSignIn extends StatefulWidget {
@@ -16,7 +14,7 @@ class EmailSignIn extends StatefulWidget {
 }
 
 class _EmailSignInState extends State<EmailSignIn> {
-  final TextEditingController PhoneController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -31,9 +29,10 @@ class _EmailSignInState extends State<EmailSignIn> {
                 imageHeight: 230,
                 cardWidth: 245,
                 cardHeight: 295,
-                loginImage: AssetImage('assets/images/login.png'),
+                loginImage: const AssetImage('assets/images/login.png'),
                 onEmailLoginPressed: (userEmail, userPassword) async {
                   final user = await UserAPI().signIn(userEmail, userPassword);
+
                   if (user != null) {
                     Navigator.push(
                         context,
@@ -52,10 +51,10 @@ class _EmailSignInState extends State<EmailSignIn> {
                 },
                 phoneAuthentication: false,
                 isSignUpVisible: false,
-                buttonColor: Color(0xFFeb1589),
+                buttonColor: const Color(0xFFeb1589),
                 loginButonTextColor: Colors.white,
                 // titleTextColor: Colors.white,
-                loginPageTextStyle: TextStyle(
+                loginPageTextStyle: const TextStyle(
                   color: Colors.white,
                   fontSize: 40,
                   fontWeight: FontWeight.bold,
@@ -63,10 +62,10 @@ class _EmailSignInState extends State<EmailSignIn> {
                 isImageVisible: true,
                 textFieldBorderColor: Colors.white,
                 //  Color(0xFFeb1589),
-                cardColor: Color(0XFF3f51b5),
+                cardColor: const Color(0XFF3f51b5),
                 // textfieldHintColor: Colors.white,
-                emailHintTextStyle: TextStyle(color: Colors.white),
-                passwordHintTextStyle: TextStyle(color: Colors.white),
+                emailHintTextStyle: const TextStyle(color: Colors.white),
+                passwordHintTextStyle: const TextStyle(color: Colors.white),
               )),
         ),
       ),

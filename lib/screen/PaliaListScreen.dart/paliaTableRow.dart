@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:sdp/API/paliaaAPI.dart';
 import 'package:sdp/Models/vaktaModel.dart';
@@ -49,7 +51,6 @@ class _PaliaTableRowState extends State<PaliaTableRow> {
                   setState(() {
                     isCheck = value!;
 
-                    print('***Value****$value');
                     widget.isCheckedBoolValue(value);
                     // widget.isallCheckedBoolValue(value);
                   });
@@ -94,33 +95,33 @@ class _PaliaTableRowState extends State<PaliaTableRow> {
                           ),
                         );
                       },
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.visibility,
                         color: Color(0XFF3f51b5),
                       ))),
             if (widget.showMenu == true)
               Expanded(
                   child: IconButton(
-                      color: Color(0XFF3f51b5),
+                      color: const Color(0XFF3f51b5),
                       onPressed: () {
                         showDialog<void>(
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
-                              title: Text('Edit Palia Details'),
+                              title: const Text('Edit Palia Details'),
                               content: EditPaliadilougePage(
                                   paliaDetails: widget.paliaDetails),
                             );
                           },
                         );
                       },
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.edit,
                       ))),
             if (widget.showMenu == true)
               Expanded(
                   child: IconButton(
-                      color: Color(0XFF3f51b5),
+                      color: const Color(0XFF3f51b5),
                       onPressed: () {
                         showDialog<String>(
                           context: context,
@@ -153,7 +154,7 @@ class _PaliaTableRowState extends State<PaliaTableRow> {
                           ),
                         );
                       },
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.delete,
                       ))),
           ],
