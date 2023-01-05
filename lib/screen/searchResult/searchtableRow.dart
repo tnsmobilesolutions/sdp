@@ -18,7 +18,6 @@ class searchTableRow extends StatefulWidget {
   final int slNo;
   bool showMenu;
   Function isCheckedBoolValue;
-
   bool? allCheck;
 
   @override
@@ -27,6 +26,15 @@ class searchTableRow extends StatefulWidget {
 
 class _searchTableRowState extends State<searchTableRow> {
   bool isCheck = false;
+  @override
+  @override
+  void initState() {
+    if (widget.allCheck == false) {
+      widget.allCheck = null;
+    }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Expanded(

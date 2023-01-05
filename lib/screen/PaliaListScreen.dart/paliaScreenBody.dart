@@ -58,14 +58,11 @@ class _PaliaListBodyPageState extends State<PaliaListBodyPage> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               // if (selectedPalia.isNotEmpty)
-              Visibility(
-                visible: selectedPalia != [],
-                child: Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: multipleEditPali(
-                      docIds: selectedPalia,
-                    )),
-              ),
+              Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: multipleEditPali(
+                    docIds: selectedPalia,
+                  )),
               OutlinedButton(
                 style: OutlinedButton.styleFrom(
                   side: const BorderSide(
@@ -230,9 +227,7 @@ class _PaliaListBodyPageState extends State<PaliaListBodyPage> {
                               selectedPalia.remove(e.docId);
                               print('***ALLFALSE***$selectedPalia');
                               if (selectedPalia == []) {
-                                setState(() {
-                                  // editpaliDate = false;
-                                });
+                                setState(() {});
                               }
                             }
                           });
@@ -270,9 +265,9 @@ class _PaliaListBodyPageState extends State<PaliaListBodyPage> {
                         slNo: index + 1,
                         allCheck: allCheck,
                         paliaDetails: snapshot.data[index],
-                        isCheckedBoolValue: (isCheckedValuee) {
-                          checkedValue = isCheckedValuee;
-                          if (isCheckedValuee == true) {
+                        isCheckedBoolValue: (isCheckedValue) {
+                          // checkedValue = isCheckedValuee;
+                          if (isCheckedValue == true) {
                             editpaliDate = true;
                             if (!selectedPalia
                                 .contains(snapshot.data[index].docId)) {
@@ -282,9 +277,7 @@ class _PaliaListBodyPageState extends State<PaliaListBodyPage> {
                             }
                           } else {
                             selectedPalia.remove(snapshot.data[index].docId);
-                            // if (selectedPalia.isEmpty) {
-                            //   setState(() {});
-                            // }
+
                             print('***SELECTED FALSE***$selectedPalia');
                           }
                         },

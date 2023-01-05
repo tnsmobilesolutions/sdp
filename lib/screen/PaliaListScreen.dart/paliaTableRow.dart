@@ -28,6 +28,13 @@ class PaliaTableRow extends StatefulWidget {
 class _PaliaTableRowState extends State<PaliaTableRow> {
   // List<String> selectedPalia = [];
   bool isCheck = false;
+  @override
+  void initState() {
+    super.initState();
+    if (widget.allCheck == false) {
+      widget.allCheck = null;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

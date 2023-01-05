@@ -64,12 +64,21 @@ class _multipleEditPaliState extends State<multipleEditPali> {
                 final a = VaktaModel(
                   paaliDate: editPaliDatecontroller.text,
                 );
-                await PaliaAPI().editPaliDateMultiple(widget.docIds, a);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DashboardPage(),
-                    ));
+                if (widget.docIds.isNotEmpty) {
+                  await PaliaAPI().editPaliDateMultiple(widget.docIds, a);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DashboardPage(),
+                      ));
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: const Text(
+                          'Plese select any Palia you want to update!'),
+                    ),
+                  );
+                }
               },
               child: const Text('Update'),
               style: ButtonStyle(

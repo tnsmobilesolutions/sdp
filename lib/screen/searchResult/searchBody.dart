@@ -18,19 +18,6 @@ class searchresultBodyPage extends StatefulWidget {
 }
 
 class _searchresultBodyPageState extends State<searchresultBodyPage> {
-  // dynamic baloobhainaheading;
-  // font() async {
-  //   final a = await PdfGoogleFonts.notoSansOriyaRegular();
-  //   setState(() {
-  //     baloobhainaheading = a;
-  //   });
-  // }
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   font();
-  // }
   List<String> selectedPalia = [];
   bool checkedValue = false;
   bool? allCheck;
@@ -242,12 +229,9 @@ class _searchresultBodyPageState extends State<searchresultBodyPage> {
                                 selectedPalia.add(e.docId.toString());
                                 print('***ALLSearchTRUE***$selectedPalia');
                               }
-                            } else {
+                            } else if (allCheck == false) {
                               selectedPalia.remove(e.docId);
                               print('***ALLSearchFALSE***$selectedPalia');
-                              // if (selectedPalia.isEmpty) {
-                              //   setState(() {});
-                              // }
                             }
                           });
                         });
@@ -272,6 +256,10 @@ class _searchresultBodyPageState extends State<searchresultBodyPage> {
               itemBuilder: (BuildContext context, int index) {
                 //Table firebase Data
                 return searchTableRow(
+                  allCheck: allCheck,
+                  showMenu: showMenu,
+                  slNo: index + 1,
+                  searchpaliaDetails: widget.searchModel[index],
                   isCheckedBoolValue: (isCheckedValuee) {
                     checkedValue = isCheckedValuee;
                     if (isCheckedValuee == true) {
@@ -285,14 +273,8 @@ class _searchresultBodyPageState extends State<searchresultBodyPage> {
                     } else {
                       selectedPalia.remove(widget.searchModel[index].docId);
                       print('***SELECTED FALSE***$selectedPalia');
-                      if (selectedPalia.isEmpty) {
-                        setState(() {});
-                      }
                     }
                   },
-                  showMenu: showMenu,
-                  slNo: index + 1,
-                  searchpaliaDetails: widget.searchModel[index],
                 );
               },
             ),
