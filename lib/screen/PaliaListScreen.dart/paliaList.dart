@@ -38,13 +38,8 @@ class _PaliaListPageState extends State<PaliaListPage> {
         actions: const [ActionWidget()],
       ),
       body: SafeArea(
-          child: Column(
-        children: [
-          Expanded(
-              child: PaliaListBodyPage(
-            year: widget.year,
-          ))
-        ],
+          child: PaliaListBodyPage(
+        year: widget.year,
       )),
     );
   }

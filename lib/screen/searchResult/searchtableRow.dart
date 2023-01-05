@@ -97,7 +97,7 @@ class _SearchTableRowState extends State<SearchTableRow> {
                             ),
                           );
                         },
-                        icon: const Icon(Icons.visibility))),
+                        icon: const Icon(Icons.info))),
               if (widget.showMenu == true)
                 Expanded(
                     child: IconButton(

@@ -96,7 +96,7 @@ class _PaliaTableRowState extends State<PaliaTableRow> {
                         );
                       },
                       icon: const Icon(
-                        Icons.visibility,
+                        Icons.info,
                         color: Color(0XFF3f51b5),
                       ))),
             if (widget.showMenu == true)

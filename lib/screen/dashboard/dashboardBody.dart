@@ -16,18 +16,6 @@ class DashboardBody extends StatefulWidget {
 class _DashboardBodyState extends State<DashboardBody> {
   final sammilaniDetails = SammilaniUtility.getAllSammilaniName();
   String? numberOfPalia;
-  paliaLength() async {
-    final a = await PaliaAPI().fetchAllByYearPalias('2022');
-    setState(() {
-      numberOfPalia = a.length.toString();
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    paliaLength();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,81 +31,76 @@ class _DashboardBodyState extends State<DashboardBody> {
               .fetchAllByYearPalias(list[index].sammilaniYear.toString()),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-              return Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: InkWell(
-                    highlightColor: const Color.fromARGB(255, 0, 0, 0),
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => PaliaListPage(
-                                year: list[index].sammilaniYear.toString()),
-                          ));
-                    },
-                    child: Card(
-                      elevation: 10,
-                      shadowColor: const Color(0XFF3f51b5),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  list[index].sammilaniNumber.toString(),
-                                  style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                const Text(
-                                  'ସମ୍ମିଳନୀ',
-                                  style: TextStyle(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.normal),
-                                ),
-                                Text(
-                                  list[index].sammilaniYear.toString(),
-                                  style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            ),
-                            Text(
-                              list[index].sammilaniPlace.toString(),
-                              style: const TextStyle(
-                                  fontSize: 17, fontWeight: FontWeight.normal),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  snapshot.data.length.toString(),
-                                  style: const TextStyle(
-                                      fontSize: 50,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                const Text(
-                                  'ଦିନିକିଆ ପାଳି',
-                                  style: TextStyle(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.normal),
-                                )
-                              ],
-                            )
-                          ],
-                        ),
+              return Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: InkWell(
+                  highlightColor: const Color.fromARGB(255, 0, 0, 0),
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => PaliaListPage(
+                              year: list[index].sammilaniYear.toString()),
+                        ));
+                  },
+                  child: Card(
+                    elevation: 10,
+                    shadowColor: const Color(0XFF3f51b5),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                list[index].sammilaniNumber.toString(),
+                                style: const TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                              const Text(
+                                'ସମ୍ମିଳନୀ',
+                                style: TextStyle(
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.normal),
+                              ),
+                              Text(
+                                list[index].sammilaniYear.toString(),
+                                style: const TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
+                          Text(
+                            list[index].sammilaniPlace.toString(),
+                            style: const TextStyle(
+                                fontSize: 17, fontWeight: FontWeight.normal),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                snapshot.data.length.toString(),
+                                style: const TextStyle(
+                                    fontSize: 50, fontWeight: FontWeight.bold),
+                              ),
+                              const Text(
+                                'ଦିନିକିଆ ପାଳି',
+                                style: TextStyle(
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.normal),
+                              )
+                            ],
+                          )
+                        ],
                       ),
                     ),
                   ),
                 ),
               );
             } else {
-              return const Expanded(child: DUmmyDashBoard());
+              return const DummyDashBoard();
             }
           },
         );

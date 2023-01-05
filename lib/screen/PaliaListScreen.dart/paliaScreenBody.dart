@@ -142,49 +142,47 @@ class _PaliaListBodyPageState extends State<PaliaListBodyPage> {
                                 printSearchheadingText('pali Date'),
                               ]),
                               pw.Divider(thickness: 0.5),
-                              pw.Expanded(
-                                child: pw.ListView.builder(
-                                  itemCount: allPaliaList != null
-                                      ? allPaliaList!.length
-                                      : 0,
-                                  itemBuilder: (pw.Context context, int index) {
-                                    return pw.Column(
-                                      children: [
-                                        pw.Row(
-                                          children: [
-                                            pw.Expanded(
-                                              child: pw.Text(
-                                                (index + 1).toString(),
-                                                textAlign: pw.TextAlign.center,
-                                              ),
+                              pw.ListView.builder(
+                                itemCount: allPaliaList != null
+                                    ? allPaliaList!.length
+                                    : 0,
+                                itemBuilder: (pw.Context context, int index) {
+                                  return pw.Column(
+                                    children: [
+                                      pw.Row(
+                                        children: [
+                                          pw.Expanded(
+                                            child: pw.Text(
+                                              (index + 1).toString(),
+                                              textAlign: pw.TextAlign.center,
                                             ),
-                                            pw.Expanded(
-                                              child: pw.Text(
-                                                '${allPaliaList?[index].name}',
-                                                textAlign: pw.TextAlign.center,
-                                              ),
+                                          ),
+                                          pw.Expanded(
+                                            child: pw.Text(
+                                              '${allPaliaList?[index].name}',
+                                              textAlign: pw.TextAlign.center,
                                             ),
-                                            pw.Expanded(
-                                              child: pw.Text(
-                                                '${allPaliaList?[index].sangha}',
-                                                textAlign: pw.TextAlign.center,
-                                              ),
+                                          ),
+                                          pw.Expanded(
+                                            child: pw.Text(
+                                              '${allPaliaList?[index].sangha}',
+                                              textAlign: pw.TextAlign.center,
                                             ),
-                                            pw.Expanded(
-                                              child: pw.Text(
-                                                '${allPaliaList?[index].paaliDate}',
-                                                textAlign: pw.TextAlign.center,
-                                              ),
+                                          ),
+                                          pw.Expanded(
+                                            child: pw.Text(
+                                              '${allPaliaList?[index].paaliDate}',
+                                              textAlign: pw.TextAlign.center,
                                             ),
-                                          ],
-                                        ),
-                                        pw.Divider(
-                                          thickness: 0.5,
-                                        )
-                                      ],
-                                    );
-                                  },
-                                ),
+                                          ),
+                                        ],
+                                      ),
+                                      pw.Divider(
+                                        thickness: 0.5,
+                                      )
+                                    ],
+                                  );
+                                },
                               ),
                             ]);
                           },
@@ -260,23 +258,25 @@ class _PaliaListBodyPageState extends State<PaliaListBodyPage> {
                     itemCount: snapshot.data.length,
                     itemBuilder: (BuildContext context, int index) {
                       //Table firebase Data
-                      return PaliaTableRow(
-                        showMenu: showMenu,
-                        slNo: index + 1,
-                        allCheck: allCheck,
-                        paliaDetails: snapshot.data[index],
-                        isCheckedBoolValue: (isCheckedValue) {
-                          // checkedValue = isCheckedValuee;
-                          if (isCheckedValue == true) {
-                            editpaliDate = true;
-                            if (!selectedPalia
-                                .contains(snapshot.data[index].docId)) {
-                              selectedPalia.add(snapshot.data[index].docId);
+                      return Expanded(
+                        child: PaliaTableRow(
+                          showMenu: showMenu,
+                          slNo: index + 1,
+                          allCheck: allCheck,
+                          paliaDetails: snapshot.data[index],
+                          isCheckedBoolValue: (isCheckedValue) {
+                            // checkedValue = isCheckedValuee;
+                            if (isCheckedValue == true) {
+                              editpaliDate = true;
+                              if (!selectedPalia
+                                  .contains(snapshot.data[index].docId)) {
+                                selectedPalia.add(snapshot.data[index].docId);
+                              }
+                            } else {
+                              selectedPalia.remove(snapshot.data[index].docId);
                             }
-                          } else {
-                            selectedPalia.remove(snapshot.data[index].docId);
-                          }
-                        },
+                          },
+                        ),
                       );
                     },
                   ),
