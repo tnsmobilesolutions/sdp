@@ -29,17 +29,20 @@ class SearchTableRow extends StatefulWidget {
 
 class _SearchTableRowState extends State<SearchTableRow> {
   bool isCheck = false;
-  @override
-  @override
-  void initState() {
-    if (widget.allCheck == false) {
-      widget.allCheck = null;
-    }
-    super.initState();
-  }
+
+  // @override
+  // void initState() {
+  //   if (widget.allCheck == false) {
+  //     widget.allCheck = null;
+  //   }
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
+    if (widget.allCheck == false) {
+      widget.allCheck = null;
+    }
     return Column(
       children: [
         Row(

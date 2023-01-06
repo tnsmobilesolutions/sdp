@@ -26,7 +26,7 @@ class _DashboardBodyState extends State<DashboardBody> {
       itemCount: 6,
       shrinkWrap: true,
       // ignore: prefer_const_constructors
-      physics: NeverScrollableScrollPhysics(),
+
       itemBuilder: (BuildContext context, int index) {
         return FutureBuilder(
           future: PaliaAPI()
