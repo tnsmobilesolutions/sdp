@@ -21,7 +21,18 @@ class SearchButton extends StatelessWidget {
         showDialog<String>(
           context: context,
           builder: (BuildContext context) => AlertDialog(
-            title: const Text('Search Palia'),
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text('Search Palia'),
+                IconButton(
+                    color: const Color(0XFF3f51b5),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: const Icon(Icons.close))
+              ],
+            ),
             content: Padding(
               padding: const EdgeInsets.all(8.0),
               child: SearchSDP(

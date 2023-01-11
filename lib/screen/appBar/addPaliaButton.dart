@@ -31,8 +31,19 @@ class AddPaliaButton extends StatelessWidget {
         showDialog<void>(
           context: context,
           builder: (BuildContext context) {
-            return const AlertDialog(
-              title: Text('Add Palia Details'),
+            return AlertDialog(
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('Add Palia Details'),
+                  IconButton(
+                      color: const Color(0XFF3f51b5),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: const Icon(Icons.close))
+                ],
+              ),
               content: AddPageDilouge(),
             );
           },

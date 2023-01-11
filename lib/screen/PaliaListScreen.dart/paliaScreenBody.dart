@@ -78,7 +78,7 @@ class _PaliaListBodyPageState extends State<PaliaListBodyPage> {
                     showMenu = !showMenu;
                   });
                 },
-                child: const Text('Show Menu'),
+                child: const Text('Show Action Menu'),
               ),
               const SizedBox(
                 width: 10,

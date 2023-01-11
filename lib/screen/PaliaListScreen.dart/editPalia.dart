@@ -392,7 +392,18 @@ class _EditPaliadilougePageState extends State<EditPaliadilougePage> {
                     showDialog<String>(
                       context: context,
                       builder: (BuildContext context) => AlertDialog(
-                        title: const Text('Edit Palia Details'),
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text('Edit Palia Details'),
+                            IconButton(
+                                color: const Color(0XFF3f51b5),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                icon: const Icon(Icons.close))
+                          ],
+                        ),
                         content:
                             const Text('Do You Want to Update Palia Details'),
                         actions: <Widget>[

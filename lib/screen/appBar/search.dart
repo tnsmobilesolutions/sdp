@@ -4,6 +4,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:intl/intl.dart';
 
 import 'package:sdp/API/paliaaAPI.dart';
+import 'package:sdp/sammilani_list.dart';
 import 'package:sdp/sanghalist.dart';
 import 'package:sdp/screen/searchResult/searchResultScreen.dart';
 
@@ -107,77 +108,283 @@ class _SearchSDPState extends State<SearchSDP> {
                   const SizedBox(
                     width: 10,
                   ),
-                  Expanded(
-                    child: TextFormField(
-                      onFieldSubmitted: (value) async {
-                        final result = await PaliaAPI().searchSDP(
-                            _selectedSearchType,
-                            sdpSearchController.text,
-                            searchSanghaController.text);
-                        widget.onSubmitPress(result, _selectedSearchType,
-                            sdpSearchController.text);
-                      },
+                  _selectedSearchType == 'Sangha'
+                      ? SizedBox(
+                          width: 200,
+                          height: 50,
+                          child: TypeAheadField(
+                            textFieldConfiguration: TextFieldConfiguration(
+                                onSubmitted: (value) async {
+                                  final result = await PaliaAPI().searchSDP(
+                                      _selectedSearchType,
+                                      sdpSearchController.text,
+                                      searchSanghaController.text);
+                                  widget.onSubmitPress(
+                                      result,
+                                      _selectedSearchType,
+                                      sdpSearchController.text);
+                                },
+                                controller: sdpSearchController,
+                                decoration: InputDecoration(
+                                  labelText: 'Search Sangha Names',
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(15.0),
+                                  ),
+                                )),
+                            suggestionsCallback: (pattern) async {
+                              final sanghaList =
+                                  SanghaUtility.getAllSanghaName();
+                              return sanghaList.where((element) => element!
+                                  .toLowerCase()
+                                  .contains(pattern.toLowerCase()));
 
-                      autofocus: false,
-                      controller: sdpSearchController,
-                      // keyboardType: TextInputType.datetime,
-                      // },
+                              // return await BackendService.getSuggestions(pattern);
+                            },
+                            itemBuilder: (context, suggestion) {
+                              return ListTile(
+                                title: Text(suggestion.toString()),
+                              );
+                            },
+                            getImmediateSuggestions: true,
+                            hideOnEmpty: false,
+                            noItemsFoundBuilder: (context) => const Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Text('No Sangha Name Found'),
+                            ),
+                            onSuggestionSelected: (suggestion) {
+                              sdpSearchController.text = suggestion.toString();
+                            },
+                          ),
+                        )
+                      : _selectedSearchType == 'Sammilani Number'
+                          ? SizedBox(
+                              width: 200,
+                              height: 50,
+                              child: TypeAheadField(
+                                textFieldConfiguration: TextFieldConfiguration(
+                                    controller: sdpSearchController,
+                                    decoration: const InputDecoration(
+                                        labelText: 'Search Sammilani Number',
+                                        border: OutlineInputBorder()
+                                        // OutlineInputBorder(
+                                        //   borderRadius: BorderRadius.circular(15.0),
+                                        // ),
+                                        )),
+                                suggestionsCallback: (pattern) async {
+                                  final sammilaniNumber =
+                                      SammilaniUtility.getAllSammilaniName();
+                                  return sammilaniNumber.where((element) =>
+                                      element.sammilaniNumber!
+                                          .contains(pattern.toLowerCase()));
 
-                      textInputAction: TextInputAction.next,
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15.0),
-                          ),
-                          contentPadding: const EdgeInsets.all(15),
-                          // border: InputBorder.none,
-                          hintText: 'Search item',
-                          hintStyle: const TextStyle(
-                            color: Color(0XFF3f51b5),
-                          ),
-                          suffixIcon: _selectedSearchType == 'Pali Date'
-                              ? IconButton(
-                                  onPressed: () async {
-                                    DateTime? selectedDate =
-                                        await showDatePicker(
-                                            context: context,
-                                            initialDate: DateTime.now(),
-                                            firstDate: DateTime(1947),
-                                            lastDate: DateTime(2050));
-                                    if (selectedDate != null) {
-                                      setState(() {
-                                        sdpSearchController.text =
-                                            DateFormat('dd/MM/yyyy')
-                                                .format(selectedDate);
-                                      });
-                                    } else {
-                                      sdpSearchController.text = '';
-                                    }
-                                  },
-                                  icon: const Icon(
-                                    Icons.calendar_month_rounded,
-                                    color: Color(0XFF3f51b5),
-                                  ))
-                              : null),
-                      onTap: _selectedSearchType == 'Pali Date'
-                          ? () async {
-                              DateTime? selectedDate = await showDatePicker(
-                                  context: context,
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime(1947),
-                                  lastDate: DateTime(2050));
-                              if (selectedDate != null) {
-                                setState(() {
+                                  // return await BackendService.getSuggestions(pattern);
+                                },
+                                itemBuilder: (context, suggestion) {
+                                  return ListTile(
+                                    title: Text(
+                                        suggestion.sammilaniNumber.toString()),
+                                  );
+                                },
+                                getImmediateSuggestions: true,
+                                hideOnEmpty: false,
+                                noItemsFoundBuilder: (context) => const Padding(
+                                  padding: EdgeInsets.all(8.0),
+                                  child: Text('No Sammilani Number Found'),
+                                ),
+                                onSuggestionSelected: (value) {
                                   sdpSearchController.text =
-                                      DateFormat('dd/MM/yyyy')
-                                          .format(selectedDate);
-                                });
-                              } else {
-                                sdpSearchController.text = '';
-                              }
-                            }
-                          : () {},
-                    ),
-                  ),
+                                      value.sammilaniNumber.toString();
+                                },
+                              ),
+                            )
+                          : _selectedSearchType == 'Sammilani Year'
+                              ? SizedBox(
+                                  width: 200,
+                                  height: 50,
+                                  child: TypeAheadField(
+                                    textFieldConfiguration:
+                                        TextFieldConfiguration(
+                                            controller: sdpSearchController,
+                                            decoration: const InputDecoration(
+                                                labelText: 'Add Sammilani Year',
+                                                border: OutlineInputBorder()
+                                                // OutlineInputBorder(
+                                                //   borderRadius: BorderRadius.circular(15.0),
+                                                // ),
+                                                )),
+                                    suggestionsCallback: (pattern) async {
+                                      final sammilanimodelist = SammilaniUtility
+                                          .getAllSammilaniName();
+                                      return sammilanimodelist.where(
+                                          (element) => element.sammilaniYear!
+                                              .contains(pattern.toLowerCase()));
+
+                                      // return await BackendService.getSuggestions(pattern);
+                                    },
+                                    itemBuilder: (context, suggestion) {
+                                      return ListTile(
+                                        title: Text(suggestion.sammilaniYear
+                                            .toString()),
+                                      );
+                                    },
+                                    getImmediateSuggestions: true,
+                                    hideOnEmpty: false,
+                                    noItemsFoundBuilder: (context) =>
+                                        const Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Text('No Sammilani Year Found'),
+                                    ),
+                                    onSuggestionSelected: (value) {
+                                      sdpSearchController.text =
+                                          value.sammilaniYear.toString();
+                                    },
+                                  ),
+                                )
+                              : _selectedSearchType == 'Sammilani Place'
+                                  ? SizedBox(
+                                      width: 200,
+                                      height: 50,
+                                      child: TypeAheadField(
+                                        textFieldConfiguration:
+                                            TextFieldConfiguration(
+                                                controller: sdpSearchController,
+                                                decoration: const InputDecoration(
+                                                    labelText:
+                                                        'Add Sammilani Place',
+                                                    border: OutlineInputBorder()
+                                                    // OutlineInputBorder(
+                                                    //   borderRadius: BorderRadius.circular(15.0),
+                                                    // ),
+                                                    )),
+                                        suggestionsCallback: (pattern) async {
+                                          final sammilaniNumber =
+                                              SammilaniUtility
+                                                  .getAllSammilaniName();
+                                          return sammilaniNumber.where(
+                                              (element) => element
+                                                  .sammilaniPlace!
+                                                  .toLowerCase()
+                                                  .contains(
+                                                      pattern.toLowerCase()));
+
+                                          // return await BackendService.getSuggestions(pattern);
+                                        },
+                                        itemBuilder: (context, suggestion) {
+                                          return ListTile(
+                                            title: Text(suggestion
+                                                .sammilaniPlace
+                                                .toString()),
+                                          );
+                                        },
+                                        getImmediateSuggestions: true,
+                                        hideOnEmpty: false,
+                                        noItemsFoundBuilder: (context) =>
+                                            const Padding(
+                                          padding: EdgeInsets.all(8.0),
+                                          child: Text('No Sangha Name Found'),
+                                        ),
+                                        onSuggestionSelected: (value) {
+                                          sdpSearchController.text =
+                                              value.sammilaniPlace.toString();
+                                        },
+                                      ),
+                                    )
+                                  : SizedBox(
+                                      width: 200,
+                                      height: 50,
+                                      child: TextFormField(
+                                        onFieldSubmitted: (value) async {
+                                          final result = await PaliaAPI()
+                                              .searchSDP(
+                                                  _selectedSearchType,
+                                                  sdpSearchController.text,
+                                                  searchSanghaController.text);
+                                          widget.onSubmitPress(
+                                              result,
+                                              _selectedSearchType,
+                                              sdpSearchController.text);
+                                        },
+
+                                        autofocus: false,
+                                        controller: sdpSearchController,
+                                        // keyboardType: TextInputType.datetime,
+                                        // },
+
+                                        textInputAction: TextInputAction.next,
+                                        decoration: InputDecoration(
+                                            border: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(15.0),
+                                            ),
+                                            contentPadding:
+                                                const EdgeInsets.all(15),
+                                            // border: InputBorder.none,
+                                            hintText: 'Search item',
+                                            hintStyle: const TextStyle(
+                                              color: Color(0XFF3f51b5),
+                                            ),
+                                            suffixIcon: _selectedSearchType ==
+                                                    'Pali Date'
+                                                ? IconButton(
+                                                    onPressed: () async {
+                                                      DateTime? selectedDate =
+                                                          await showDatePicker(
+                                                              context: context,
+                                                              initialDate:
+                                                                  DateTime
+                                                                      .now(),
+                                                              firstDate:
+                                                                  DateTime(
+                                                                      1947),
+                                                              lastDate:
+                                                                  DateTime(
+                                                                      2050));
+                                                      if (selectedDate !=
+                                                          null) {
+                                                        setState(() {
+                                                          sdpSearchController
+                                                              .text = DateFormat(
+                                                                  'dd-MMM-yyyy')
+                                                              .format(
+                                                                  selectedDate);
+                                                        });
+                                                      } else {
+                                                        sdpSearchController
+                                                            .text = '';
+                                                      }
+                                                    },
+                                                    icon: const Icon(
+                                                      Icons
+                                                          .calendar_month_rounded,
+                                                      color: Color(0XFF3f51b5),
+                                                    ))
+                                                : null),
+                                        onTap: _selectedSearchType ==
+                                                'Pali Date'
+                                            ? () async {
+                                                DateTime? selectedDate =
+                                                    await showDatePicker(
+                                                        context: context,
+                                                        initialDate:
+                                                            DateTime.now(),
+                                                        firstDate:
+                                                            DateTime(1947),
+                                                        lastDate:
+                                                            DateTime(2050));
+                                                if (selectedDate != null) {
+                                                  setState(() {
+                                                    sdpSearchController
+                                                        .text = DateFormat(
+                                                            'dd-MMM-yyyy')
+                                                        .format(selectedDate);
+                                                  });
+                                                } else {
+                                                  sdpSearchController.text = '';
+                                                }
+                                              }
+                                            : () {},
+                                      ),
+                                    ),
                 ],
               ),
               if (_selectedSearchType == 'Sammilani Number' ||

@@ -110,7 +110,7 @@ class _ViewPaliaState extends State<ViewPalia> {
                       'Sammilani Year',
                       style: TextStyle(color: Colors.grey),
                     ),
-                    Text('${widget.item.sammilaniData?.sammilaniYear}')
+                    Text('${widget.item.sammilaniData?.sammilaniYear},')
                   ],
                 ),
                 Column(
@@ -121,6 +121,34 @@ class _ViewPaliaState extends State<ViewPalia> {
                       style: TextStyle(color: Colors.grey),
                     ),
                     Text('${widget.item.sammilaniData?.sammilaniPlace}')
+                  ],
+                ),
+              ],
+            ),
+            const Divider(
+              thickness: 0.5,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Receipt No.',
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                    Text('${widget.item.receiptNo}')
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    const Text(
+                      'Receipt Date',
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                    Text('${widget.item.receiptDate}')
                   ],
                 ),
               ],

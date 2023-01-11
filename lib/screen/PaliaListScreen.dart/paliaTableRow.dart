@@ -90,7 +90,18 @@ class _PaliaTableRowState extends State<PaliaTableRow> {
                         showDialog<String>(
                           context: context,
                           builder: (BuildContext context) => AlertDialog(
-                            title: const Text('View Palia Details'),
+                            title: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text('View Palia Details'),
+                                IconButton(
+                                    color: const Color(0XFF3f51b5),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    icon: const Icon(Icons.close))
+                              ],
+                            ),
                             content: ViewPalia(item: widget.paliaDetails),
                           ),
                         );
@@ -108,7 +119,19 @@ class _PaliaTableRowState extends State<PaliaTableRow> {
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
-                              title: const Text('Edit Palia Details'),
+                              title: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Text('Edit Palia Details'),
+                                  IconButton(
+                                      color: const Color(0XFF3f51b5),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      icon: const Icon(Icons.close))
+                                ],
+                              ),
                               content: EditPaliadilougePage(
                                   paliaDetails: widget.paliaDetails),
                             );
@@ -126,7 +149,18 @@ class _PaliaTableRowState extends State<PaliaTableRow> {
                         showDialog<String>(
                           context: context,
                           builder: (BuildContext context) => AlertDialog(
-                            title: const Text('Delete User'),
+                            title: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text('Delete User'),
+                                IconButton(
+                                    color: const Color(0XFF3f51b5),
+                                    onPressed: () {
+                                      Navigator.pop(context);
+                                    },
+                                    icon: const Icon(Icons.close))
+                              ],
+                            ),
                             content: const Text(
                                 'Do You Want to delete the user permanently?'),
                             actions: <Widget>[
