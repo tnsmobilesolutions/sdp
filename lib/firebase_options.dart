@@ -53,12 +53,12 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyD-vSQNpl7Q1Q9fNKXjmDVzmZQFdgEOjsY',
-    appId: '1:562220483011:web:7b1b8822f6fd7a6252fd76',
-    messagingSenderId: '562220483011',
-    projectId: 'sdp-nss-puri-dev',
-    authDomain: 'sdp-nss-puri-dev.firebaseapp.com',
-    storageBucket: 'sdp-nss-puri-dev.appspot.com',
-    measurementId: 'G-Z5WVCD97FR',
-  );
+      apiKey: "AIzaSyBBM9fjqih7IJSi1VfYLfHq3nWtbKFKuNQ",
+      authDomain: "sdp-nss-puri.firebaseapp.com",
+      databaseURL: "https://sdp-nss-puri.firebaseio.com",
+      projectId: "sdp-nss-puri",
+      storageBucket: "sdp-nss-puri.appspot.com",
+      messagingSenderId: "684346010972",
+      appId: "1:684346010972:web:20b7176ec8d3228476e599",
+      measurementId: "G-SQX9E3P6PP");
 }
