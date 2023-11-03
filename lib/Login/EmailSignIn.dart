@@ -1,6 +1,6 @@
 // ignore_for_file: file_names, use_build_context_synchronously
 
-import 'package:authentication/EmailLogin/authenticationWidget.dart';
+import 'package:authentication/EmailLogin/authentication_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:sdp/API/userAPI.dart';
 
@@ -25,10 +25,11 @@ class _EmailSignInState extends State<EmailSignIn> {
           child: Padding(
               padding: const EdgeInsets.all(20),
               child: AuthenticationWidget(
+                shouldEmailAuthentication: true,
                 imageWidth: 245,
                 imageHeight: 230,
                 cardWidth: 245,
-                cardHeight: 295,
+                cardHeight: 310,
                 loginImage: const AssetImage('assets/images/login.png'),
                 onEmailLoginPressed: (userEmail, userPassword) async {
                   final user = await UserAPI().signIn(userEmail, userPassword);
@@ -53,6 +54,7 @@ class _EmailSignInState extends State<EmailSignIn> {
                 isSignUpVisible: false,
                 buttonColor: const Color(0xFFeb1589),
                 loginButonTextColor: Colors.white,
+
                 // titleTextColor: Colors.white,
                 loginPageTextStyle: const TextStyle(
                   color: Colors.white,
@@ -62,10 +64,10 @@ class _EmailSignInState extends State<EmailSignIn> {
                 isImageVisible: true,
                 textFieldBorderColor: Colors.white,
                 //  Color(0xFFeb1589),
-                cardColor: const Color(0XFF3f51b5),
-                // textfieldHintColor: Colors.white,
-                emailHintTextStyle: const TextStyle(color: Colors.white),
-                passwordHintTextStyle: const TextStyle(color: Colors.white),
+                cardColor: Color.fromARGB(255, 253, 253, 253),
+                textfieldHintColor: Colors.white,
+                // emailHintTextStyle: const TextStyle(color: Colors.white),
+                // passwordHintTextStyle: const TextStyle(color: Colors.white),
               )),
         ),
       ),

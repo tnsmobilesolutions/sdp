@@ -13,13 +13,6 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  // await Firebase.initializeApp(
-  //     options: FirebaseOptions(
-  //   apiKey: "AIzaSyBBM9fjqih7IJSi1VfYLfHq3nWtbKFKuNQ",
-  //   appId: "1:684346010972:web:20b7176ec8d3228476e599",
-  //   messagingSenderId: "684346010972",
-  //   projectId: "sdp-nss-puri",
-  // ));
   runApp(MyApp());
 }
 

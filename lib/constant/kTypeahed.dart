@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 
+// ignore: must_be_immutable
 class KTypeahed extends StatefulWidget {
   KTypeahed(
       {Key? key,
