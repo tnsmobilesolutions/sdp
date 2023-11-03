@@ -46,7 +46,7 @@ dependencies:
   intl: ^0.17.0
   uuid: ^3.0.6
   material_color_generator: ^1.1.0
-  printing: ^5.9.3
+  printing: ^5.11.0
   flutter_typeahead: ^4.1.1
  
   
