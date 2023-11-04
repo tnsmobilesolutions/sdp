@@ -59,7 +59,6 @@ class _PaliaListBodyPageState extends State<PaliaListBodyPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              // if (selectedPalia.isNotEmpty)
               Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: MultipleEditPali(
