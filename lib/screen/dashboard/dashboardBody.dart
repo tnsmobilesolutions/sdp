@@ -49,7 +49,7 @@ class _DashboardBodyState extends State<DashboardBody> {
                     elevation: 10,
                     shadowColor: const Color(0XFF3f51b5),
                     color: list[index].sammilaniPlace == "Pune, Maharashtra"
-                        ? Color.fromARGB(255, 255, 239, 92)
+                        ? const Color.fromARGB(255, 255, 239, 92)
                         : Colors.white,
                     child: Padding(
                       padding: const EdgeInsets.all(15.0),

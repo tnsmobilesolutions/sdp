@@ -33,7 +33,10 @@ class PaliaAPI {
           }
           lstPalias.sort(
             (a, b) {
-              return b.createdOn.toString().compareTo(a.createdOn.toString());
+              int cmp =
+                  a.paaliDate.toString().compareTo(b.paaliDate.toString());
+              if (cmp != 0) return cmp;
+              return (b.sangha ?? "").compareTo(a.sangha ?? "");
             },
           );
           return lstPalias;
