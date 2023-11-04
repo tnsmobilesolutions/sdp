@@ -129,7 +129,7 @@ final allSangha = [
   Sangha(name: 'Gud', district: 'Balasore'),
   Sangha(name: 'Balabhadrapur', district: 'Balasore'),
   Sangha(name: 'Mahatipur', district: 'Balasore'),
-  Sangha(name: 'Sora', district: 'Balasore'),
+  Sangha(name: 'Soro', district: 'Balasore'),
   Sangha(name: 'Barapada', district: 'Balasore'),
   Sangha(name: 'Mahatipur1', district: 'Balasore'),
   Sangha(name: 'Mukteswarapur', district: 'Balasore'),

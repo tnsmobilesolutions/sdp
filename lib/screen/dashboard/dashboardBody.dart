@@ -48,8 +48,11 @@ class _DashboardBodyState extends State<DashboardBody> {
                   child: Card(
                     elevation: 10,
                     shadowColor: const Color(0XFF3f51b5),
+                    color: list[index].sammilaniPlace == "Pune, Maharashtra"
+                        ? Color.fromARGB(255, 255, 239, 92)
+                        : Colors.white,
                     child: Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(15.0),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -77,10 +80,12 @@ class _DashboardBodyState extends State<DashboardBody> {
                           Text(
                             list[index].sammilaniPlace.toString(),
                             style: const TextStyle(
-                                fontSize: 17, fontWeight: FontWeight.normal),
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0XFF3f51b5)),
                           ),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Text(
                                 snapshot.data.length.toString(),
@@ -88,7 +93,7 @@ class _DashboardBodyState extends State<DashboardBody> {
                                     fontSize: 50, fontWeight: FontWeight.bold),
                               ),
                               const Text(
-                                'ଦିନିକିଆ ପାଳି',
+                                ' ଦିନିକିଆ ପାଳି',
                                 style: TextStyle(
                                     fontSize: 17,
                                     fontWeight: FontWeight.normal),

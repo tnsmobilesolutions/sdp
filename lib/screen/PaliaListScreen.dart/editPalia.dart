@@ -94,7 +94,7 @@ class _EditPaliadilougePageState extends State<EditPaliadilougePage> {
                 },
               ),
 
-              const SizedBox(height: 5),
+              const SizedBox(height: 10),
               //Sangha Name
               TypeAheadField(
                 textFieldConfiguration: TextFieldConfiguration(
@@ -128,7 +128,7 @@ class _EditPaliadilougePageState extends State<EditPaliadilougePage> {
                   sanghaNameController.text = value.toString();
                 },
               ),
-              const SizedBox(height: 5),
+              const SizedBox(height: 10),
               // Pranami
               TextFormField(
                 focusNode: FocusNode(
@@ -142,7 +142,7 @@ class _EditPaliadilougePageState extends State<EditPaliadilougePage> {
                 ),
               ),
               // Pali Date
-              const SizedBox(height: 5),
+              const SizedBox(height: 10),
               TextFormField(
                 focusNode: FocusNode(
                   descendantsAreFocusable: false,
@@ -171,7 +171,7 @@ class _EditPaliadilougePageState extends State<EditPaliadilougePage> {
                   labelText: 'Pali Date (DD-MMM-YYYY)',
                 ),
               ),
-              const SizedBox(height: 5),
+              const SizedBox(height: 10),
               // receipt Date
               TextFormField(
                 focusNode: FocusNode(
@@ -216,7 +216,7 @@ class _EditPaliadilougePageState extends State<EditPaliadilougePage> {
                   labelText: 'Receipt Number',
                 ),
               ),
-              const SizedBox(height: 5),
+              const SizedBox(height: 10),
               // Sammilani Number
               TypeAheadField(
                 textFieldConfiguration: TextFieldConfiguration(
@@ -266,7 +266,7 @@ class _EditPaliadilougePageState extends State<EditPaliadilougePage> {
               //     labelText: 'Sammilani Number',
               //   ),
               // ),
-              const SizedBox(height: 5),
+              const SizedBox(height: 10),
               // Sammilani Year
               TypeAheadField(
                 textFieldConfiguration: TextFieldConfiguration(
@@ -316,7 +316,7 @@ class _EditPaliadilougePageState extends State<EditPaliadilougePage> {
               //   ),
               // ),
 
-              const SizedBox(height: 5),
+              const SizedBox(height: 10),
               // Sammilani Place
               TypeAheadField(
                 textFieldConfiguration: TextFieldConfiguration(
@@ -369,7 +369,7 @@ class _EditPaliadilougePageState extends State<EditPaliadilougePage> {
               //   ),
               // ),
 
-              const SizedBox(height: 5),
+              const SizedBox(height: 10),
               // Remark
               TextFormField(
                 focusNode: FocusNode(
@@ -387,7 +387,7 @@ class _EditPaliadilougePageState extends State<EditPaliadilougePage> {
                     backgroundColor: MaterialStateProperty.all<Color>(
                         const Color(0XFF3f51b5)),
                   ),
-                  child: const Text('Edit Palia'),
+                  child: const Text('Save'),
                   onPressed: () async {
                     showDialog<String>(
                       context: context,

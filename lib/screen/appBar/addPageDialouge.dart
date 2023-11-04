@@ -49,10 +49,11 @@ class _AddPageDilougeState extends State<AddPageDilouge> {
     currentUser();
 //Initial Value
     pranamiController.text = '1101';
-    paliDateController.text = DateFormat('dd-MMM-yyyy').format(DateTime.now());
-    sammilaniNumberController.text = '71';
-    sammilaniYearController.text = '2022';
-    sammilaniPlaceController.text = 'Satsikhya Mandir,Bhubaneswar';
+    paliDateController.text =
+        DateFormat('dd-MMM-yyyy').format(DateTime.parse('2024-02-01'));
+    sammilaniNumberController.text = '73';
+    sammilaniYearController.text = '2024';
+    sammilaniPlaceController.text = 'Pune';
     receiptDateController.text =
         DateFormat('dd-MMM-yyyy').format(DateTime.now());
   }
@@ -88,7 +89,7 @@ class _AddPageDilougeState extends State<AddPageDilouge> {
                 },
               ),
 
-              const SizedBox(height: 5),
+              const SizedBox(height: 10),
               //Sangha Name
               TypeAheadField(
                 textFieldConfiguration: TextFieldConfiguration(
@@ -123,7 +124,7 @@ class _AddPageDilougeState extends State<AddPageDilouge> {
                 },
               ),
 
-              const SizedBox(height: 5),
+              const SizedBox(height: 10),
               // Pranami
               TextFormField(
                 focusNode: FocusNode(
@@ -137,7 +138,7 @@ class _AddPageDilougeState extends State<AddPageDilouge> {
                 ),
               ),
               // Pali Date
-              const SizedBox(height: 5),
+              const SizedBox(height: 10),
               TextFormField(
                 focusNode: FocusNode(
                   descendantsAreFocusable: false,
@@ -149,7 +150,7 @@ class _AddPageDilougeState extends State<AddPageDilouge> {
                       onPressed: () async {
                         DateTime? selectedDate = await showDatePicker(
                             context: context,
-                            initialDate: DateTime.now(),
+                            initialDate: DateTime.parse('2024-02-01'),
                             firstDate: DateTime(1947),
                             lastDate: DateTime(2050));
                         if (selectedDate != null) {
@@ -166,7 +167,7 @@ class _AddPageDilougeState extends State<AddPageDilouge> {
                   labelText: 'Pali Date (DD-MMM-YYYY)',
                 ),
               ),
-              const SizedBox(height: 5),
+              const SizedBox(height: 10),
               // Receipt Date
               TextFormField(
                 focusNode: FocusNode(
@@ -211,7 +212,7 @@ class _AddPageDilougeState extends State<AddPageDilouge> {
                   labelText: 'Receipt Number',
                 ),
               ),
-              const SizedBox(height: 5),
+              const SizedBox(height: 10),
               // Sammilani Number
               TypeAheadField(
                 textFieldConfiguration: TextFieldConfiguration(
@@ -261,7 +262,7 @@ class _AddPageDilougeState extends State<AddPageDilouge> {
               //     labelText: 'Sammilani Number',
               //   ),
               // ),
-              const SizedBox(height: 5),
+              const SizedBox(height: 10),
               // Sammilani Year
               TypeAheadField(
                 textFieldConfiguration: TextFieldConfiguration(
@@ -311,7 +312,7 @@ class _AddPageDilougeState extends State<AddPageDilouge> {
               //   ),
               // ),
 
-              const SizedBox(height: 5),
+              const SizedBox(height: 10),
               // Sammilani Place
               TypeAheadField(
                 textFieldConfiguration: TextFieldConfiguration(
@@ -353,7 +354,7 @@ class _AddPageDilougeState extends State<AddPageDilouge> {
                 },
               ),
 
-              const SizedBox(height: 5),
+              const SizedBox(height: 10),
               // Remark
               TextFormField(
                 focusNode: FocusNode(

@@ -13,7 +13,7 @@ class SammilaniUtility {
     var f = allSammilaniList
         .getRange(allSammilaniList.length - n, allSammilaniList.length)
         .map((e) => e);
-    return f.toList();
+    return f.toList().reversed.toList();
   }
 
   static Future<int> paliaNumber(year) async {
@@ -314,6 +314,11 @@ final allSammilaniList = [
   SammilaniModel(
     sammilaniNumber: '73',
     sammilaniYear: '2024',
-    sammilaniPlace: 'Pune',
+    sammilaniPlace: 'Pune, Maharashtra',
+  ),
+  SammilaniModel(
+    sammilaniNumber: '74',
+    sammilaniYear: '2025',
+    sammilaniPlace: 'Soro, Balasore',
   ),
 ];

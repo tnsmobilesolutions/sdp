@@ -43,7 +43,7 @@ class _MultipleEditPaliState extends State<MultipleEditPali> {
                 onTap: () async {
                   DateTime? selectedDate = await showDatePicker(
                       context: context,
-                      initialDate: DateTime.now(),
+                      initialDate: DateTime.parse('2024-02-01'),
                       firstDate: DateTime(1947),
                       lastDate: DateTime(2050));
                   if (selectedDate != null) {

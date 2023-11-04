@@ -331,8 +331,8 @@ class _SearchSDPState extends State<SearchSDP> {
                                                           await showDatePicker(
                                                               context: context,
                                                               initialDate:
-                                                                  DateTime
-                                                                      .now(),
+                                                                  DateTime.parse(
+                                                                      '2024-02-01'),
                                                               firstDate:
                                                                   DateTime(
                                                                       1947),
